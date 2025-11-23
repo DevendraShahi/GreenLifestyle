@@ -58,6 +58,8 @@ class TipForm(forms.ModelForm):
 
         # Custom labels
         labels = {
+            '
+            '
             'title': 'Tip Title',
             'category': 'Category',
             'content': 'Tip Content',
@@ -72,6 +74,49 @@ class TipForm(forms.ModelForm):
             'image': 'Add an image to make your tip more engaging (JPG, PNG, max 5MB)',
             'is_published': 'Uncheck to save as draft'
         }
+
+            # Optional field for creating a new category
+    new_category_name = forms.CharField(
+        required=False,
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none',
+            'placeholder': 'Or create a new category...',
+        }),
+        help_text='Leave empty to use existing category from dropdown'
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        category = cleaned_data.get('category')
+        new_category_name = cleaned_data.get('new_category_name')
+        
+        # If both are empty, require one
+        if not category and not new_category_name:
+            raise ValidationError('Please select an existing category or create a new one.')
+        
+        # If new category name is provided, check it doesn't already exist
+        if new_category_name:
+            if Category.objects.filter(name__iexact=new_category_name.strip()).exists():
+                raise ValidationError(f'Category "{new_category_name}" already exists. Please select it from the dropdown.')
+        
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        
+        # If a new category name was provided, create it
+        new_category_name = self.cleaned_data.get('new_category_name')
+        if new_category_name and new_category_name.strip():
+            # Create the new category
+            new_category, created = Category.objects.get_or_create(
+                name=new_category_name.strip()
+            )
+            instance.category = new_category
+        
+        if commit:
+            instance.save()
+        return instance
 
     def clean_title(self):
         """
@@ -168,7 +213,8 @@ class CommentForm(forms.ModelForm):
     How it works:
     1. User types comment
     2. Form validates (min 5 characters)
-    3. If valid, save to database
+    3. If valid, save to 27
+
     """
 
     class Meta:
