@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} Tips - Green Lifestyle{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-white dark:bg-gray-950 pt-20 pb-20">
+  
+  <!-- Category Header -->
+  <div class="px-4 py-16 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-6xl mb-4">{{ category.icon }}</div>
+      <h1 class="text-4xl font-light text-gray-900 dark:text-white mb-2">
+        {{ category.name }}
+      </h1>
+      {% if category.description %}
+      <p class="text-gray-600 dark:text-gray-400">{{ category.description }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    
+    <!-- Tips Grid -->
+    {% if page_obj %}
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for tip in page_obj %}
+      <div class="bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 hover:border-emerald-200 dark:hover:border-emerald-800 transition-colors">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+          <a href="{% url 'tips:tip_detail' slug=tip.slug %}">{{ tip.title }}</a>
+        </h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ tip.content|truncatewords:15 }}</p>
+        <div class="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+          <span>❤️ {{ tip.likes_count }}</span>
+          <span>💬 {{ tip.comments_count }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="mt-8 flex justify-center gap-2">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+        Previous
+      </a>
+      {% endif %}
+      
+      <span class="px-3 py-1.5 bg-emerald-500 text-white text-sm rounded">{{ page_obj.number }}</span>
+      
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+        Next
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="text-center py-16">
+      <p class="text-gray-600 dark:text-gray-400">No tips in this category yet</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

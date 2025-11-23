@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Eco Tips - Green Lifestyle{% endblock %}
+
+{% block content %}
+
+<!-- Twitter/X Style Feed with Sidebar -->
+<div class="min-h-screen bg-white dark:bg-gray-950 pt-16">
+
+  <div class="max-w-7xl mx-auto flex gap-6 px-4">
+
+    <!-- Left Sidebar -->
+    {% include 'tips/_sidebar.html' %}
+
+    <!-- Main Feed -->
+    <main class="flex-grow max-w-2xl">
+
+      <!-- Feed Header -->
+      <div
+        class="sticky top-16 z-10 bg-white/80 dark:bg-gray-950/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 px-4 py-4">
+        <h1 class="text-xl font-bold text-gray-900 dark:text-white">Green Tips</h1>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Discover eco-friendly wisdom from our community</p>
+      </div>
+
+      <!-- Tips Feed -->
+      {% if page_obj %}
+      <div class="divide-y divide-gray-200 dark:divide-gray-800">
+        {% for tip in page_obj %}
+        <article
+          class="px-4 py-4 hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors border-b border-gray-100 dark:border-gray-800">
+          <div class="flex gap-3">
+
+            <!-- Avatar -->
+            <div class="flex-shrink-0">
+              <div
+                class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 flex items-center justify-center overflow-hidden">
+                {% if tip.author.profile_picture %}
+                <img src="{{ tip.author.profile_picture.url }}" alt="{{ tip.author.username }}"
+                  class="w-full h-full object-cover">
+                {% else %}
+                <span class="text-white font-semibold">{{ tip.author.username|slice:":1"|upper }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-grow min-w-0">
+
+              <!-- Header -->
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-semibold text-gray-900 dark:text-white text-sm">
+                  {{ tip.author.get_full_name|default:tip.author.username }}
+                </span>
+                {% if tip.author.is_verified %}
+                <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                {% endif %}
+                <span class="text-gray-600 dark:text-gray-400 text-sm">@{{ tip.author.username }}</span>
+                <span class="text-gray-400 dark:text-gray-500 text-sm">·</span>
+                <time class="text-gray-600 dark:text-gray-400 text-sm">{{ tip.created_at|date:"M j" }}</time>
+              </div>
+
+              <!-- Title & Content -->
+              <a href="{% url 'tips:tip_detail' slug=tip.slug %}" class="block group">
+                <h2
+                  class="font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                  {{ tip.title }}
+                </h2>
+                <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-3 line-clamp-2">
+                  {{ tip.content|truncatewords:30 }}
+                </p>
+              </a>
+
+              <!-- Image -->
+              {% if tip.image %}
+              <a href="{% url 'tips:tip_detail' slug=tip.slug %}" class="block mb-3">
+                <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                  <img src="{{ tip.image.url }}" alt="{{ tip.title }}" class="w-full max-h-96 object-cover">
+                </div>
+              </a>
+              {% endif %}
+
+              <!-- Action Buttons -->
+              <div class="px-4 py-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-around">
+
+                <!-- Like Button -->
+                {% if user.is_authenticated %}
+                <button id="likeButton" onclick="toggleLike('{{ tip.slug }}')"
+                  class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors group">
+                  <svg
+                    class="w-5 h-5 {% if is_liked %}text-red-500 fill-current{% else %}text-gray-600 dark:text-gray-400 group-hover:text-red-500{% endif %}"
+                    fill="{% if is_liked %}currentColor{% else %}none{% endif %}" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                    </path>
+                  </svg>
+                  <span id="likeButtonText"
+                    class="text-sm font-medium {% if is_liked %}text-red-500{% else %}text-gray-600 dark:text-gray-400 group-hover:text-red-500{% endif %}">
+                    {% if is_liked %}Liked{% else %}Like{% endif %}
+                  </span>
+                </button>
+                {% else %}
+                <a href="{% url 'accounts:login' %}"
+                  class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors group">
+                  <svg class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-red-500" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                    </path>
+                  </svg>
+                  <span
+                    class="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-red-500">Like</span>
+                </a>
+                {% endif %}
+
+                <!-- Comment Button -->
+                <button onclick="document.getElementById('commentBox').focus()"
+                  class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors group">
+                  <svg class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-500" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                    </path>
+                  </svg>
+                  <span
+                    class="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-blue-500">Comment</span>
+                </button>
+
+                <!-- Bookmark Button (NEW) -->
+                {% if user.is_authenticated %}
+                <button id="bookmarkButton" onclick="toggleBookmark('{{ tip.slug }}')"
+                  class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/10 transition-colors group">
+                  <svg
+                    class="w-5 h-5 {% if is_bookmarked %}text-yellow-500 fill-current{% else %}text-gray-600 dark:text-gray-400 group-hover:text-yellow-500{% endif %}"
+                    fill="{% if is_bookmarked %}currentColor{% else %}none{% endif %}" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                  </svg>
+                  <span id="bookmarkButtonText"
+                    class="text-sm font-medium {% if is_bookmarked %}text-yellow-500{% else %}text-gray-600 dark:text-gray-400 group-hover:text-yellow-500{% endif %}">
+                    {% if is_bookmarked %}Saved{% else %}Save{% endif %}
+                  </span>
+                </button>
+                {% else %}
+                <a href="{% url 'accounts:login' %}"
+                  class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/10 transition-colors group">
+                  <svg class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-yellow-500" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                  </svg>
+                  <span
+                    class="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-yellow-500">Save</span>
+                </a>
+                {% endif %}
+
+                <!-- Share Button -->
+                <button
+                  class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/10 transition-colors group">
+                  <svg class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-green-500" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z">
+                    </path>
+                  </svg>
+                  <span
+                    class="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-green-500">Share</span>
+                </button>
+              </div>
+
+
+              <!-- Engagement -->
+              <div class="flex items-center gap-6 text-gray-600 dark:text-gray-400 text-sm">
+                <button class="flex items-center gap-1 hover:text-red-500 transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                    </path>
+                  </svg>
+                  <span>{{ tip.likes_count }}</span>
+                </button>
+                <button class="flex items-center gap-1 hover:text-blue-500 transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                    </path>
+                  </svg>
+                  <span>{{ tip.comments_count }}</span>
+                </button>
+                <button class="flex items-center gap-1 hover:text-green-500 transition-colors ml-auto">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z">
+                    </path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      {% if page_obj.has_other_pages %}
+      <div class="border-t border-gray-200 dark:border-gray-800 px-4 py-4 flex justify-center gap-2">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          Previous
+        </a>
+        {% endif %}
+
+        <span class="px-4 py-2 bg-emerald-500 text-white rounded-lg text-sm font-medium">
+          {{ page_obj.number }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          Next
+        </a>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {% else %}
+      <!-- Empty State -->
+      <div class="px-4 py-20 text-center">
+        <div class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No tips found</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Be the first to share!</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'tips:create_tip' %}"
+          class="inline-block px-4 py-2 bg-emerald-500 text-white text-sm font-medium rounded-lg hover:bg-emerald-600 transition-colors">
+          Create Tip
+        </a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </main>
+
+    <!-- Right Sidebar (Optional - for trending, who to follow, etc.) -->
+    <aside class="w-80 flex-shrink-0 sticky top-20 h-fit hidden xl:block">
+      <div class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-3 text-sm">Trending Topics</h3>
+        <div class="space-y-3">
+          <div class="text-sm">
+            <p class="text-gray-600 dark:text-gray-400 text-xs">Trending</p>
+            <p class="font-medium text-gray-900 dark:text-white">#ZeroWaste</p>
+            <p class="text-gray-600 dark:text-gray-400 text-xs">1.2K tips</p>
+          </div>
+          <div class="text-sm">
+            <p class="text-gray-600 dark:text-gray-400 text-xs">Trending</p>
+            <p class="font-medium text-gray-900 dark:text-white">#SustainableLiving</p>
+            <p class="text-gray-600 dark:text-gray-400 text-xs">890 tips</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Line Clamp CSS -->
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+
+{% endblock %}

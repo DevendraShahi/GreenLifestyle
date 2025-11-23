@@ -1,0 +1,245 @@
+{% load static %}
+<!-- Premium Glassmorphism Footer -->
+<footer class="relative pt-20 overflow-hidden">
+
+  <!-- Video Background -->
+  <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover">
+    <source src="{% static 'images/bg-7.mp4' %}" type="video/mp4">
+  </video>
+
+  <!-- Dark Overlay -->
+  <div class="absolute inset-0 bg-black/40"></div>
+
+  <!-- Glassmorphism Layer -->
+  <div class="absolute inset-0 bg-glass backdrop-blur-lg border-t border-white/20 shadow-glass-footer"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+
+      <!-- Brand Section -->
+      <div class="space-y-4">
+        <div class="flex items-center space-x-3">
+          <span class="text-3xl">🌱</span>
+          <h3 class="text-xl font-bold text-white">Green Lifestyle</h3>
+        </div>
+        <p class="text-gray-100 text-sm leading-relaxed">
+          Empowering sustainable living through community, education, and action. Together, we create a greener tomorrow.
+        </p>
+        <!-- Social Media Links -->
+        <div class="flex space-x-4 pt-2">
+          <a href="#" class="social-icon group">
+            <i class="fab fa-facebook-f text-white group-hover:text-emerald-400 transition-colors duration-300"></i>
+          </a>
+          <a href="#" class="social-icon group">
+            <i class="fab fa-twitter text-white group-hover:text-emerald-400 transition-colors duration-300"></i>
+          </a>
+          <a href="#" class="social-icon group">
+            <i class="fab fa-instagram text-white group-hover:text-emerald-400 transition-colors duration-300"></i>
+          </a>
+          <a href="#" class="social-icon group">
+            <i class="fab fa-linkedin-in text-white group-hover:text-emerald-400 transition-colors duration-300"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="space-y-4">
+        <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
+        <ul class="space-y-3">
+          <li>
+            <a href="/" class="footer-link group flex items-center">
+              <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">Home</span>
+              <i class="fas fa-arrow-right text-xs ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-emerald-400"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer-link group flex items-center">
+              <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">About Us</span>
+              <i class="fas fa-arrow-right text-xs ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-emerald-400"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer-link group flex items-center">
+              <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">Tips & Guides</span>
+              <i class="fas fa-arrow-right text-xs ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-emerald-400"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer-link group flex items-center">
+              <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">Community</span>
+              <i class="fas fa-arrow-right text-xs ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-emerald-400"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div class="space-y-4">
+        <h4 class="text-lg font-semibold text-white mb-4">Resources</h4>
+        <ul class="space-y-3">
+          <li>
+            <a href="#" class="footer-link group flex items-center">
+              <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">Blog</span>
+              <i class="fas fa-arrow-right text-xs ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-emerald-400"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer-link group flex items-center">
+              <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">Events</span>
+              <i class="fas fa-arrow-right text-xs ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-emerald-400"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer-link group flex items-center">
+              <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">Help Center</span>
+              <i class="fas fa-arrow-right text-xs ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-emerald-400"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer-link group flex items-center">
+              <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">Contact</span>
+              <i class="fas fa-arrow-right text-xs ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-emerald-400"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="space-y-4">
+        <h4 class="text-lg font-semibold text-white mb-4">Stay Updated</h4>
+        <p class="text-gray-100 text-sm leading-relaxed">
+          Subscribe to our newsletter for eco-friendly tips and updates.
+        </p>
+        <form class="space-y-3">
+          <div class="relative">
+            <input
+              type="email"
+              placeholder="Your email address"
+              class="w-full px-4 py-2.5 bg-white/50 backdrop-blur-sm border border-emerald-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 text-gray-700 placeholder-gray-500"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full px-4 py-2.5 bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+          >
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="border-t border-white/20 my-8"></div>
+
+    <!-- Bottom Section -->
+    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+      <div class="text-gray-100 text-sm text-center md:text-left">
+        <p>&copy; 2024 Green Lifestyle. All rights reserved.</p>
+      </div>
+
+      <!-- Legal Links -->
+      <div class="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
+        <a href="#" class="text-gray-100 hover:text-emerald-400 transition-colors duration-300">
+          Privacy Policy
+        </a>
+        <a href="#" class="text-gray-100 hover:text-emerald-400 transition-colors duration-300">
+          Terms of Service
+        </a>
+        <a href="#" class="text-gray-100 hover:text-emerald-400 transition-colors duration-300">
+          Cookie Policy
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button
+      id="scrollToTop"
+      class="fixed bottom-8 right-8 p-3 bg-emerald-500 text-white rounded-full shadow-lg hover:bg-emerald-600 transform hover:scale-110 transition-all duration-300 opacity-0 invisible"
+      aria-label="Scroll to top"
+    >
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </div>
+</footer>
+
+<!-- FontAwesome for icons (if not already included) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+  .bg-glass {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .shadow-glass-footer {
+    box-shadow: 0 -8px 32px rgba(31, 38, 135, 0.15);
+  }
+
+  .backdrop-blur-lg {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .social-icon:hover {
+    background: rgba(16, 185, 129, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  }
+
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Scroll to Top Button Animation */
+  #scrollToTop.show {
+    opacity: 1;
+    visibility: visible;
+  }
+</style>
+
+<script>
+  // Scroll to Top Button Functionality
+  const scrollToTopBtn = document.getElementById('scrollToTop');
+
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      scrollToTopBtn.classList.add('show');
+    } else {
+      scrollToTopBtn.classList.remove('show');
+    }
+  });
+
+  scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  // Newsletter Form Submission (Add your actual form handling logic)
+  const newsletterForm = document.querySelector('footer form');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = newsletterForm.querySelector('input[type="email"]').value;
+      // Add your newsletter subscription logic here
+      alert('Thank you for subscribing!');
+      newsletterForm.reset();
+    });
+  }
+</script>

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Tips - Green Lifestyle{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-white dark:bg-gray-950 pt-20 pb-20">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-light text-gray-900 dark:text-white mb-2">
+        My <span class="font-semibold">Tips</span>
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400">Manage your shared eco-friendly tips</p>
+    </div>
+
+    <!-- Create Button -->
+    <div class="mb-8">
+      <a href="{% url 'tips:create_tip' %}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500 dark:bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-600 dark:hover:bg-emerald-700 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Create New Tip
+      </a>
+    </div>
+
+    <!-- Tips List -->
+    {% if page_obj %}
+    <div class="space-y-4">
+      {% for tip in page_obj %}
+      <div class="bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
+        <div class="flex items-start justify-between">
+          
+          <!-- Tip Info -->
+          <div class="flex-grow">
+            <div class="flex items-center gap-3 mb-2">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                <a href="{% url 'tips:tip_detail' slug=tip.slug %}" class="hover:text-emerald-600 dark:hover:text-emerald-400">
+                  {{ tip.title }}
+                </a>
+              </h3>
+              {% if not tip.is_published %}
+              <span class="px-2 py-1 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium rounded">Draft</span>
+              {% endif %}
+            </div>
+            
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ tip.content|truncatewords:20 }}</p>
+            
+            <div class="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+              <span>{{ tip.category.icon }} {{ tip.category.name }}</span>
+              <span>❤️ {{ tip.likes_count }}</span>
+              <span>💬 {{ tip.comments_count }}</span>
+              <span>📅 {{ tip.created_at|date:"M j, Y" }}</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex gap-2 ml-4">
+            <a href="{% url 'tips:edit_tip' slug=tip.slug %}" class="px-3 py-1.5 bg-blue-500 text-white text-xs font-medium rounded hover:bg-blue-600 transition-colors">
+              Edit
+            </a>
+            <a href="{% url 'tips:delete_tip' slug=tip.slug %}" class="px-3 py-1.5 bg-red-500 text-white text-xs font-medium rounded hover:bg-red-600 transition-colors">
+              Delete
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="mt-8 flex justify-center gap-2">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+        Previous
+      </a>
+      {% endif %}
+      
+      <span class="px-3 py-1.5 bg-emerald-500 text-white text-sm rounded">
+        {{ page_obj.number }}
+      </span>
+      
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+        Next
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="text-center py-16 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+      <p class="text-gray-600 dark:text-gray-400 mb-4">You haven't created any tips yet</p>
+      <a href="{% url 'tips:create_tip' %}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white text-sm font-medium rounded-lg hover:bg-emerald-600 transition-colors">
+        Create Your First Tip
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

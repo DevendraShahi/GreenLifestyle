@@ -1,0 +1,52 @@
+/* Hero Section Background */
+
+@font-face {
+  font-family: 'flower';
+  src: url('../fonts/flower.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'flower1';
+  src: url('../fonts/flower-herbaceous.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.headline {
+  font-family: 'flower', serif;
+}
+
+.tagline{
+    font-family: 'flower1', serif;
+}
+
+
+.hero {
+  background-image: url('/static/images/bg-2.gif');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+/* Overlay for text readability */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 1;
+}
+
+/* Make sure content is above overlay */
+.hero > div {
+  position: relative;
+  z-index: 2;
+}

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bc9dc3b8-07cb-453c-aaf5-2021cc2da28b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/GreenLifestyle.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/accounts/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/accounts/templates/accounts/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/accounts/templates/accounts/profile.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/accounts/templates/accounts/settings.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/accounts/templates/accounts/signup.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/accounts/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/css/home.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/footer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/homepage/cta.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/homepage/hero.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/homepage/howItWorks.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/homepage/whyChooseUs.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/homepage/yourImpact.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/navbar.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/templates/tips/_sidebar.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/templates/tips/category_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/templates/tips/my_tips.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/templates/tips/saved_tips.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/templates/tips/tip_confirm_delete.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/templates/tips/tip_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/templates/tips/tip_form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/templates/tips/tip_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tips/urls.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="34zs5g2ThoV38T1Q5RKt0b057SD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates" />
+      <recent name="$PROJECT_DIR$/accounts/templates" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="GreenLifestyle" type="Python.DjangoServer" factoryName="Django server">
+      <module name="GreenLifestyle" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-PY-252.26199.168" />
+        <option value="bundled-python-sdk-b3d66beaba9a-c6efb3732140-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.26199.168" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bc9dc3b8-07cb-453c-aaf5-2021cc2da28b" name="Changes" comment="" />
+      <created>1762227552542</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762227552542</updated>
+      <workItem from="1762227553542" duration="38577000" />
+      <workItem from="1762320141718" duration="895000" />
+      <workItem from="1762364562993" duration="5513000" />
+      <workItem from="1762451807959" duration="24809000" />
+      <workItem from="1763414218848" duration="6722000" />
+      <workItem from="1763515200395" duration="1221000" />
+      <workItem from="1763787782483" duration="9491000" />
+      <workItem from="1763864042325" duration="1054000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -1,0 +1,272 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark mode overrides */
+@layer base {
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html.dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+
+  html.dark h1,
+  html.dark h2,
+  html.dark h3,
+  html.dark h4,
+  html.dark h5,
+  html.dark h6 {
+    @apply text-white;
+  }
+
+  html.dark p,
+  html.dark span,
+  html.dark div,
+  html.dark a {
+    @apply text-gray-200;
+  }
+
+  html.dark .text-gray-900 {
+    @apply text-gray-100;
+  }
+
+  html.dark .text-gray-800 {
+    @apply text-gray-200;
+  }
+
+  html.dark .text-gray-700 {
+    @apply text-gray-300;
+  }
+
+  html.dark .text-gray-600 {
+    @apply text-gray-400;
+  }
+
+  html.dark .bg-white {
+    @apply bg-gray-800;
+  }
+
+  html.dark .bg-gray-50 {
+    @apply bg-gray-900;
+  }
+
+  html.dark .bg-gray-100 {
+    @apply bg-gray-800;
+  }
+
+  html.dark .bg-gray-200 {
+    @apply bg-gray-700;
+  }
+
+  html.dark .bg-emerald-50 {
+    @apply bg-emerald-900/20;
+  }
+
+  html.dark .bg-blue-50 {
+    @apply bg-blue-900/20;
+  }
+
+  html.dark .bg-purple-50 {
+    @apply bg-purple-900/20;
+  }
+
+  html.dark .bg-amber-50 {
+    @apply bg-amber-900/20;
+  }
+
+  html.dark .bg-teal-50 {
+    @apply bg-teal-900/20;
+  }
+
+  html.dark .bg-rose-50 {
+    @apply bg-rose-900/20;
+  }
+
+  html.dark .border-gray-100 {
+    @apply border-gray-700;
+  }
+
+  html.dark .border-gray-200 {
+    @apply border-gray-700;
+  }
+
+  html.dark .border-gray-300 {
+    @apply border-gray-600;
+  }
+
+  html.dark .border-white {
+    @apply border-gray-700;
+  }
+
+  html.dark .shadow-md,
+  html.dark .shadow-lg,
+  html.dark .shadow-xl,
+  html.dark .shadow-2xl {
+    @apply shadow-gray-900/50;
+  }
+
+  html.dark input[type="text"],
+  html.dark input[type="email"],
+  html.dark input[type="password"],
+  html.dark textarea,
+  html.dark select {
+    @apply bg-gray-800 text-white border-gray-700 placeholder-gray-500;
+  }
+
+  html.dark input[type="text"]:focus,
+  html.dark input[type="email"]:focus,
+  html.dark input[type="password"]:focus,
+  html.dark textarea:focus,
+  html.dark select:focus {
+    @apply border-emerald-500 ring-emerald-500/20;
+  }
+
+  html.dark .bg-white.border,
+  html.dark .bg-white.rounded-lg,
+  html.dark .bg-white.rounded-xl,
+  html.dark .bg-white.rounded-2xl,
+  html.dark .bg-white.rounded-3xl {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  html.dark .border-emerald-500\/30 {
+    @apply border-emerald-600/40;
+  }
+
+  html.dark .hover\:bg-emerald-50:hover {
+    @apply bg-emerald-900/20;
+  }
+
+  html.dark .hover\:bg-white\/20:hover {
+    @apply bg-white/10;
+  }
+
+  html.dark .hover\:bg-emerald-50:hover {
+    @apply bg-emerald-900/30;
+  }
+
+  html.dark .hover\:bg-blue-50:hover {
+    @apply bg-blue-900/30;
+  }
+
+  html.dark .hover\:bg-purple-50:hover {
+    @apply bg-purple-900/30;
+  }
+
+  html.dark .hover\:bg-amber-50:hover {
+    @apply bg-amber-900/30;
+  }
+
+  html.dark .hover\:bg-teal-50:hover {
+    @apply bg-teal-900/30;
+  }
+
+  html.dark .hover\:bg-rose-50:hover {
+    @apply bg-rose-900/30;
+  }
+
+  html.dark .bg-white\/90 {
+    @apply bg-gray-800/90;
+  }
+
+  html.dark .bg-white\/80 {
+    @apply bg-gray-800/80;
+  }
+
+  html.dark .bg-white\/50 {
+    @apply bg-gray-800/50;
+  }
+
+  html.dark .bg-white\/20 {
+    @apply bg-gray-800/20;
+  }
+
+  html.dark .from-white,
+  html.dark .to-white {
+    @apply from-gray-900 to-gray-900;
+  }
+
+  html.dark .via-emerald-50\/20 {
+    @apply via-emerald-900/10;
+  }
+
+  html.dark a {
+    @apply text-emerald-400 hover:text-emerald-300;
+  }
+
+  html.dark a.text-gray-700 {
+    @apply text-gray-300 hover:text-emerald-400;
+  }
+
+  html.dark a.text-gray-600 {
+    @apply text-gray-400;
+  }
+
+  html.dark .absolute.inset-0 {
+    @apply bg-opacity-20;
+  }
+
+  html.dark hr,
+  html.dark .border-t,
+  html.dark .border-b {
+    @apply border-gray-700;
+  }
+
+  html.dark .text-emerald-600 {
+    @apply text-emerald-400;
+  }
+
+  html.dark .text-emerald-700 {
+    @apply text-emerald-300;
+  }
+
+  html.dark .text-blue-600 {
+    @apply text-blue-400;
+  }
+
+  html.dark .text-purple-600 {
+    @apply text-purple-400;
+  }
+
+  html.dark .text-red-600 {
+    @apply text-red-400;
+  }
+
+  html.dark .text-amber-600 {
+    @apply text-amber-400;
+  }
+
+  html.dark .text-teal-600 {
+    @apply text-teal-400;
+  }
+
+  html.dark .text-rose-600 {
+    @apply text-rose-400;
+  }
+
+  html.dark .text-5xl,
+  html.dark .text-6xl,
+  html.dark .text-7xl {
+    @apply text-white;
+  }
+
+  html.dark #themeToggle svg {
+    animation: themeSwitch 0.5s ease-out;
+  }
+}
+
+@keyframes themeSwitch {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 1;
+  }
+}

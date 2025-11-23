@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Up - Green Lifestyle{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-black flex">
+
+  <!-- Left Side - Form -->
+  <div class="flex-1 flex items-center justify-center p-8">
+    <div class="w-full max-w-md">
+
+      <!-- Logo/Brand -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Create Account</h1>
+        <p class="text-gray-600 dark:text-zinc-400">Join the Green Lifestyle community</p>
+      </div>
+
+      <!-- Form -->
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <div>
+          <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+            Username
+          </label>
+          <input
+            type="text"
+            name="username"
+            id="{{ form.username.id_for_label }}"
+            class="w-full px-4 py-3 bg-white dark:bg-zinc-950 border border-gray-300 dark:border-zinc-800 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            placeholder="Choose a username"
+            value="{{ form.username.value|default:'' }}"
+          />
+          {% if form.username.errors %}
+          <div class="mt-2 text-sm text-red-600 dark:text-red-500">
+            {% for error in form.username.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+            Email Address
+          </label>
+          <input
+            type="email"
+            name="email"
+            id="{{ form.email.id_for_label }}"
+            class="w-full px-4 py-3 bg-white dark:bg-zinc-950 border border-gray-300 dark:border-zinc-800 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            placeholder="you@example.com"
+            value="{{ form.email.value|default:'' }}"
+          />
+          {% if form.email.errors %}
+          <div class="mt-2 text-sm text-red-600 dark:text-red-500">
+            {% for error in form.email.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+            Password
+          </label>
+          <input
+            type="password"
+            name="password1"
+            id="{{ form.password1.id_for_label }}"
+            class="w-full px-4 py-3 bg-white dark:bg-zinc-950 border border-gray-300 dark:border-zinc-800 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            placeholder="Create a strong password"
+          />
+          {% if form.password1.errors %}
+          <div class="mt-2 text-sm text-red-600 dark:text-red-500">
+            {% for error in form.password1.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+          <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            name="password2"
+            id="{{ form.password2.id_for_label }}"
+            class="w-full px-4 py-3 bg-white dark:bg-zinc-950 border border-gray-300 dark:border-zinc-800 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            placeholder="Confirm your password"
+          />
+          {% if form.password2.errors %}
+          <div class="mt-2 text-sm text-red-600 dark:text-red-500">
+            {% for error in form.password2.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Non-field errors -->
+        {% if form.non_field_errors %}
+        <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          {% for error in form.non_field_errors %}
+            <p class="text-sm text-red-600 dark:text-red-500">{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+        >
+          Create Account
+        </button>
+
+        <!-- Login Link -->
+        <p class="text-center text-sm text-gray-600 dark:text-zinc-400">
+          Already have an account?
+          <a href="{% url 'accounts:login' %}" class="font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-500 dark:hover:text-emerald-400">
+            Sign in
+          </a>
+        </p>
+      </form>
+
+      <!-- Terms -->
+      <p class="mt-8 text-xs text-center text-gray-500 dark:text-zinc-500">
+        By signing up, you agree to our
+        <a href="#" class="underline hover:text-gray-700 dark:hover:text-zinc-400">Terms of Service</a>
+        and
+        <a href="#" class="underline hover:text-gray-700 dark:hover:text-zinc-400">Privacy Policy</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Right Side - Image/Illustration -->
+  <div class="hidden lg:flex flex-1 bg-white dark:bg-zinc-950 items-center justify-center p-12 border-l border-gray-200 dark:border-zinc-900">
+    <div class="max-w-md">
+      <img
+        src="{% static 'images/signup.svg' %}"
+        alt="Sign up illustration"
+        class="w-full h-auto"
+      />
+      <div class="mt-8 text-center">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Start Your Green Journey</h2>
+        <p class="text-gray-600 dark:text-zinc-400">Join thousands of people making a positive impact on the environment</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

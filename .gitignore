@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django / SQLite artifacts
+db.sqlite3
+media/
+
+# Python environments
+.venv/
+.env
+
+# Node.js
+node_modules/
+
+# IDEs and OS
+.DS_Store
+.idea/

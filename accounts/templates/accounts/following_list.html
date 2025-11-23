@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ profile_user.username }}'s Following - Green Lifestyle{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-white dark:bg-gray-950 pt-20 pb-20">
+    <div class="max-w-2xl mx-auto px-4">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'accounts:profile' username=profile_user.username %}"
+                class="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 mb-4">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Profile
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Following</h1>
+            <p class="text-gray-600 dark:text-gray-400">People @{{ profile_user.username }} is following</p>
+        </div>
+
+        <!-- Following List -->
+        {% if page_obj %}
+        <div class="space-y-4">
+            {% for follow in page_obj %}
+            <div class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+                <div class="flex items-center justify-between">
+
+                    <!-- User Info -->
+                    <div class="flex items-center gap-3">
+                        <a href="{% url 'accounts:profile' username=follow.following.username %}">
+                            <div
+                                class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center overflow-hidden">
+                                {% if follow.following.profile_picture %}
+                                <img src="{{ follow.following.profile_picture.url }}"
+                                    alt="{{ follow.following.username }}" class="w-full h-full object-cover">
+                                {% else %}
+                                <span class="text-white font-semibold">{{ follow.following.username|slice:":1"|upper
+                                    }}</span>
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <div>
+                            <a href="{% url 'accounts:profile' username=follow.following.username %}"
+                                class="font-semibold text-gray-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400">
+                                {{ follow.following.get_full_name|default:follow.following.username }}
+                            </a>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">@{{ follow.following.username }}</p>
+                            {% if follow.following.bio %}
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{
+                                follow.following.bio|truncatewords:15 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                    <!-- Follow Button -->
+                    {% if user.is_authenticated and user != follow.following %}
+                    {% if is_own_profile %}
+                    <!-- If viewing own following list, show "Following" button -->
+                    <button onclick="toggleFollowInList('{{ follow.following.username }}', this)"
+                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        Following
+                    </button>
+                    {% else %}
+                    <!-- If viewing someone else's following list, show Follow/Following based on current user's status -->
+                    <button onclick="toggleFollowInList('{{ follow.following.username }}', this)"
+                        data-username="{{ follow.following.username }}"
+                        class="follow-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-emerald-500 text-white hover:bg-emerald-600">
+                        Follow
+                    </button>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div class="mt-8 flex justify-center gap-2">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                Previous
+            </a>
+            {% endif %}
+
+            <span class="px-4 py-2 bg-emerald-500 text-white rounded-lg">{{ page_obj.number }}</span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                Next
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="text-center py-20">
+            <p class="text-gray-600 dark:text-gray-400">Not following anyone yet</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function toggleFollowInList(username, button) {
+        const csrftoken = getCookie('csrftoken');
+
+        fetch(`/accounts/follow/${username}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_following) {
+                    button.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
+                    button.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white');
+                    button.textContent = 'Following';
+                } else {
+                    button.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+                    button.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white');
+                    button.textContent = 'Follow';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Check follow status for all users on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        const followBtns = document.querySelectorAll('.follow-btn');
+        followBtns.forEach(btn => {
+            const username = btn.dataset.username;
+            // You can add AJAX call here to check status if needed
+        });
+    });
+</script>
+
+{% endblock %}
