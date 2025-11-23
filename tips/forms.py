@@ -58,8 +58,6 @@ class TipForm(forms.ModelForm):
 
         # Custom labels
         labels = {
-            '
-            '
             'title': 'Tip Title',
             'category': 'Category',
             'content': 'Tip Content',
