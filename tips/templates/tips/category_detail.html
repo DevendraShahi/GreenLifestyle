@@ -1,3 +1,5 @@
+<!-- tips/templates/tips/category_detail.html -->
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -6,7 +8,7 @@
 {% block content %}
 
 <div class="min-h-screen bg-white dark:bg-gray-950 pt-20 pb-20">
-  
+
   <!-- Category Header -->
   <div class="px-4 py-16 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-7xl mx-auto">
@@ -21,12 +23,13 @@
   </div>
 
   <div class="max-w-7xl mx-auto px-4 py-12">
-    
+
     <!-- Tips Grid -->
     {% if page_obj %}
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for tip in page_obj %}
-      <div class="bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 hover:border-emerald-200 dark:hover:border-emerald-800 transition-colors">
+      <div
+        class="bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 hover:border-emerald-200 dark:hover:border-emerald-800 transition-colors">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
           <a href="{% url 'tips:tip_detail' slug=tip.slug %}">{{ tip.title }}</a>
         </h3>
@@ -43,15 +46,17 @@
     {% if page_obj.has_other_pages %}
     <div class="mt-8 flex justify-center gap-2">
       {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+      <a href="?page={{ page_obj.previous_page_number }}"
+        class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-800">
         Previous
       </a>
       {% endif %}
-      
+
       <span class="px-3 py-1.5 bg-emerald-500 text-white text-sm rounded">{{ page_obj.number }}</span>
-      
+
       {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+      <a href="?page={{ page_obj.next_page_number }}"
+        class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-800">
         Next
       </a>
       {% endif %}

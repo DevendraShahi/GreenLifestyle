@@ -1,3 +1,5 @@
+<!-- tips/templates/tips/tip_form.html -->
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -7,7 +9,7 @@
 
 <div class="min-h-screen bg-white dark:bg-gray-950 pt-20 pb-20">
   <div class="max-w-3xl mx-auto px-4 py-12">
-    
+
     <!-- Header -->
     <div class="mb-8">
       <h1 class="text-4xl font-light text-gray-900 dark:text-white mb-2">
@@ -18,7 +20,7 @@
 
     <!-- Form Card -->
     <div class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-8">
-      
+
       <form method="post" enctype="multipart/form-data" class="space-y-6">
         {% csrf_token %}
 
@@ -27,7 +29,7 @@
           <label class="text-sm font-semibold text-gray-900 dark:text-white block mb-2">TITLE</label>
           {{ form.title }}
           {% if form.title.errors %}
-            <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.title.errors.0 }}</p>
+          <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.title.errors.0 }}</p>
           {% endif %}
         </div>
 
@@ -36,7 +38,7 @@
           <label class="text-sm font-semibold text-gray-900 dark:text-white block mb-2">CATEGORY</label>
           {{ form.category }}
           {% if form.category.errors %}
-            <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.category.errors.0 }}</p>
+          <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.category.errors.0 }}</p>
           {% endif %}
         </div>
 
@@ -45,7 +47,7 @@
           <label class="text-sm font-semibold text-gray-900 dark:text-white block mb-2">CONTENT</label>
           {{ form.content }}
           {% if form.content.errors %}
-            <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.content.errors.0 }}</p>
+          <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.content.errors.0 }}</p>
           {% endif %}
         </div>
 
@@ -54,7 +56,7 @@
           <label class="text-sm font-semibold text-gray-900 dark:text-white block mb-2">IMAGE (OPTIONAL)</label>
           {{ form.image }}
           {% if form.image.errors %}
-            <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.image.errors.0 }}</p>
+          <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.image.errors.0 }}</p>
           {% endif %}
         </div>
 
@@ -66,10 +68,12 @@
 
         <!-- Buttons -->
         <div class="flex gap-3 pt-4">
-          <a href="{% url 'tips:tip_list' %}" class="px-5 py-2 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-sm font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <a href="{% url 'tips:tip_list' %}"
+            class="px-5 py-2 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-sm font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
             Cancel
           </a>
-          <button type="submit" class="px-5 py-2 bg-emerald-500 dark:bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-600 dark:hover:bg-emerald-700 transition-colors">
+          <button type="submit"
+            class="px-5 py-2 bg-emerald-500 dark:bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-600 dark:hover:bg-emerald-700 transition-colors">
             Save Tip
           </button>
         </div>

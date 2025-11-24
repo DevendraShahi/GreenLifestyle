@@ -1,108 +1,113 @@
+<!-- templates/base.html -->
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>{% block title %}Green Lifestyle{% endblock %}</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Compiled Tailwind CSS -->
-    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+  <title>{% block title %}Green Lifestyle{% endblock %}</title>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Compiled Tailwind CSS -->
+  <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/home.css' %}" />
 
-    <!-- Custom theme CSS -->
-    <style>
-      /* Root colors - nature theme */
-      :root {
-        --primary-green: #8b9d83;
-        --dark-green: #2d5f3f;
-        --light-bg: #f8f9f5;
-        --dark-bg: #1a1d1f;
-        --accent-blue: #a8dadc;
+  <!-- Custom theme CSS -->
+  <style>
+    /* Root colors - nature theme */
+    :root {
+      --primary-green: #8b9d83;
+      --dark-green: #2d5f3f;
+      --light-bg: #f8f9f5;
+      --dark-bg: #1a1d1f;
+      --accent-blue: #a8dadc;
+    }
+
+    /* Light theme (default) */
+    body {
+      background-color: var(--light-bg);
+      color: #2d3436;
+      transition: all 0.3s ease;
+    }
+
+    /* Dark theme */
+    html.dark body {
+      background-color: #000000;
+      color: #e5e7eb;
+    }
+
+    /* Smooth transitions */
+    * {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Glass effect for navbar */
+    .glass-navbar {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(139, 157, 131, 0.2);
+    }
+
+    html.dark .glass-navbar {
+      background: rgba(26, 29, 31, 0.8);
+      border-bottom: 1px solid rgba(139, 157, 131, 0.3);
+    }
+
+    /* Calm animations */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
       }
 
-      /* Light theme (default) */
-      body {
-        background-color: var(--light-bg);
-        color: #2d3436;
-        transition: all 0.3s ease;
+      50% {
+        transform: translateY(-10px);
       }
+    }
 
-      /* Dark theme */
-      html.dark body {
-        background-color: #000000;
-        color: #e5e7eb;
-      }
+    .float {
+      animation: float 3s ease-in-out infinite;
+    }
+  </style>
 
-      /* Smooth transitions */
-      * {
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
+  {% block extra_css %}{% endblock %}
+</head>
 
-      /* Glass effect for navbar */
-      .glass-navbar {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(139, 157, 131, 0.2);
-      }
+<body>
+  <!-- Include Navbar -->
+  {% include 'navbar.html' %}
 
-      html.dark .glass-navbar {
-        background: rgba(26, 29, 31, 0.8);
-        border-bottom: 1px solid rgba(139, 157, 131, 0.3);
-      }
-
-      /* Calm animations */
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
-      }
-
-      .float {
-        animation: float 3s ease-in-out infinite;
-      }
-    </style>
-
-    {% block extra_css %}{% endblock %}
-  </head>
-
-  <body>
-    <!-- Include Navbar -->
-    {% include 'navbar.html' %}
-
-    <!-- Messages -->
-    {% if messages %}
-    <div class="max-w-7xl mx-auto px-4 mt-4">
-      {% for message in messages %}
-      <div
-        class="p-4 rounded mb-4 {% if message.tags == 'success' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400{% endif %} {% if message.tags == 'error' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400{% endif %} {% if message.tags == 'info' %}bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400{% endif %}"
-      >
-        {{ message }}
-      </div>
-      {% endfor %}
+  <!-- Messages -->
+  {% if messages %}
+  <div class="max-w-7xl mx-auto px-4 mt-4">
+    {% for message in messages %}
+    <div
+      class="p-4 rounded mb-4 {% if message.tags == 'success' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400{% endif %} {% if message.tags == 'error' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400{% endif %} {% if message.tags == 'info' %}bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400{% endif %}">
+      {{ message }}
     </div>
-    {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
 
-    <!-- Main content -->
-    <main>
-      {% block content %}{% endblock %}
-    </main>
+  <!-- Main content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 
-    <!-- Footer -->
-    {% include 'footer.html' %}
+  <!-- Footer -->
+  {% include 'footer.html' %}
 
-    {% block extra_js %}{% endblock %}
-  </body>
+  {% block extra_js %}{% endblock %}
+</body>
+
 </html>

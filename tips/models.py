@@ -217,17 +217,6 @@ class Tip(models.Model):
             return self.bookmarks.filter(user=user).exists()
         return False
 
-
-    def get_full_name(self):
-        """
-        Returns the full name of the author.
-
-        Usage: tip.get_full_name()
-        Returns: String (e.g., "John Doe")
-        """
-        return self.author.get_full_name()
-
-
 # ============================================
 # LIKE MODEL
 # ============================================

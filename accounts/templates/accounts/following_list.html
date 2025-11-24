@@ -1,3 +1,5 @@
+<!-- accounts/templates/accounts/following_list.html -->
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -46,7 +48,11 @@
                         <div>
                             <a href="{% url 'accounts:profile' username=follow.following.username %}"
                                 class="font-semibold text-gray-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400">
-                                {{ follow.following.get_full_name|default:follow.following.username }}
+                                {% if follow.following.first_name or follow.following.last_name %}
+                                {{ follow.following.first_name }} {{ follow.following.last_name }}
+                                {% else %}
+                                {{ follow.following.username }}
+                                {% endif %}
                             </a>
                             <p class="text-sm text-gray-600 dark:text-gray-400">@{{ follow.following.username }}</p>
                             {% if follow.following.bio %}

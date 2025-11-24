@@ -1,3 +1,5 @@
+<!-- tips/templates/tips/tip_detail.html -->
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -46,8 +48,7 @@
             <div>
               <a href="{% url 'accounts:profile' username=tip.author.username %}"
                 class="flex items-center gap-1.5 hover:underline">
-                <span class="font-semibold text-gray-900 dark:text-white">{{
-                  tip.get_full_name|default:tip.author.username }}</span>
+                <span class="font-semibold text-gray-900 dark:text-white">{{ tip.author_display_name }}</span>
                 {% if tip.author.is_verified %}
                 <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd"
@@ -188,7 +189,7 @@
           <span class="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-blue-500">Comment</span>
         </button>
 
-        <!-- Bookmark Button (NEW) -->
+        <!-- Bookmark Button -->
         {% if user.is_authenticated %}
         <button id="bookmarkButton" onclick="toggleBookmark('{{ tip.slug }}')"
           class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/10 transition-colors group">
@@ -305,7 +306,7 @@
               <div class="flex items-center gap-2 mb-1">
                 <a href="{% url 'accounts:profile' username=comment.author.username %}"
                   class="font-semibold text-sm text-gray-900 dark:text-white hover:underline">
-                  {{ comment.author.get_full_name|default:comment.author.username }}
+                  {{ comment.author_display_name }}
                 </a>
                 <span class="text-gray-600 dark:text-gray-400 text-sm">@{{ comment.author.username }}</span>
                 <span class="text-gray-400 dark:text-gray-500 text-sm">·</span>
@@ -420,6 +421,5 @@
       .catch(error => console.error('Error:', error));
   }
 </script>
-
 
 {% endblock %}

@@ -1,3 +1,5 @@
+<!-- templates/home.html -->
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -5,17 +7,17 @@
 
 {% block content %}
 
-    {% include 'homepage/hero.html' %}
+{% include 'homepage/hero.html' %}
 <!-- Premium Features Section -->
 
-    {% include 'homepage/whyChooseUs.html' %}
+{% include 'homepage/whyChooseUs.html' %}
 
 
-    {% include 'homepage/howItWorks.html' %}
+{% include 'homepage/howItWorks.html' %}
 
-    {% include 'homepage/yourImpact.html' %}
+{% include 'homepage/yourImpact.html' %}
 
-    {% include 'homepage/cta.html' %}
+{% include 'homepage/cta.html' %}
 
 <!-- Animations CSS -->
 <style>
@@ -23,6 +25,7 @@
     from {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }
@@ -33,6 +36,7 @@
       opacity: 0;
       transform: translateY(-30px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -44,6 +48,7 @@
       opacity: 0;
       transform: translateY(30px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -51,9 +56,12 @@
   }
 
   @keyframes bounce {
-    0%, 100% {
+
+    0%,
+    100% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(-10px);
     }

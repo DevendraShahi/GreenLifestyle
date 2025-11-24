@@ -73,7 +73,7 @@ class TipForm(forms.ModelForm):
             'is_published': 'Uncheck to save as draft'
         }
 
-            # Optional field for creating a new category
+    # Optional field for creating a new category
     new_category_name = forms.CharField(
         required=False,
         max_length=100,
@@ -211,8 +211,7 @@ class CommentForm(forms.ModelForm):
     How it works:
     1. User types comment
     2. Form validates (min 5 characters)
-    3. If valid, save to 27
-
+    3. If valid, save to database
     """
 
     class Meta:
@@ -321,17 +320,3 @@ class CategoryForm(forms.ModelForm):
                 raise ValidationError(f'Category "{name}" already exists.')
 
         return name
-
-
-    """
-    User submits form
-        ↓
-    Django calls clean_<field>() for each field
-        ↓
-    If all validations pass → form.is_valid() returns True
-        ↓
-    Access cleaned  form.cleaned_data['title']
-        ↓
-    Save to database: form.save()
-
-    """

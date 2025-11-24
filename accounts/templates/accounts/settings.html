@@ -1,3 +1,5 @@
+<!-- accounts/templates/accounts/settings.html -->
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -14,27 +16,29 @@
 </div>
 
 <div class="max-w-2xl mx-auto px-4 py-12">
-  
+
   <!-- Settings Card -->
   <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-200 dark:border-gray-700">
-    
+
     <div class="space-y-6">
-      
+
       <!-- Privacy Settings -->
       <div class="pb-6 border-b border-gray-200 dark:border-gray-700">
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Privacy</h2>
-        
+
         <div class="space-y-4">
           <label class="flex items-center gap-3 cursor-pointer group">
-            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" checked>
+            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+              checked>
             <div>
               <p class="font-medium text-gray-900 dark:text-white">Make profile public</p>
               <p class="text-sm text-gray-600 dark:text-gray-400">Allow others to view your profile</p>
             </div>
           </label>
-          
+
           <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" checked>
+            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+              checked>
             <div>
               <p class="font-medium text-gray-900 dark:text-white">Show tip count</p>
               <p class="text-sm text-gray-600 dark:text-gray-400">Display how many tips you've shared</p>
@@ -46,18 +50,20 @@
       <!-- Notification Settings -->
       <div class="pb-6 border-b border-gray-200 dark:border-gray-700">
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Notifications</h2>
-        
+
         <div class="space-y-4">
           <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" checked>
+            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+              checked>
             <div>
               <p class="font-medium text-gray-900 dark:text-white">Email notifications</p>
               <p class="text-sm text-gray-600 dark:text-gray-400">Get updates about your tips</p>
             </div>
           </label>
-          
+
           <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" checked>
+            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+              checked>
             <div>
               <p class="font-medium text-gray-900 dark:text-white">Follow notifications</p>
               <p class="text-sm text-gray-600 dark:text-gray-400">Get notified when someone follows you</p>
@@ -69,11 +75,13 @@
       <!-- Danger Zone -->
       <div class="pt-6">
         <h2 class="text-2xl font-bold text-red-600 mb-4">Danger Zone</h2>
-        
+
         <div class="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg p-6">
           <h3 class="text-lg font-semibold text-red-600 dark:text-red-400 mb-2">Delete Account</h3>
-          <p class="text-red-600 dark:text-red-400 text-sm mb-4">This action cannot be undone. All your data will be permanently deleted.</p>
-          <button class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all duration-300">
+          <p class="text-red-600 dark:text-red-400 text-sm mb-4">This action cannot be undone. All your data will be
+            permanently deleted.</p>
+          <button
+            class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all duration-300">
             Delete Account
           </button>
         </div>

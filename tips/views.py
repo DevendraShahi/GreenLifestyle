@@ -64,6 +64,10 @@ def tip_list_view(request):
     paginator = Paginator(tips, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    
+    # Add display names to tips
+    for tip in page_obj:
+        tip.author_display_name = tip.author.get_full_name() or tip.author.username
 
     categories = Category.objects.all()
 
@@ -159,6 +163,13 @@ def tip_detail_view(request, slug):
     ).exclude(
         id=tip.id
     ).order_by('-created_at')[:3]
+
+    # Add display names for template
+    tip.author_display_name = tip.author.get_full_name() or tip.author.username
+    
+    # Add display names to comments
+    for comment in comments:
+        comment.author_display_name = comment.author.get_full_name() or comment.author.username
 
     context = {
         'tip': tip,
@@ -440,6 +451,10 @@ def my_tips_view(request):
     paginator = Paginator(tips, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    
+    # Add display names to tips
+    for tip in page_obj:
+        tip.author_display_name = tip.author.get_full_name() or tip.author.username
 
     context = {
         'page_obj': page_obj,
@@ -579,6 +594,10 @@ def saved_tips_view(request):
     paginator = Paginator(bookmarks, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    
+    # Add display names to bookmarked tips
+    for bookmark in page_obj:
+        bookmark.tip.author_display_name = bookmark.tip.author.get_full_name() or bookmark.tip.author.username
 
     context = {
         'page_obj': page_obj,
