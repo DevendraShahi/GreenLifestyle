@@ -10,18 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Deploy to PythonAnywhere
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ssh.pythonanywhere.com
-        username: devendraShahi
-        password: ${{ secrets.PYTHONANYWHERE_PASSWORD }}
-        script: |
-          cd ~/GreenLifeStyle
-          git pull origin master
-          source ~/.virtualenvs/greenlifestyle/bin/activate
-          pip install -r requirements.txt
-          python manage.py migrate
-          python manage.py collectstatic --noinput
-          touch /var/www/devendrashahi_pythonanywhere_com_wsgi.py
-          echo "Deployment completed successfully!"
+    - name: Deploy and Reload Web App
+      run: |
+        echo "Reloading PythonAnywhere web app..."
+        
+        # Use PythonAnywhere API to reload the web app
+        RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+          "https://www.pythonanywhere.com/api/v0/user/devendraShahi/webapps/devendrashahi.pythonanywhere.com/reload/" \
+          -H "Authorization: Token ${{ secrets.PYTHONANYWHERE_API_TOKEN }}")
+        
+        HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+        BODY=$(echo "$RESPONSE" | sed '$d')
+        
+        echo "HTTP Status Code: $HTTP_CODE"
+        echo "Response Body: $BODY"
+        
+        if [ "$HTTP_CODE" -eq 200 ] || [ "$HTTP_CODE" -eq 204 ]; then
+          echo "✅ Web app reloaded successfully!"
+        else
+          echo "❌ Failed to reload web app"
+          echo "Response: $BODY"
+          exit 1
+        fi
+        
+        echo "Deployment completed!"
