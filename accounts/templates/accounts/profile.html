@@ -93,16 +93,19 @@
               </a>
             </li>
 
+            {% if is_own_profile %}
             <li>
-              <a href="#activity"
-                class="nav-link flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <a href="{% url 'accounts:activity_history' %}"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-900 rounded-lg transition-all duration-200">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
                   </path>
                 </svg>
                 Activity
               </a>
             </li>
+            {% endif %}
 
             {% if is_own_profile %}
             <li>
@@ -532,28 +535,7 @@
           </div>
         </section>
 
-        <!-- Activity Section -->
-        <section id="activity" class="content-section hidden">
-          <div class="p-8 max-w-4xl mx-auto">
-            <div class="mb-6">
-              <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Activity</h1>
-              <p class="text-sm text-gray-500 dark:text-zinc-400">Your recent actions and interactions</p>
-            </div>
 
-            <div
-              class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 p-12 text-center">
-              <div
-                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-zinc-900 mb-4">
-                <svg class="w-8 h-8 text-gray-400 dark:text-zinc-600" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
-                  </path>
-                </svg>
-              </div>
-              <p class="text-gray-500 dark:text-zinc-400">No activity to show</p>
-            </div>
-          </div>
-        </section>
 
         <!-- Settings Section -->
         {% if is_own_profile %}
@@ -746,9 +728,14 @@
 
     navLinks.forEach(link => {
       link.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href').substring(1);
-        showSection(targetId);
+        const href = this.getAttribute('href');
+
+        // Only intercept hash links (internal tabs)
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          const targetId = href.substring(1);
+          showSection(targetId);
+        }
       });
     });
 

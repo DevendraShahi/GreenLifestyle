@@ -1,9 +1,13 @@
 # views.py - UPDATED VERSION
 # This combines profile viewing and editing in one view for inline editing
+from datetime import timedelta
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils import timezone
+from django.db import models  # Add this for aggregate functions
+
 from .models import CustomUser
 from tips.models import Tip
 from .forms import UserProfileForm, SignupForm, LoginForm
@@ -11,7 +15,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
-from .models import CustomUser, Follow
+from .models import CustomUser, Follow, UserActivity
 
 
 @login_required(login_url='accounts:login')
@@ -362,3 +366,95 @@ def following_list_view(request, username):
     }
     
     return render(request, 'accounts/following_list.html', context)
+
+
+@login_required(login_url='accounts:login')
+def activity_history_view(request):
+    """
+    Show user's activity history and statistics.
+
+    URL: /accounts/activity/
+    Template: accounts/activity_history.html
+    """
+
+    # Get session activity
+    session_activity = request.session.get('activity', {})
+
+    # Get database activity logs
+    activity_logs = UserActivity.objects.filter(
+        user=request.user
+    ).order_by('-date')[:30]  # Last 30 days
+
+    # Calculate statistics
+    total_visits = UserActivity.objects.filter(
+        user=request.user
+    ).aggregate(
+        total_visits=models.Sum('visits_count'),
+        total_pages=models.Sum('page_views'),
+    )
+
+    # Get today's activity
+    today = timezone.now().date()
+    today_activity = UserActivity.objects.filter(
+        user=request.user,
+        date=today
+    ).first()
+
+    # Calculate login streak
+    login_streak = calculate_login_streak(request.user)
+
+    # Get most viewed tips
+    all_tips_viewed = []
+    for log in activity_logs:
+        all_tips_viewed.extend(log.tips_viewed)
+
+    from collections import Counter
+    most_viewed_tip_ids = Counter(all_tips_viewed).most_common(5)
+
+    from tips.models import Tip
+    most_viewed_tips = []
+    for tip_id, count in most_viewed_tip_ids:
+        try:
+            tip = Tip.objects.get(id=tip_id)
+            most_viewed_tips.append({'tip': tip, 'views': count})
+        except Tip.DoesNotExist:
+            pass
+
+    context = {
+        'session_activity': session_activity,
+        'activity_logs': activity_logs,
+        'total_visits': total_visits['total_visits'] or 0,
+        'total_pages': total_visits['total_pages'] or 0,
+        'today_activity': today_activity,
+        'login_streak': login_streak,
+        'most_viewed_tips': most_viewed_tips,
+    }
+
+    return render(request, 'accounts/activity_history.html', context)
+
+
+def calculate_login_streak(user):
+    """Calculate consecutive days user has logged in"""
+    activities = UserActivity.objects.filter(
+        user=user
+    ).order_by('-date').values_list('date', flat=True)
+
+    if not activities:
+        return 0
+
+    streak = 1
+    today = timezone.now().date()
+
+    # Check if user visited today or yesterday
+    if activities[0] < today - timedelta(days=1):
+        return 0
+
+    for i in range(len(activities) - 1):
+        diff = (activities[i] - activities[i + 1]).days
+        if diff == 1:
+            streak += 1
+        elif diff > 1:
+            break
+
+    return streak
+

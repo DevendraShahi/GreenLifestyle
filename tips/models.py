@@ -27,57 +27,102 @@ class Category(models.Model):
     - icon: Emoji or icon for visual representation
     - created_at: When this category was created
     """
-
-    name = models.CharField(max_length=100, unique=True, help_text="Category name (e.g., Recycling)")
-
-    slug = models.SlugField(max_length=100, unique=True, help_text="URL-friendly name (auto-generated)")
-
-    description = models.TextField(blank=True, help_text="Brief description of this category")
-
-    icon = models.CharField(max_length=50, default='🌱', help_text="Emoji icon for this category")
-
+    
+    name = models.CharField(
+        max_length=100, 
+        unique=True, 
+        help_text="Category name (e.g., Recycling)"
+    )
+    
+    slug = models.SlugField(
+        max_length=100, 
+        unique=True, 
+        help_text="URL-friendly name (auto-generated)"
+    )
+    
+    description = models.TextField(
+        blank=True, 
+        help_text="Brief description of this category"
+    )
+    
+    icon = models.CharField(
+        max_length=50, 
+        default='🌱', 
+        help_text="Emoji icon for this category"
+    )
+    
+    # NEW FIELDS FOR APPROVAL SYSTEM
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_categories',
+        help_text="User who created this category"
+    )
+    
+    is_approved = models.BooleanField(
+        default=False,
+        help_text="Whether this category is approved for use"
+    )
+    
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='approved_categories',
+        help_text="Moderator/Admin who approved this category"
+    )
+    
+    approved_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When this category was approved"
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
-
+    updated_at = models.DateTimeField(auto_now=True)
+    
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
-        ordering = ['name']  # Sort alphabetically
-
+        ordering = ['name']
+    
     def __str__(self):
-        """
-        String representation of category.
-        When you print a Category object, you'll see: "Recycling"
-        """
-        return self.name
-
+        status = " (Pending)" if not self.is_approved else ""
+        return f"{self.name}{status}"
+    
     def save(self, *args, **kwargs):
-        """
-        Override save method to auto-generate slug from name.
-
-        Example: "Energy Saving" → "energy-saving"
-
-        This runs every time you save a Category.
-        """
+        """Auto-generate slug and handle auto-approval"""
         if not self.slug:
             self.slug = slugify(self.name)
+        
+        # Auto-approve if created by moderator/admin
+        if self.created_by and not self.is_approved:
+            if self.created_by.role in ['moderator', 'admin']:
+                self.is_approved = True
+                self.approved_by = self.created_by
+                from django.utils import timezone
+                self.approved_at = timezone.now()
+        
         super().save(*args, **kwargs)
-
+    
     def get_absolute_url(self):
-        """
-        Returns the URL to view tips in this category.
-
-        Example: /tips/category/recycling/
-        """
+        """Returns the URL to view tips in this category"""
         return reverse('tips:category_detail', kwargs={'slug': self.slug})
-
+    
     def get_tips_count(self):
-        """
-        Returns how many tips are in this category.
-
-        Usage: category.get_tips_count()
-        Returns: Integer (e.g., 15)
-        """
-        return self.tips.count()
+        """Returns how many approved tips are in this category"""
+        return self.tips.filter(is_published=True).count()
+    
+    def approve(self, approved_by_user):
+        """Approve this category"""
+        from django.utils import timezone
+        self.is_approved = True
+        self.approved_by = approved_by_user
+        self.approved_at = timezone.now()
+        self.save()
 
 
 # ============================================

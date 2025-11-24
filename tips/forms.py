@@ -1,322 +1,309 @@
+# tips/forms.py - ENHANCED VERSION WITH CATEGORY FORM
+
 from django import forms
-from .models import Tip, Comment, Category
+from .models import Tip, Category, Comment
 from django.core.exceptions import ValidationError
 
 
-# ============================================
-# TIP FORM
-# ============================================
 class TipForm(forms.ModelForm):
-    """
-    Form for creating and editing tips.
-
-    This form handles:
-    - Title validation
-    - Content validation
-    - Category selection
-    - Image upload
-    - Custom styling with Tailwind CSS
-
-    How it works:
-    1. User fills out form
-    2. Django validates data
-    3. If valid, save to database
-    4. If invalid, show errors
-    """
-
+    """Form for creating/editing tips with optional category creation"""
+    
+    # Optional fields for creating a new category
+    new_category_name = forms.CharField(
+        required=False,
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200',
+            'placeholder': 'New category name...'
+        }),
+        help_text='Create a new category if none of the existing ones fit'
+    )
+    
+    new_category_icon = forms.CharField(
+        required=False,
+        max_length=10,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200',
+            'placeholder': 'Enter emoji (e.g., 🌱 ♻️ 💡)'
+        }),
+        help_text='Emoji icon for the new category'
+    )
+    
+    new_category_description = forms.CharField(
+        required=False,
+        max_length=500,
+        widget=forms.Textarea(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200 resize-none',
+            'rows': 2,
+            'placeholder': 'Brief description of the category...'
+        }),
+        help_text='Describe what this category is about'
+    )
+    
     class Meta:
         model = Tip
-        fields = ['title', 'category', 'content', 'image', 'is_published']
-
-        # Custom widgets for styling
+        fields = ['title', 'content', 'category', 'image', 'is_published']
+        
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200',
-                'placeholder': 'Enter a catchy title for your tip...',
-                'maxlength': '200'
+                'placeholder': 'Give your tip a catchy title...'
             }),
-
-            'category': forms.Select(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200 cursor-pointer'
-            }),
-
+            
             'content': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200 resize-none',
                 'rows': 8,
                 'placeholder': 'Share your eco-friendly tip in detail...'
             }),
-
+            
+            'category': forms.Select(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200'
+            }),
+            
             'image': forms.FileInput(attrs={
-                'class': 'block w-full text-sm text-gray-600 dark:text-gray-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 dark:file:bg-emerald-900/30 file:text-emerald-700 dark:file:text-emerald-400 hover:file:bg-emerald-100 dark:hover:file:bg-emerald-900/50 cursor-pointer transition-all duration-200',
+                'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/30 dark:file:text-emerald-400 dark:hover:file:bg-emerald-900/50 cursor-pointer transition-all duration-200',
                 'accept': 'image/*'
             }),
-
+            
             'is_published': forms.CheckboxInput(attrs={
-                'class': 'w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer'
+                'class': 'w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
             }),
         }
-
-        # Custom labels
-        labels = {
-            'title': 'Tip Title',
-            'category': 'Category',
-            'content': 'Tip Content',
-            'image': 'Upload Image (Optional)',
-            'is_published': 'Publish immediately'
-        }
-
-        # Help text for fields
-        help_texts = {
-            'title': 'Make it catchy and descriptive (max 200 characters)',
-            'content': 'Provide detailed, actionable advice',
-            'image': 'Add an image to make your tip more engaging (JPG, PNG, max 5MB)',
-            'is_published': 'Uncheck to save as draft'
-        }
-
-    # Optional field for creating a new category
-    new_category_name = forms.CharField(
-        required=False,
-        max_length=100,
-        widget=forms.TextInput(attrs={
-            'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none',
-            'placeholder': 'Or create a new category...',
-        }),
-        help_text='Leave empty to use existing category from dropdown'
-    )
-
+    
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        # Only show approved categories in dropdown
+        approved_categories = Category.objects.filter(is_approved=True).order_by('name')
+        self.fields['category'].queryset = approved_categories
+        self.fields['category'].required = False
+        self.fields['category'].empty_label = "-- Select a category --"
+        
+        # If no approved categories exist, show a helpful message
+        if not approved_categories.exists():
+            self.fields['category'].empty_label = "-- No categories available, create one below --"
+    
     def clean(self):
+        """Validate that either existing category is selected OR new category is provided"""
         cleaned_data = super().clean()
         category = cleaned_data.get('category')
-        new_category_name = cleaned_data.get('new_category_name')
+        new_category_name = cleaned_data.get('new_category_name', '').strip()
         
-        # If both are empty, require one
+        # Must have either existing category or new category name
         if not category and not new_category_name:
             raise ValidationError('Please select an existing category or create a new one.')
         
-        # If new category name is provided, check it doesn't already exist
+        # If creating new category, validate required fields
         if new_category_name:
-            if Category.objects.filter(name__iexact=new_category_name.strip()).exists():
+            new_category_icon = cleaned_data.get('new_category_icon', '').strip()
+            
+            if not new_category_icon:
+                raise ValidationError('Please provide an emoji icon for the new category.')
+            
+            # Check if category already exists
+            if Category.objects.filter(name__iexact=new_category_name).exists():
                 raise ValidationError(f'Category "{new_category_name}" already exists. Please select it from the dropdown.')
         
         return cleaned_data
-
+    
     def save(self, commit=True):
+        """Save tip and create new category if provided"""
         instance = super().save(commit=False)
         
-        # If a new category name was provided, create it
-        new_category_name = self.cleaned_data.get('new_category_name')
-        if new_category_name and new_category_name.strip():
-            # Create the new category
-            new_category, created = Category.objects.get_or_create(
-                name=new_category_name.strip()
+        # Check if user wants to create a new category
+        new_category_name = self.cleaned_data.get('new_category_name', '').strip()
+        
+        if new_category_name:
+            # Create new category
+            new_category = Category.objects.create(
+                name=new_category_name,
+                description=self.cleaned_data.get('new_category_description', '').strip(),
+                icon=self.cleaned_data.get('new_category_icon', '🌱').strip(),
+                created_by=self.user,
+                is_approved=False  # Default to  pending approval
             )
+            
+            # Auto-approve if user is moderator or admin
+            if self.user and hasattr(self.user, 'role') and self.user.role in ['moderator', 'admin']:
+                from django.utils import timezone
+                new_category.is_approved = True
+                new_category.approved_by = self.user
+                new_category.approved_at = timezone.now()
+                new_category.save()
+            
             instance.category = new_category
         
         if commit:
             instance.save()
+        
         return instance
 
-    def clean_title(self):
-        """
-        Validate the title field.
 
-        Checks:
-        1. Title is not empty
-        2. Title is at least 10 characters
-        3. Title doesn't contain only special characters
-
-        Returns: cleaned title
-        Raises: ValidationError if invalid
-        """
-        title = self.cleaned_data.get('title')
-
-        if not title:
-            raise ValidationError('Title is required.')
-
-        if len(title.strip()) < 10:
-            raise ValidationError('Title must be at least 10 characters long.')
-
-        # Check if title contains at least some alphanumeric characters
-        if not any(c.isalnum() for c in title):
-            raise ValidationError('Title must contain letters or numbers.')
-
-        return title.strip()
-
-    def clean_content(self):
-        """
-        Validate the content field.
-
-        Checks:
-        1. Content is not empty
-        2. Content is at least 50 characters
-        3. Content has substance (not just repeated characters)
-
-        Returns: cleaned content
-        Raises: ValidationError if invalid
-        """
-        content = self.cleaned_data.get('content')
-
-        if not content:
-            raise ValidationError('Content is required.')
-
-        content = content.strip()
-
-        if len(content) < 50:
-            raise ValidationError('Content must be at least 50 characters long. Provide detailed advice.')
-
-        # Check for repeated characters (spam detection)
-        if len(set(content)) < 10:
-            raise ValidationError('Content seems invalid. Please provide meaningful advice.')
-
-        return content
-
-    def clean_image(self):
-        """
-        Validate uploaded image.
-
-        Checks:
-        1. File size (max 5MB)
-        2. File type (only images)
-
-        Returns: cleaned image or None
-        Raises: ValidationError if invalid
-        """
-        image = self.cleaned_data.get('image')
-
-        if image:
-            # Check file size (5MB = 5 * 1024 * 1024 bytes)
-            if image.size > 5 * 1024 * 1024:
-                raise ValidationError('Image file size cannot exceed 5MB.')
-
-            # Check file extension
-            valid_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp']
-            ext = image.name.split('.')[-1].lower()
-
-            if ext not in valid_extensions:
-                raise ValidationError(f'Unsupported file type. Allowed: {", ".join(valid_extensions)}')
-
-        return image
-
-
-# ============================================
-# COMMENT FORM
-# ============================================
 class CommentForm(forms.ModelForm):
-    """
-    Form for adding comments to tips.
-
-    Simple form with just content field.
-    Used when users want to comment on a tip.
-
-    How it works:
-    1. User types comment
-    2. Form validates (min 5 characters)
-    3. If valid, save to database
-    """
-
+    """Form for adding comments to tips"""
+    
     class Meta:
         model = Comment
         fields = ['content']
-
+        
         widgets = {
             'content': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200 resize-none',
                 'rows': 3,
-                'placeholder': 'Share your thoughts or add your own experience...'
-            }),
+                'placeholder': 'Share your thoughts...'
+            })
         }
 
-        labels = {
-            'content': 'Your Comment'
-        }
 
-    def clean_content(self):
-        """
-        Validate comment content.
-
-        Checks:
-        1. Not empty
-        2. At least 5 characters
-        3. Not just whitespace
-
-        Returns: cleaned content
-        Raises: ValidationError if invalid
-        """
-        content = self.cleaned_data.get('content')
-
-        if not content:
-            raise ValidationError('Comment cannot be empty.')
-
-        content = content.strip()
-
-        if len(content) < 3:
-            raise ValidationError('Comment must be at least 3 characters long.')
-
-        return content
-
-
-# ============================================
-# CATEGORY FORM (Admin/Moderator use)
-# ============================================
 class CategoryForm(forms.ModelForm):
     """
     Form for creating/editing categories.
-
-    Usually used by admins or moderators.
-    Regular users won't see this form.
+    
+    Can be used by:
+    - Regular users (with pending approval)
+    - Moderators (auto-approved)
+    - Administrators (auto-approved)
     """
-
+    
     class Meta:
         model = Category
         fields = ['name', 'description', 'icon']
-
+        
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200',
-                'placeholder': 'Category name (e.g., Recycling)'
+                'placeholder': 'Category name (e.g., Recycling, Zero Waste)'
             }),
-
+            
             'description': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200 resize-none',
                 'rows': 4,
-                'placeholder': 'Brief description of this category...'
+                'placeholder': 'Describe what this category is about...'
             }),
-
+            
             'icon': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200',
-                'placeholder': 'Emoji icon (e.g., 🌱, ♻️, 💡)'
+                'placeholder': 'Emoji icon (e.g., 🌱, ♻️, 💡, 🌍)'
             }),
         }
-
+    
     def clean_name(self):
         """
         Validate category name.
-
+        
         Checks:
         1. Not empty
         2. At least 3 characters
-        3. Not duplicate (if creating new)
-
+        3. Not duplicate (case-insensitive)
+        
         Returns: cleaned name
         """
         name = self.cleaned_data.get('name')
-
+        
         if not name:
             raise ValidationError('Category name is required.')
-
+        
         name = name.strip()
-
+        
         if len(name) < 3:
-            raise ValidationError('Category name must be at least 3 characters.')
-
+            raise ValidationError('Category name must be at least 3 characters long.')
+        
+        if len(name) > 100:
+            raise ValidationError('Category name cannot exceed 100 characters.')
+        
         # Check for duplicate (exclude current instance if editing)
         if self.instance.pk:
             # Editing existing category
             if Category.objects.filter(name__iexact=name).exclude(pk=self.instance.pk).exists():
-                raise ValidationError(f'Category "{name}" already exists.')
+                raise ValidationError(f'A category named "{name}" already exists.')
         else:
             # Creating new category
             if Category.objects.filter(name__iexact=name).exists():
-                raise ValidationError(f'Category "{name}" already exists.')
+                raise ValidationError(f'A category named "{name}" already exists.')
+        
+        return name
+    
+    def clean_icon(self):
+        """
+        Validate icon field.
+        
+        Checks:
+        1. Not empty
+        2. Reasonable length (emojis are typically 1-4 characters)
+        """
+        icon = self.cleaned_data.get('icon')
+        
+        if not icon:
+            raise ValidationError('Please provide an emoji icon for this category.')
+        
+        icon = icon.strip()
+        
+        if len(icon) > 10:
+            raise ValidationError('Icon should be a single emoji (1-4 characters).')
+        
+        return icon
+    
+    def clean_description(self):
+        """Validate description field"""
+        description = self.cleaned_data.get('description', '').strip()
+        
+        if description and len(description) > 500:
+            raise ValidationError('Description cannot exceed 500 characters.')
+        
+        return description
 
+
+class CategoryRequestForm(forms.ModelForm):
+    """
+    Form for users to request new categories.
+    Simpler version for regular users, requires approval.
+    """
+    
+    reason = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200 resize-none',
+            'rows': 3,
+            'placeholder': 'Why is this category needed? (Optional)'
+        }),
+        required=False,
+        help_text='Explain why this category would be useful'
+    )
+    
+    class Meta:
+        model = Category
+        fields = ['name', 'description', 'icon']
+        
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200',
+                'placeholder': 'Category name (e.g., Sustainable Fashion)'
+            }),
+            
+            'description': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200 resize-none',
+                'rows': 3,
+                'placeholder': 'Brief description of this category...'
+            }),
+            
+            'icon': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white transition-all duration-200',
+                'placeholder': '🌱 (Choose an emoji)'
+            }),
+        }
+    
+    def clean_name(self):
+        """Validate category name"""
+        name = self.cleaned_data.get('name', '').strip()
+        
+        if not name:
+            raise ValidationError('Category name is required.')
+        
+        if len(name) < 3:
+            raise ValidationError('Category name must be at least 3 characters.')
+        
+        # Check if category already exists or is pending
+        if Category.objects.filter(name__iexact=name).exists():
+            raise ValidationError(f'A category named "{name}" already exists.')
+        
         return name

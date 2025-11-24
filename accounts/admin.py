@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from .models import CustomUser, Follow
+from .models import CustomUser, Follow, UserActivity
 
 # Register CustomUser in the admin panel and use this class to manage it
 @admin.register(CustomUser)
@@ -37,3 +37,34 @@ class FollowAdmin(admin.ModelAdmin):
         """Optimize queries"""
         qs = super().get_queryset(request)
         return qs.select_related('follower', 'following')
+
+
+# ============================================
+# USER ACTIVITY ADMIN
+# ============================================
+@admin.register(UserActivity)
+class UserActivityAdmin(admin.ModelAdmin):
+    """
+    Manage user activity in admin.
+    """
+    list_display = ['get_user_display', 'date', 'visits_count', 'page_views', 'tips_viewed_count', 'last_activity']
+    list_filter = ['date', 'user']
+    search_fields = ['user__username', 'session_key']
+    date_hierarchy = 'date'
+    readonly_fields = ['created_at', 'last_activity']
+
+    def get_user_display(self, obj):
+        if obj.user:
+            return obj.user.username
+        return f"Anonymous ({obj.session_key[:8]}...)"
+
+    get_user_display.short_description = 'User'
+
+    def tips_viewed_count(self, obj):
+        return len(obj.tips_viewed)
+
+    tips_viewed_count.short_description = 'Tips Viewed'
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('user')

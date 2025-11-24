@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Activity History - Green Lifestyle{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-950 pt-20 pb-20">
+    <div class="max-w-6xl mx-auto px-4">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Activity History</h1>
+            <p class="text-gray-600 dark:text-gray-400">Track your engagement and activity on Green Lifestyle</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            
+            <!-- Total Visits -->
+            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ total_visits }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Total Visits</div>
+            </div>
+
+            <!-- Page Views -->
+            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ total_pages }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Page Views</div>
+            </div>
+
+            <!-- Today's Activity -->
+            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                    {% if today_activity %}{{ today_activity.visits_count }}{% else %}0{% endif %}
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Today's Visits</div>
+            </div>
+
+            <!-- Login Streak -->
+            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ login_streak }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Day Streak 🔥</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Activity Timeline -->
+            <div class="lg:col-span-2">
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Daily Activity</h2>
+                    </div>
+                    
+                    <div class="p-6">
+                        {% if activity_logs %}
+                        <div class="space-y-4">
+                            {% for log in activity_logs %}
+                            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 dark:text-white">{{ log.date|date:"F j, Y" }}</div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-400">
+                                            {{ log.visits_count }} visit{{ log.visits_count|pluralize }} • {{ log.page_views }} page{{ log.page_views|pluralize }}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-3">
+                                    {% if log.tips_viewed %}
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">
+                                        {{ log.tips_viewed|length }} tip{{ log.tips_viewed|length|pluralize }} viewed
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if log.date == today_activity.date %}
+                                    <span class="px-2 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded">Today</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-12">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400">No activity recorded yet</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Session Info & Most Viewed -->
+            <div class="space-y-6">
+                
+                <!-- Session Information -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Current Session</h2>
+                    </div>
+                    
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Page Views</span>
+                            <span class="text-sm font-medium text-gray-900 dark:text-white">{{ session_activity.page_views|default:"0" }}</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Session Start</span>
+                            <span class="text-sm font-medium text-gray-900 dark:text-white">
+                                {% if session_activity.first_visit %}
+                                {{ session_activity.first_visit|slice:":16" }}
+                                {% else %}
+                                Just now
+                                {% endif %}
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Last Activity</span>
+                            <span class="text-sm font-medium text-gray-900 dark:text-white">
+                                {% if session_activity.last_visit %}
+                                {{ session_activity.last_visit|slice:"-8:" }}
+                                {% else %}
+                                Now
+                                {% endif %}
+                            </span>
+                        </div>
+                        
+                        {% if session_activity.tips_viewed %}
+                        <div class="pt-4 border-t border-gray-200 dark:border-gray-800">
+                            <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Tips Viewed This Session</div>
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ session_activity.tips_viewed|length }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Most Viewed Tips -->
+                {% if most_viewed_tips %}
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Most Viewed Tips</h2>
+                    </div>
+                    
+                    <div class="p-6 space-y-3">
+                        {% for item in most_viewed_tips %}
+                        <a href="{% url 'tips:tip_detail' slug=item.tip.slug %}" class="block p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white mb-1">{{ item.tip.title|truncatewords:6 }}</div>
+                                    <div class="text-xs text-gray-600 dark:text-gray-400">{{ item.tip.category.icon }} {{ item.tip.category.name }}</div>
+                                </div>
+                                <div class="ml-3 flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                    {{ item.views }}
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

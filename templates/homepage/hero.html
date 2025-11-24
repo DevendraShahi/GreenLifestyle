@@ -31,11 +31,11 @@
     <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12 animate-slide-up delay-300">
       {% if user.is_authenticated %}
       <!-- User logged in -->
-      <a href="#tips"
+      <a href="{% url 'tips:tip_list' %}"
         class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 backdrop-blur-sm">
         Browse Tips
       </a>
-      <a href="#"
+      <a href="{% url 'tips:create_tip' %}"
         class="px-8 py-4 bg-white/20 backdrop-blur-md border-2 border-white text-white rounded-lg font-semibold hover:bg-white/30 transition-all duration-300">
         Share a Tip
       </a>
@@ -56,17 +56,17 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 animate-slide-up delay-500">
       <div
         class="p-6 bg-white/20 backdrop-blur-md rounded-lg border border-white/30 hover:shadow-lg transition-shadow duration-300 transform hover:scale-105">
-        <div class="text-4xl font-bold text-white mb-2">1000+</div>
+        <div class="text-4xl font-bold text-white mb-2">{{ total_tips }}</div>
         <p class="text-gray-100">Green Tips</p>
       </div>
       <div
         class="p-6 bg-white/20 backdrop-blur-md rounded-lg border border-white/30 hover:shadow-lg transition-shadow duration-300 transform hover:scale-105">
-        <div class="text-4xl font-bold text-white mb-2">5000+</div>
+        <div class="text-4xl font-bold text-white mb-2">{{ total_users }}</div>
         <p class="text-gray-100">Community Members</p>
       </div>
       <div
         class="p-6 bg-white/20 backdrop-blur-md rounded-lg border border-white/30 hover:shadow-lg transition-shadow duration-300 transform hover:scale-105">
-        <div class="text-4xl font-bold text-white mb-2">100+</div>
+        <div class="text-4xl font-bold text-white mb-2">{{ total_categories }}</div>
         <p class="text-gray-100">Categories</p>
       </div>
     </div>

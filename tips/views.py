@@ -5,17 +5,16 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.core.paginator import Paginator
-from django.db.models import Q, Count
 from django.http import JsonResponse
 from .models import Tip, Category, Like, Comment, Bookmark
 from .forms import TipForm, CommentForm
 from django.views.decorators.http import require_POST
+from accounts.models import UserActivity
 
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
 
-from django.utils import timezone  # Add this
+from django.utils import timezone
 from datetime import timedelta
 
 
@@ -126,6 +125,8 @@ def tip_detail_view(request, slug):
         is_published=True
     )
 
+    # Track tip view in activity
+    UserActivity.log_activity(request, tip_id=tip.id)
     comments = tip.comments.select_related('author').order_by('-created_at')
 
     # Check if user liked/bookmarked this tip
@@ -209,7 +210,7 @@ def create_tip_view(request):
 
     if request.method == 'POST':
         # User submitted form
-        form = TipForm(request.POST, request.FILES)
+        form = TipForm(request.POST, request.FILES, user=request.user)
 
         if form.is_valid():
             # Form is valid, save it
@@ -224,7 +225,7 @@ def create_tip_view(request):
             messages.error(request, '✗ Please correct the errors below.')
     else:
         # Show empty form
-        form = TipForm()
+        form = TipForm(user=request.user)
 
     context = {
         'form': form,
@@ -272,7 +273,7 @@ def edit_tip_view(request, slug):
 
     if request.method == 'POST':
         # User submitted changes
-        form = TipForm(request.POST, request.FILES, instance=tip)
+        form = TipForm(request.POST, request.FILES, instance=tip, user=request.user)
 
         if form.is_valid():
             form.save()
@@ -282,7 +283,7 @@ def edit_tip_view(request, slug):
             messages.error(request, '✗ Please correct the errors below.')
     else:
         # Show pre-filled form
-        form = TipForm(instance=tip)
+        form = TipForm(instance=tip, user=request.user)
 
     context = {
         'form': form,

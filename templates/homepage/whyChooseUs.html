@@ -342,7 +342,7 @@
             Sign In
           </a>
           {% else %}
-          <a href="#"
+          <a href="{% url 'tips:tip_list' %}"
             class="px-10 py-4 bg-emerald-500 text-white font-semibold rounded-xl hover:bg-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 inline-flex items-center justify-center gap-2 group">
             Browse All Tips
             <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none"

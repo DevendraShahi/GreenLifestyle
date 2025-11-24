@@ -33,12 +33,67 @@
           {% endif %}
         </div>
 
-        <!-- Category -->
+        <!-- Category Section -->
         <div>
           <label class="text-sm font-semibold text-gray-900 dark:text-white block mb-2">CATEGORY</label>
-          {{ form.category }}
-          {% if form.category.errors %}
-          <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.category.errors.0 }}</p>
+
+          <!-- Category Mode Toggle -->
+          <div class="flex gap-2 mb-4">
+            <button type="button" id="existingCategoryBtn"
+              class="px-4 py-2 text-sm font-medium rounded-lg transition-colors bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 border-2 border-emerald-500">
+              Select Existing
+            </button>
+            <button type="button" id="newCategoryBtn"
+              class="px-4 py-2 text-sm font-medium rounded-lg transition-colors bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-transparent">
+              Create New
+            </button>
+          </div>
+
+          <!-- Existing Category Selection -->
+          <div id="existingCategorySection">
+            {{ form.category }}
+            {% if form.category.errors %}
+            <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.category.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <!-- New Category Section -->
+          <div id="newCategorySection" class="hidden space-y-4">
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 block mb-1">Category Name</label>
+              {{ form.new_category_name }}
+              {% if form.new_category_name.errors %}
+              <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.new_category_name.errors.0 }}</p>
+              {% endif %}
+            </div>
+
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 block mb-1">Emoji Icon</label>
+              {{ form.new_category_icon }}
+              {% if form.new_category_icon.errors %}
+              <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.new_category_icon.errors.0 }}</p>
+              {% endif %}
+            </div>
+
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 block mb-1">Description
+                (Optional)</label>
+              {{ form.new_category_description }}
+              {% if form.new_category_description.errors %}
+              <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.new_category_description.errors.0 }}</p>
+              {% endif %}
+            </div>
+
+            <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+              <p class="text-xs text-amber-800 dark:text-amber-200">
+                ℹ️ New categories require approval before being visible to all users.
+              </p>
+            </div>
+          </div>
+
+          <!-- General category errors -->
+          {% if form.non_field_errors %}
+          <p class="text-xs text-red-600 dark:text-red-400 mt-2">{{ form.non_field_errors.0 }}</p>
           {% endif %}
         </div>
 
@@ -82,4 +137,55 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Category toggle functionality
+  document.addEventListener('DOMContentLoaded', function () {
+    const existingBtn = document.getElementById('existingCategoryBtn');
+    const newBtn = document.getElementById('newCategoryBtn');
+    const existingSection = document.getElementById('existingCategorySection');
+    const newSection = document.getElementById('newCategorySection');
+    const categorySelect = document.getElementById('id_category');
+
+    // Toggle to existing category
+    existingBtn.addEventListener('click', function () {
+      // Update button styles
+      existingBtn.classList.add('bg-emerald-100', 'dark:bg-emerald-900', 'text-emerald-700', 'dark:text-emerald-300', 'border-emerald-500');
+      existingBtn.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
+
+      newBtn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900', 'text-emerald-700', 'dark:text-emerald-300', 'border-emerald-500');
+      newBtn.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
+
+      // Show/hide sections
+      existingSection.classList.remove('hidden');
+      newSection.classList.add('hidden');
+
+      // Clear new category fields
+      document.getElementById('id_new_category_name').value = '';
+      document.getElementById('id_new_category_icon').value = '';
+      document.getElementById('id_new_category_description').value = '';
+    });
+
+    // Toggle to new category
+    newBtn.addEventListener('click', function () {
+      // Update button styles
+      newBtn.classList.add('bg-emerald-100', 'dark:bg-emerald-900', 'text-emerald-700', 'dark:text-emerald-300', 'border-emerald-500');
+      newBtn.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
+
+      existingBtn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900', 'text-emerald-700', 'dark:text-emerald-300', 'border-emerald-500');
+      existingBtn.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
+
+      // Show/hide sections
+      existingSection.classList.add('hidden');
+      newSection.classList.remove('hidden');
+
+      // Clear existing category selection
+      if (categorySelect) {
+        categorySelect.selectedIndex = 0;
+      }
+    });
+  });
+</script>
 {% endblock %}

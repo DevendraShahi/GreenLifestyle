@@ -5,7 +5,7 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-
+from django.utils import timezone
 
 
 class CustomUser(AbstractUser):
@@ -217,4 +217,146 @@ class Follow(models.Model):
             raise ValueError("Users cannot follow themselves")
         super().save(*args, **kwargs)
 
+
+# ============================================
+# USER ACTIVITY MODEL
+# ============================================
+class UserActivity(models.Model):
+    """
+    Track detailed user activity and engagement.
+
+    Stores persistent activity data in database
+    (session data is temporary, this is permanent)
+
+    Fields:
+    - user: The user (or None for anonymous)
+    - session_key: Anonymous session identifier
+    - date: Date of activity
+    - visits_count: Number of visits on this date
+    - page_views: Number of pages viewed
+    - tips_viewed: List of tip IDs viewed
+    - time_spent: Total time spent (in seconds)
+    - last_activity: Last activity timestamp
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='activity_logs',
+        help_text="User (null for anonymous users)"
+    )
+
+    session_key = models.CharField(
+        max_length=40,
+        null=True,
+        blank=True,
+        help_text="Session key for anonymous users"
+    )
+
+    date = models.DateField(
+        default=timezone.now,
+        help_text="Date of activity"
+    )
+
+    visits_count = models.PositiveIntegerField(
+        default=0,
+        help_text="Number of visits on this date"
+    )
+
+    page_views = models.PositiveIntegerField(
+        default=0,
+        help_text="Number of pages viewed"
+    )
+
+    tips_viewed = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="List of tip IDs viewed"
+    )
+
+    time_spent = models.PositiveIntegerField(
+        default=0,
+        help_text="Time spent in seconds"
+    )
+
+    last_activity = models.DateTimeField(
+        auto_now=True,
+        help_text="Last activity timestamp"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date', '-last_activity']
+        verbose_name = "User Activity"
+        verbose_name_plural = "User Activities"
+        indexes = [
+            models.Index(fields=['user', 'date']),
+            models.Index(fields=['session_key', 'date']),
+        ]
+
+    def __str__(self):
+        if self.user:
+            return f"{self.user.username} - {self.date}"
+        return f"Anonymous ({self.session_key[:8]}) - {self.date}"
+
+    @classmethod
+    def log_activity(cls, request, tip_id=None):
+        """
+        Log user activity.
+
+        Usage: UserActivity.log_activity(request, tip_id=5)
+        """
+        today = timezone.now().date()
+
+        if request.user.is_authenticated:
+            # Logged in user
+            activity, created = cls.objects.get_or_create(
+                user=request.user,
+                date=today,
+                defaults={
+                    'visits_count': 1,
+                    'page_views': 1,
+                }
+            )
+
+            if not created:
+                activity.visits_count += 1
+                activity.page_views += 1
+        else:
+            # Anonymous user
+            session_key = request.session.session_key
+            if not session_key:
+                request.session.create()
+                session_key = request.session.session_key
+
+            activity, created = cls.objects.get_or_create(
+                session_key=session_key,
+                date=today,
+                defaults={
+                    'visits_count': 1,
+                    'page_views': 1,
+                }
+            )
+
+            if not created:
+                activity.visits_count += 1
+                activity.page_views += 1
+
+        # Track tip views
+        if tip_id and tip_id not in activity.tips_viewed:
+            activity.tips_viewed.append(tip_id)
+
+        activity.save()
+        return activity
+
+    def get_total_visits(self):
+        """Get total visits for this user"""
+        if self.user:
+            return UserActivity.objects.filter(user=self.user).aggregate(
+                total=models.Sum('visits_count')
+            )['total'] or 0
+        return self.visits_count
 
