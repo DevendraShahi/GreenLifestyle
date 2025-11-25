@@ -1,7 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -19,19 +15,19 @@ from datetime import timedelta
 
 
 def tip_list_view(request):
-
+    """Displaying tips."""
 
     tips = Tip.objects.filter(is_published=True).select_related('author', 'category').annotate(
         likes_count=Count('likes'),
         comments_count=Count('comments')
     )
 
-    # Filter by category
+    # Filtering by category
     category_slug = request.GET.get('category')
     if category_slug:
         tips = tips.filter(category__slug=category_slug)
 
-    # Search keywords in title/content
+    # Searching tips
     search_query = request.GET.get('search')
     if search_query:
         tips = tips.filter(
@@ -39,7 +35,7 @@ def tip_list_view(request):
             Q(content__icontains=search_query)
         )
 
-    # Filter by date range
+    # Filtering by date
     date_range = request.GET.get('date_range')
     if date_range == 'last_7_days':
         since = timezone.now() - timedelta(days=7)
@@ -48,7 +44,7 @@ def tip_list_view(request):
         since = timezone.now() - timedelta(days=30)
         tips = tips.filter(created_at__gte=since)
 
-    # Sort by choice
+    # Sorting tips
     sort_by = request.GET.get('sort_by')
     if sort_by == 'oldest':
         tips = tips.order_by('created_at')
@@ -57,20 +53,20 @@ def tip_list_view(request):
     elif sort_by == 'most_commented':
         tips = tips.order_by('-comments_count', '-created_at')
     else:
-        # Default newest first
+        # Defaulting to newest
         tips = tips.order_by('-created_at')
 
     paginator = Paginator(tips, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    # Add display names to tips
+    # Adding display names
     for tip in page_obj:
         tip.author_display_name = tip.author.get_full_name() or tip.author.username
 
     categories = Category.objects.all()
 
-    # Stats for sidebar
+    # Getting stats
     total_tips = Tip.objects.filter(is_published=True).count()
     total_likes = Like.objects.count()
 
@@ -88,36 +84,8 @@ def tip_list_view(request):
     return render(request, 'tips/tip_list.html', context)
 
 
-# ============================================
-# TIP DETAIL VIEW
-# ============================================
-
 def tip_detail_view(request, slug):
-    """
-        Show single tip with full details, comments, and like button.
-
-        What this does:
-        1. Gets tip by slug (URL-friendly ID)
-        2. Loads all comments for this tip
-        3. Checks if current user liked this tip
-        4. Handles comment form submission
-        5. Shows related tips (same category)
-
-        URL: /tips/slug-of-tip/
-        Template: tips/tip_detail.html
-
-        Parameters:
-        - slug: URL slug of the tip (e.g., "5-ways-to-reduce-plastic")
-
-        Context:
-        - tip: The tip object
-        - comments: All comments on this tip
-        - comment_form: Form to add new comment
-        - is_liked: Whether user liked this tip
-        - related_tips: Similar tips
-        """
-
-    """Show single tip with full details."""
+    """Displaying tip details."""
 
     tip = get_object_or_404(
         Tip.objects.select_related('author', 'category'),
@@ -125,11 +93,11 @@ def tip_detail_view(request, slug):
         is_published=True
     )
 
-    # Track tip view in activity
+    # Tracking view
     UserActivity.log_activity(request, tip_id=tip.id)
     comments = tip.comments.select_related('author').order_by('-created_at')
 
-    # Check if user liked/bookmarked this tip
+    # Checking interactions
     is_liked = False
     is_bookmarked = False
     if request.user.is_authenticated:
@@ -148,7 +116,7 @@ def tip_detail_view(request, slug):
             comment.author = request.user
             comment.save()
 
-            # Update impact scores
+            # Updating impact
             from accounts.utils import update_user_impact_score
             update_user_impact_score(request.user)
             update_user_impact_score(tip.author)
@@ -165,10 +133,9 @@ def tip_detail_view(request, slug):
         id=tip.id
     ).order_by('-created_at')[:3]
 
-    # Add display names for template
+    # Adding display names
     tip.author_display_name = tip.author.get_full_name() or tip.author.username
     
-    # Add display names to comments
     for comment in comments:
         comment.author_display_name = comment.author.get_full_name() or comment.author.username
 
@@ -177,54 +144,34 @@ def tip_detail_view(request, slug):
         'comments': comments,
         'comment_form': comment_form,
         'is_liked': is_liked,
-        'is_bookmarked': is_bookmarked,  # Add this
+        'is_bookmarked': is_bookmarked,
         'related_tips': related_tips,
     }
 
     return render(request, 'tips/tip_detail.html', context)
 
 
-# ============================================
-# CREATE TIP VIEW
-# ============================================
 @login_required(login_url='accounts:login')
 def create_tip_view(request):
-    """
-    Allow logged-in users to create new tips.
-
-    What this does:
-    1. Shows empty form (GET request)
-    2. Validates and saves tip (POST request)
-    3. Sets current user as author
-    4. Redirects to tip detail page on success
-
-    URL: /tips/create/
-    Template: tips/tip_form.html
-
-    Requires: User must be logged in (@login_required)
-
-    Context:
-    - form: TipForm instance
-    - page_title: "Create New Tip"
-    """
+    """Creating new tip."""
 
     if request.method == 'POST':
-        # User submitted form
+        # Handling submission
         form = TipForm(request.POST, request.FILES, user=request.user)
 
         if form.is_valid():
-            # Form is valid, save it
-            tip = form.save(commit=False)  # Don't save to DB yet
-            tip.author = request.user  # Set author to current user
-            tip.save()  # Now save to database
+            # Saving tip
+            tip = form.save(commit=False)
+            tip.author = request.user
+            tip.save()
 
             messages.success(request, '✓ Tip created successfully!')
             return redirect('tips:tip_detail', slug=tip.slug)
         else:
-            # Form has errors
+            # Showing errors
             messages.error(request, '✗ Please correct the errors below.')
     else:
-        # Show empty form
+        # Showing form
         form = TipForm(user=request.user)
 
     context = {
@@ -235,44 +182,20 @@ def create_tip_view(request):
     return render(request, 'tips/tip_form.html', context)
 
 
-# ============================================
-# EDIT TIP VIEW
-# ============================================
 @login_required(login_url='accounts:login')
 def edit_tip_view(request, slug):
-    """
-    Allow users to edit their own tips.
+    """Editing tip."""
 
-    What this does:
-    1. Gets the tip by slug
-    2. Checks if user is the author (security)
-    3. Shows pre-filled form with tip data
-    4. Saves changes on submit
-
-    URL: /tips/slug/edit/
-    Template: tips/tip_form.html
-
-    Security: Only tip author can edit
-
-    Parameters:
-    - slug: Tip's URL slug
-
-    Context:
-    - form: Pre-filled TipForm
-    - tip: The tip being edited
-    - page_title: "Edit Tip"
-    """
-
-    # Get tip or 404
+    # Getting tip
     tip = get_object_or_404(Tip, slug=slug)
 
-    # Security check: Only author can edit
+    # Checking permission
     if tip.author != request.user:
         messages.error(request, '✗ You can only edit your own tips.')
         return redirect('tips:tip_detail', slug=tip.slug)
 
     if request.method == 'POST':
-        # User submitted changes
+        # Handling submission
         form = TipForm(request.POST, request.FILES, instance=tip, user=request.user)
 
         if form.is_valid():
@@ -282,7 +205,7 @@ def edit_tip_view(request, slug):
         else:
             messages.error(request, '✗ Please correct the errors below.')
     else:
-        # Show pre-filled form
+        # Showing form
         form = TipForm(instance=tip, user=request.user)
 
     context = {
@@ -294,38 +217,19 @@ def edit_tip_view(request, slug):
     return render(request, 'tips/tip_form.html', context)
 
 
-# ============================================
-# DELETE TIP VIEW
-# ============================================
 @login_required(login_url='accounts:login')
 def delete_tip_view(request, slug):
-    """
-    Allow users to delete their own tips.
-
-    What this does:
-    1. Gets the tip
-    2. Checks if user is author (security)
-    3. Shows confirmation page (GET)
-    4. Deletes tip (POST)
-
-    URL: /tips/slug/delete/
-    Template: tips/tip_confirm_delete.html
-
-    Security: Only tip author can delete
-
-    Parameters:
-    - slug: Tip's URL slug
-    """
+    """Deleting tip."""
 
     tip = get_object_or_404(Tip, slug=slug)
 
-    # Security check
+    # Checking permission
     if tip.author != request.user:
         messages.error(request, '✗ You can only delete your own tips.')
         return redirect('tips:tip_detail', slug=tip.slug)
 
     if request.method == 'POST':
-        # User confirmed deletion
+        # Confirming deletion
         tip.delete()
         messages.success(request, '✓ Tip deleted successfully.')
         return redirect('tips:tip_list')
@@ -337,80 +241,41 @@ def delete_tip_view(request, slug):
     return render(request, 'tips/tip_confirm_delete.html', context)
 
 
-# ============================================
-# LIKE/UNLIKE TIP VIEW (AJAX)
-# ============================================
 @login_required(login_url='accounts:login')
 @require_POST
 def toggle_like_view(request, slug):
-    """
-    Toggle like/unlike for a tip (AJAX endpoint).
-
-    What this does:
-    1. Gets the tip
-    2. Checks if user already liked it
-    3. If liked: Remove like
-    4. If not liked: Add like
-    5. Returns JSON response with new like count
-
-    URL: /tips/slug/like/
-    Method: POST only
-    Returns: JSON
-
-    Response format:
-    {
-        "liked": true/false,
-        "likes_count": 42
-    }
-
-    Used with JavaScript for instant feedback.
-    """
+    """Toggling like status."""
 
     tip = get_object_or_404(Tip, slug=slug, is_published=True)
 
-    # Check if user already liked this tip
+    # Checking existing like
     like, created = Like.objects.get_or_create(user=request.user, tip=tip)
 
     if not created:
-        # Like already exists, so unlike (delete it)
+        # Removing like
         like.delete()
         liked = False
     else:
-        # New like was created
+        # Adding like
         liked = True
 
-    # Get updated like count
+    # Getting count
     likes_count = tip.likes.count()
 
-    # Return JSON response
     return JsonResponse({
         'liked': liked,
         'likes_count': likes_count
     })
 
 
-# ============================================
-# DELETE COMMENT VIEW
-# ============================================
 @login_required(login_url='accounts:login')
 def delete_comment_view(request, comment_id):
-    """
-    Allow users to delete their own comments.
-
-    What this does:
-    1. Gets the comment
-    2. Checks if user is author
-    3. Deletes comment
-    4. Redirects back to tip
-
-    URL: /tips/comments/<id>/delete/
-    Security: Only comment author can delete
-    """
+    """Deleting comment."""
 
     comment = get_object_or_404(Comment, id=comment_id)
     tip_slug = comment.tip.slug
 
-    # Security check
+    # Checking permission
     if comment.author != request.user:
         messages.error(request, '✗ You can only delete your own comments.')
         return redirect('tips:tip_detail', slug=tip_slug)
@@ -421,25 +286,9 @@ def delete_comment_view(request, comment_id):
     return redirect('tips:tip_detail', slug=tip_slug)
 
 
-# ============================================
-# USER'S TIPS VIEW
-# ============================================
 @login_required(login_url='accounts:login')
 def my_tips_view(request):
-    """
-    Show all tips created by current user.
-
-    What this does:
-    1. Gets all tips by current user
-    2. Shows both published and draft tips
-    3. Adds pagination
-
-    URL: /tips/my-tips/
-    Template: tips/my_tips.html
-
-    Context:
-    - tips: User's tips (paginated)
-    """
+    """Displaying user tips."""
 
     tips = Tip.objects.filter(
         author=request.user
@@ -448,12 +297,12 @@ def my_tips_view(request):
         comments_count=Count('comments')
     ).order_by('-created_at')
 
-    # Pagination: 10 tips per page
+    # Paginating tips
     paginator = Paginator(tips, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    # Add display names to tips
+    # Adding display names
     for tip in page_obj:
         tip.author_display_name = tip.author.get_full_name() or tip.author.username
 
@@ -464,24 +313,8 @@ def my_tips_view(request):
     return render(request, 'tips/my_tips.html', context)
 
 
-# ============================================
-# CATEGORY DETAIL VIEW
-# ============================================
 def category_detail_view(request, slug):
-    """
-    Show all tips in a specific category.
-
-    What this does:
-    1. Gets the category
-    2. Gets all published tips in this category
-    3. Adds pagination
-
-    URL: /tips/category/slug/
-    Template: tips/category_detail.html
-
-    Parameters:
-    - slug: Category's URL slug
-    """
+    """Displaying category tips."""
 
     category = get_object_or_404(Category, slug=slug)
 
@@ -493,7 +326,7 @@ def category_detail_view(request, slug):
         comments_count=Count('comments')
     ).order_by('-created_at')
 
-    # Pagination
+    # Paginating tips
     paginator = Paginator(tips, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -506,81 +339,41 @@ def category_detail_view(request, slug):
     return render(request, 'tips/category_detail.html', context)
 
 
-# ============================================
-# BOOKMARK/UNBOOKMARK TIP VIEW (AJAX)
-# ============================================
 @login_required(login_url='accounts:login')
 @require_POST
 def toggle_bookmark_view(request, slug):
-    """
-    Toggle bookmark/unbookmark for a tip (AJAX endpoint).
-
-    What this does:
-    1. Gets the tip
-    2. Checks if user already bookmarked it
-    3. If bookmarked: Remove bookmark
-    4. If not bookmarked: Add bookmark
-    5. Returns JSON response
-
-    URL: /tips/slug/bookmark/
-    Method: POST only
-    Returns: JSON
-
-    Response format:
-    {
-        "bookmarked": true/false,
-        "bookmarks_count": 10
-    }
-    """
+    """Toggling bookmark status."""
 
     tip = get_object_or_404(Tip, slug=slug, is_published=True)
 
-    # Import Bookmark model
+    # Importing Bookmark
     from .models import Bookmark
 
-    # Check if bookmark already exists
+    # Checking existing bookmark
     bookmark, created = Bookmark.objects.get_or_create(user=request.user, tip=tip)
 
     if not created:
-        # Bookmark already exists, so remove it (unbookmark)
+        # Removing bookmark
         bookmark.delete()
         bookmarked = False
     else:
-        # New bookmark was created
+        # Adding bookmark
         bookmarked = True
 
-    # Get updated bookmark count
+    # Getting count
     bookmarks_count = tip.bookmarks.count()
 
-    # Return JSON response
     return JsonResponse({
         'bookmarked': bookmarked,
         'bookmarks_count': bookmarks_count
     })
 
 
-# ============================================
-# SAVED TIPS VIEW
-# ============================================
 @login_required(login_url='accounts:login')
 def saved_tips_view(request):
-    """
-    Show all tips bookmarked by current user.
+    """Displaying saved tips."""
 
-    What this does:
-    1. Gets all bookmarks by current user
-    2. Extracts the tips from bookmarks
-    3. Adds pagination
-    4. Renders template
-
-    URL: /tips/saved/
-    Template: tips/saved_tips.html
-
-    Context:
-    - page_obj: Paginated bookmarks
-    """
-
-    # Get user's bookmarks with related tip data
+    # Getting bookmarks
     bookmarks = Bookmark.objects.filter(
         user=request.user
     ).select_related(
@@ -591,12 +384,12 @@ def saved_tips_view(request):
         comments_count=Count('tip__comments')
     ).order_by('-created_at')
 
-    # Pagination: 12 bookmarks per page
+    # Paginating bookmarks
     paginator = Paginator(bookmarks, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    # Add display names to bookmarked tips
+    # Adding display names
     for bookmark in page_obj:
         bookmark.tip.author_display_name = bookmark.tip.author.get_full_name() or bookmark.tip.author.username
 
@@ -605,27 +398,3 @@ def saved_tips_view(request):
     }
 
     return render(request, 'tips/saved_tips.html', context)
-
-
-"""
-    1. List View tip_list_view
-        •	Shows multiple items
-        •	Has pagination
-        •	Has filtering/search
-    2. Detail View tip_detail_view
-        •	Shows single item
-        •	Loads related data (comments, likes)
-    3. Create View create_tip_view
-        •	Shows empty form (GET)
-        •	Saves new data (POST)
-    4. Update View edit_tip_view
-        •	Shows pre-filled form (GET)
-        •	Updates existing data (POST)
-    5. Delete View delete_tip_view
-        •	Shows confirmation (GET)
-        •	Deletes data (POST)
-	6. AJAX View toggle_like_view
-        •	Returns JSON (not HTML)
-        •	Used with JavaScript
-        •	Fast, no page reload
-"""

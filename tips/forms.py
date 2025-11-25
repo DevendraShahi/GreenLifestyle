@@ -1,12 +1,10 @@
-# tips/forms.py - ENHANCED VERSION WITH CATEGORY FORM
-
 from django import forms
 from .models import Tip, Category, Comment
 from django.core.exceptions import ValidationError
 
 
 class TipForm(forms.ModelForm):
-    """Form for creating/editing tips with optional category creation"""
+    # Creating/editing tips with optional category creation
     
     # Optional fields for creating a new category
     new_category_name = forms.CharField(
@@ -74,57 +72,57 @@ class TipForm(forms.ModelForm):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         
-        # Only show approved categories in dropdown
+        # Showing only approved categories in dropdown
         approved_categories = Category.objects.filter(is_approved=True).order_by('name')
         self.fields['category'].queryset = approved_categories
         self.fields['category'].required = False
         self.fields['category'].empty_label = "-- Select a category --"
         
-        # If no approved categories exist, show a helpful message
+        # Showing helpful message if no approved categories exist
         if not approved_categories.exists():
             self.fields['category'].empty_label = "-- No categories available, create one below --"
     
     def clean(self):
-        """Validate that either existing category is selected OR new category is provided"""
+        # Validating that either existing category is selected OR new category is provided
         cleaned_data = super().clean()
         category = cleaned_data.get('category')
         new_category_name = cleaned_data.get('new_category_name', '').strip()
         
-        # Must have either existing category or new category name
+        # Checking if either category or new category name is provided
         if not category and not new_category_name:
             raise ValidationError('Please select an existing category or create a new one.')
         
-        # If creating new category, validate required fields
+        # Validating required fields if creating new category
         if new_category_name:
             new_category_icon = cleaned_data.get('new_category_icon', '').strip()
             
             if not new_category_icon:
                 raise ValidationError('Please provide an emoji icon for the new category.')
             
-            # Check if category already exists
+            # Checking if category already exists
             if Category.objects.filter(name__iexact=new_category_name).exists():
                 raise ValidationError(f'Category "{new_category_name}" already exists. Please select it from the dropdown.')
         
         return cleaned_data
     
     def save(self, commit=True):
-        """Save tip and create new category if provided"""
+        # Saving tip and creating new category if provided
         instance = super().save(commit=False)
         
-        # Check if user wants to create a new category
+        # Checking if user wants to create a new category
         new_category_name = self.cleaned_data.get('new_category_name', '').strip()
         
         if new_category_name:
-            # Create new category
+            # Creating new category
             new_category = Category.objects.create(
                 name=new_category_name,
                 description=self.cleaned_data.get('new_category_description', '').strip(),
                 icon=self.cleaned_data.get('new_category_icon', '🌱').strip(),
                 created_by=self.user,
-                is_approved=False  # Default to  pending approval
+                is_approved=False
             )
             
-            # Auto-approve if user is moderator or admin
+            # Auto-approving if user is moderator or admin
             if self.user and hasattr(self.user, 'role') and self.user.role in ['moderator', 'admin']:
                 from django.utils import timezone
                 new_category.is_approved = True
@@ -141,7 +139,7 @@ class TipForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    """Form for adding comments to tips"""
+    # Adding comments to tips
     
     class Meta:
         model = Comment
@@ -157,14 +155,7 @@ class CommentForm(forms.ModelForm):
 
 
 class CategoryForm(forms.ModelForm):
-    """
-    Form for creating/editing categories.
-    
-    Can be used by:
-    - Regular users (with pending approval)
-    - Moderators (auto-approved)
-    - Administrators (auto-approved)
-    """
+    # Creating/editing categories
     
     class Meta:
         model = Category
@@ -189,16 +180,7 @@ class CategoryForm(forms.ModelForm):
         }
     
     def clean_name(self):
-        """
-        Validate category name.
-        
-        Checks:
-        1. Not empty
-        2. At least 3 characters
-        3. Not duplicate (case-insensitive)
-        
-        Returns: cleaned name
-        """
+        # Validating category name
         name = self.cleaned_data.get('name')
         
         if not name:
@@ -212,7 +194,7 @@ class CategoryForm(forms.ModelForm):
         if len(name) > 100:
             raise ValidationError('Category name cannot exceed 100 characters.')
         
-        # Check for duplicate (exclude current instance if editing)
+        # Checking for duplicate (excluding current instance if editing)
         if self.instance.pk:
             # Editing existing category
             if Category.objects.filter(name__iexact=name).exclude(pk=self.instance.pk).exists():
@@ -225,13 +207,7 @@ class CategoryForm(forms.ModelForm):
         return name
     
     def clean_icon(self):
-        """
-        Validate icon field.
-        
-        Checks:
-        1. Not empty
-        2. Reasonable length (emojis are typically 1-4 characters)
-        """
+        # Validating icon field
         icon = self.cleaned_data.get('icon')
         
         if not icon:
@@ -245,7 +221,7 @@ class CategoryForm(forms.ModelForm):
         return icon
     
     def clean_description(self):
-        """Validate description field"""
+        # Validating description field
         description = self.cleaned_data.get('description', '').strip()
         
         if description and len(description) > 500:
@@ -255,10 +231,7 @@ class CategoryForm(forms.ModelForm):
 
 
 class CategoryRequestForm(forms.ModelForm):
-    """
-    Form for users to request new categories.
-    Simpler version for regular users, requires approval.
-    """
+    # Requesting new categories (for regular users)
     
     reason = forms.CharField(
         widget=forms.Textarea(attrs={
@@ -293,7 +266,7 @@ class CategoryRequestForm(forms.ModelForm):
         }
     
     def clean_name(self):
-        """Validate category name"""
+        # Validating category name
         name = self.cleaned_data.get('name', '').strip()
         
         if not name:
@@ -302,7 +275,7 @@ class CategoryRequestForm(forms.ModelForm):
         if len(name) < 3:
             raise ValidationError('Category name must be at least 3 characters.')
         
-        # Check if category already exists or is pending
+        # Checking if category already exists or is pending
         if Category.objects.filter(name__iexact=name).exists():
             raise ValidationError(f'A category named "{name}" already exists.')
         

@@ -1,30 +1,27 @@
-# views.py - UPDATED VERSION
-# This combines profile viewing and editing in one view for inline editing
 from datetime import timedelta
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
-from django.db import models  # Add this for aggregate functions
-
-from .models import CustomUser
-from tips.models import Tip
-from .forms import UserProfileForm, SignupForm, LoginForm
+from django.db import models
 from django.contrib.auth import login, logout, authenticate
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+
 from .models import CustomUser, Follow, UserActivity
+from tips.models import Tip
+from .forms import UserProfileForm, SignupForm, LoginForm
 
 
 @login_required(login_url='accounts:login')
 def profile_view(request, username=None):
-    """
-    Display user profile - own or other user's
-    Also handles profile editing for own profile (inline editing)
-    """
+    """Displaying user profile."""
     
+    # Getting profile user
     if username is None:
         profile_user = request.user
     else:
@@ -32,7 +29,7 @@ def profile_view(request, username=None):
     
     is_own_profile = profile_user == request.user
     
-    # Handle profile edit form submission (for inline editing)
+    # Handling form submission
     if request.method == 'POST' and is_own_profile:
         form = UserProfileForm(
             request.POST,
@@ -45,7 +42,7 @@ def profile_view(request, username=None):
             messages.success(request, '✓ Profile updated successfully!')
             return redirect('accounts:profile')
         else:
-            # Show error messages
+            # Showing errors
             for field, errors in form.errors.items():
                 for error in errors:
                     if field == '__all__':
@@ -54,29 +51,28 @@ def profile_view(request, username=None):
                         field_name = field.replace('_', ' ').title()
                         messages.error(request, f'{field_name}: {error}')
     
-    # Check if current user is following this profile
+    # Checking follow status
     is_following = False
     if request.user.is_authenticated and request.user != profile_user:
         is_following = request.user.is_following(profile_user)
     
-    # Get impact breakdown (if you have this function)
+    # Getting impact breakdown
     try:
         from accounts.utils import get_impact_breakdown
         impact_breakdown = get_impact_breakdown(profile_user)
     except ImportError:
         impact_breakdown = None
     
-    # Get user's recent tips
+    # Getting recent tips
     recent_tips = Tip.objects.filter(
         author=profile_user,
         is_published=True
     ).order_by('-created_at')[:5]
     
-    # Get all posts for the "Posts" tab
+    # Getting posts
     posts = Tip.objects.filter(author=profile_user).order_by('-created_at')
 
-    # Stats
-    # Use the properties from the model if they exist, otherwise 0
+    # Getting stats
     tips_count = getattr(profile_user, 'tips_count', 0)
     followers_count = profile_user.get_followers_count() if hasattr(profile_user, 'get_followers_count') else 0
     following_count = profile_user.get_following_count() if hasattr(profile_user, 'get_following_count') else 0
@@ -100,12 +96,9 @@ def profile_view(request, username=None):
     return render(request, 'accounts/profile.html', context)
 
 
-# Alternative: Separate view for profile editing (if you want a dedicated page)
 @login_required(login_url='accounts:login')
 def edit_profile_view(request):
-    """
-    Dedicated profile editing page (optional - not needed if using inline editing)
-    """
+    """Handling profile editing."""
 
     if request.method == 'POST':
         form = UserProfileForm(
@@ -139,11 +132,7 @@ def edit_profile_view(request):
 
 @login_required(login_url='accounts:login')
 def profile_settings_view(request):
-    """
-    User account settings page
-    Note: The settings are now integrated in the profile page sidebar
-    This view can be used if you want a separate settings page
-    """
+    """Displaying settings."""
 
     context = {
         'user': request.user,
@@ -152,14 +141,11 @@ def profile_settings_view(request):
     return render(request, 'accounts/settings.html', context)
 
 
-# Login View
 def login_view(request):
-    """
-    User login
-    """
+    """Handling login."""
 
     if request.user.is_authenticated:
-        return redirect('home')  # Change 'home' to your home URL name
+        return redirect('home')
 
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
@@ -172,8 +158,6 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'Welcome back, {user.username}!')
-
-                # Redirect to next parameter or home
                 return redirect('/accounts/profile')
         else:
             messages.error(request, 'Invalid username or password.')
@@ -183,11 +167,8 @@ def login_view(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
-# Signup View
 def signup_view(request):
-    """
-    User registration
-    """
+    """Handling registration."""
 
     if request.user.is_authenticated:
         return redirect('accounts:profile')  
@@ -199,7 +180,7 @@ def signup_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, '✓ Account created successfully! Welcome to Green Lifestyle!')
-            return redirect('accounts:profile')  #
+            return redirect('accounts:profile')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -214,65 +195,70 @@ def signup_view(request):
     return render(request, 'accounts/signup.html', {'form': form})
 
 
-# Logout View
+def direct_password_reset_view(request):
+    """
+    Simplified password reset flow.
+    
+    Verifies email exists in database and redirects directly to password 
+    reset form without sending emails. For development purposes.
+    """
+    
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = CustomUser.objects.get(email=email)
+            
+            # Generate reset link components
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            
+            # Redirect directly to password reset confirm page
+            return redirect('accounts:password_reset_confirm', uidb64=uid, token=token)
+            
+        except CustomUser.DoesNotExist:
+            messages.error(request, 'No user found with this email address.')
+            
+    return render(request, 'accounts/password_reset_form.html')
+
+
 @login_required(login_url='accounts:login')
 def logout_view(request):
-    """
-    User logout
-    """
+    """Handling logout."""
     logout(request)
     messages.success(request, 'You have been logged out successfully.')
     return redirect('accounts:login')
 
 
-
-
-# ============================================
-# TOGGLE FOLLOW VIEW (AJAX)
-# ============================================
 @login_required(login_url='accounts:login')
 @require_POST
 def toggle_follow_view(request, username):
-    """
-    Toggle follow/unfollow for a user (AJAX endpoint).
-    
-    What this does:
-    1. Gets the target user
-    2. Checks if already following
-    3. If following: Unfollow
-    4. If not following: Follow
-    5. Returns JSON response
-    
-    URL: /accounts/follow/<username>/
-    Method: POST only
-    Returns: JSON
-    """
+    """Toggling follow status."""
     
     user_to_follow = get_object_or_404(CustomUser, username=username)
     
-    # Can't follow yourself
+    # Checking self-follow
     if request.user == user_to_follow:
         return JsonResponse({'error': 'Cannot follow yourself'}, status=400)
     
-    # Check if already following
+    # Checking existing follow
     follow_obj = Follow.objects.filter(
         follower=request.user,
         following=user_to_follow
     ).first()
     
     if follow_obj:
-        # Already following, so unfollow
+        # Unfollowing
         follow_obj.delete()
         is_following = False
     else:
-        # Not following, so follow
+        # Following
         Follow.objects.create(
             follower=request.user,
             following=user_to_follow
         )
         is_following = True
     
-    # Get updated counts
+    # Getting counts
     followers_count = user_to_follow.get_followers_count()
     following_count = user_to_follow.get_following_count()
     
@@ -283,37 +269,24 @@ def toggle_follow_view(request, username):
     })
 
 
-# ============================================
-# FOLLOWERS LIST VIEW
-# ============================================
 @login_required(login_url='accounts:login')
 def followers_list_view(request, username):
-    """
-    Show list of users following a specific user.
-    
-    URL: /accounts/<username>/followers/
-    Template: accounts/followers_list.html
-    """
+    """Displaying followers."""
     
     user = get_object_or_404(CustomUser, username=username)
     
-    # Get followers queryset
+    # Getting followers
     followers_qs = Follow.objects.filter(
         following=user
     ).select_related('follower').order_by('-created_at')
     
-    # Pagination - Paginate the queryset FIRST
+    # Paginating results
     paginator = Paginator(followers_qs, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    # Add follow status for each follower ON THE CURRENT PAGE ONLY
-    # We can't modify the objects in page_obj directly easily if it's a queryset slice,
-    # so we'll iterate and attach attributes, or use a list.
-    # However, page_obj iterates over the sliced queryset.
-    
+    # Adding status
     for follow in page_obj:
-        # Check if current user is following this follower
         if request.user.is_authenticated and request.user != follow.follower:
             follow.is_followed_by_current_user = request.user.is_following(follow.follower)
         else:
@@ -328,31 +301,23 @@ def followers_list_view(request, username):
     return render(request, 'accounts/followers_list.html', context)
 
 
-# ============================================
-# FOLLOWING LIST VIEW
-# ============================================
 @login_required(login_url='accounts:login')
 def following_list_view(request, username):
-    """
-    Show list of users that a specific user is following.
-    
-    URL: /accounts/<username>/following/
-    Template: accounts/following_list.html
-    """
+    """Displaying following."""
     
     user = get_object_or_404(CustomUser, username=username)
     
-    # Get following queryset
+    # Getting following
     following_qs = Follow.objects.filter(
         follower=user
     ).select_related('following').order_by('-created_at')
     
-    # Pagination - Paginate the queryset FIRST
+    # Paginating results
     paginator = Paginator(following_qs, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    # Add is_following status for each user ON THE CURRENT PAGE ONLY
+    # Adding status
     for follow in page_obj:
         if request.user.is_authenticated:
             follow.is_following_current_user = request.user.is_following(follow.following)
@@ -370,22 +335,17 @@ def following_list_view(request, username):
 
 @login_required(login_url='accounts:login')
 def activity_history_view(request):
-    """
-    Show user's activity history and statistics.
+    """Displaying activity history."""
 
-    URL: /accounts/activity/
-    Template: accounts/activity_history.html
-    """
-
-    # Get session activity
+    # Getting session
     session_activity = request.session.get('activity', {})
 
-    # Get database activity logs
+    # Getting logs
     activity_logs = UserActivity.objects.filter(
         user=request.user
-    ).order_by('-date')[:30]  # Last 30 days
+    ).order_by('-date')[:30]
 
-    # Calculate statistics
+    # Calculating stats
     total_visits = UserActivity.objects.filter(
         user=request.user
     ).aggregate(
@@ -393,17 +353,17 @@ def activity_history_view(request):
         total_pages=models.Sum('page_views'),
     )
 
-    # Get today's activity
+    # Getting today's activity
     today = timezone.now().date()
     today_activity = UserActivity.objects.filter(
         user=request.user,
         date=today
     ).first()
 
-    # Calculate login streak
+    # Calculating streak
     login_streak = calculate_login_streak(request.user)
 
-    # Get most viewed tips
+    # Getting most viewed
     all_tips_viewed = []
     for log in activity_logs:
         all_tips_viewed.extend(log.tips_viewed)
@@ -434,7 +394,7 @@ def activity_history_view(request):
 
 
 def calculate_login_streak(user):
-    """Calculate consecutive days user has logged in"""
+    """Calculating login streak."""
     activities = UserActivity.objects.filter(
         user=user
     ).order_by('-date').values_list('date', flat=True)
@@ -445,7 +405,7 @@ def calculate_login_streak(user):
     streak = 1
     today = timezone.now().date()
 
-    # Check if user visited today or yesterday
+    # Checking recent visit
     if activities[0] < today - timedelta(days=1):
         return 0
 
@@ -457,4 +417,3 @@ def calculate_login_streak(user):
             break
 
     return streak
-

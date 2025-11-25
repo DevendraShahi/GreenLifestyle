@@ -1,5 +1,3 @@
-<!-- accounts/templates/accounts/profile.html -->
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -11,10 +9,10 @@
   <div class="max-w-[1400px] mx-auto">
     <div class="flex">
 
-      <!-- Premium Sidebar -->
+      <!-- Sidebar -->
       <aside class="w-72 h-screen sticky top-0 bg-white border-r border-gray-200 dark:border-zinc-800">
 
-        <!-- Profile Header -->
+        <!-- Header -->
         <div class="p-8 border-b border-gray-200 dark:border-zinc-800">
           <div class="flex flex-col items-center">
             <div class="w-24 h-24 rounded-full overflow-hidden mb-4 ring-2 ring-gray-100 dark:ring-zinc-800">
@@ -53,7 +51,7 @@
           </div>
         </div>
 
-        <!-- Navigation Menu -->
+        <!-- Navigation -->
         <nav class="p-4">
           <ul class="space-y-1">
             <li>
@@ -125,7 +123,7 @@
           </ul>
         </nav>
 
-        <!-- Stats Summary in Sidebar -->
+        <!-- Sidebar Stats -->
         <div class="px-4 py-6 border-t border-gray-200 dark:border-zinc-800">
           <div class="grid grid-cols-2 gap-4 text-center">
             <div>
@@ -140,14 +138,14 @@
         </div>
       </aside>
 
-      <!-- Main Content Area -->
+      <!-- Main Content -->
       <main class="flex-1 min-h-screen">
 
-        <!-- Profile Section -->
+        <!-- Profile -->
         <section id="profile" class="content-section">
           <div class="p-8 max-w-4xl mx-auto">
 
-            <!-- Profile Header -->
+            <!-- Header -->
             <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 mb-6">
               <div class="p-8">
                 <div class="flex items-start justify-between mb-6">
@@ -277,7 +275,7 @@
               {% endif %}
             </div>
 
-            <!-- Stats Grid -->
+            <!-- Stats -->
             <div class="grid grid-cols-4 gap-4 mb-6">
               <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 p-6">
                 <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ tips_count }}</div>
@@ -297,7 +295,7 @@
               </div>
             </div>
 
-            <!-- Stats Row with Clickable Followers/Following -->
+            <!-- Follow Stats -->
             <div class="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
               <div class="text-center">
                 <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ tips_count|default:"0" }}</p>
@@ -319,7 +317,7 @@
               </a>
             </div>
 
-            <!-- Recent Activity -->
+            <!-- Activity -->
             <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 mt-6">
               <div class="px-8 py-6 border-b border-gray-200 dark:border-zinc-800">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Recent Activity</h2>
@@ -340,7 +338,7 @@
           </div>
         </section>
 
-        <!-- Edit Profile Section -->
+        <!-- Edit Profile -->
         {% if is_own_profile %}
         <section id="edit" class="content-section hidden">
           <div class="p-8 max-w-3xl mx-auto">
@@ -445,7 +443,7 @@
                 </div>
               </div>
 
-              <!-- Form Footer -->
+              <!-- Footer -->
               <div
                 class="px-8 py-4 bg-gray-50 dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 rounded-b-xl flex items-center justify-end gap-3">
                 <button type="button"
@@ -462,7 +460,7 @@
         </section>
         {% endif %}
 
-        <!-- Posts Section -->
+        <!-- Posts -->
         <section id="posts" class="content-section hidden">
           <div class="p-8 max-w-4xl mx-auto">
             <div class="mb-6">
@@ -537,7 +535,7 @@
 
 
 
-        <!-- Settings Section -->
+        <!-- Settings -->
         {% if is_own_profile %}
         <section id="settings" class="content-section hidden">
           <div class="p-8 max-w-3xl mx-auto">
@@ -546,7 +544,7 @@
               <p class="text-sm text-gray-500 dark:text-zinc-400">Manage your account preferences</p>
             </div>
 
-            <!-- Privacy Settings -->
+            <!-- Privacy -->
             <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 mb-6">
               <div class="px-8 py-6 border-b border-gray-200 dark:border-zinc-800">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Privacy</h2>
@@ -617,7 +615,7 @@
               </div>
             </div>
 
-            <!-- Account Actions -->
+            <!-- Actions -->
             <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 mb-6">
               <div class="px-8 py-6 border-b border-gray-200 dark:border-zinc-800">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Account</h2>
@@ -755,7 +753,7 @@
   });
 </script>
 
-<!-- Follow Toggle JavaScript -->
+<!-- Follow Script -->
 <script>
   function getCookie(name) {
     let cookieValue = null;
@@ -798,8 +796,8 @@
           buttonText.textContent = 'Following';
         } else {
           // Unfollowed
-          button.classList.add('bg-emerald-500', 'dark:bg-emerald-600', 'hover:bg-emerald-600', 'dark:hover:bg-emerald-700');
           button.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
+          button.classList.add('bg-emerald-500', 'dark:bg-emerald-600', 'text-white', 'hover:bg-emerald-600', 'dark:hover:bg-emerald-700');
           buttonText.textContent = 'Follow';
         }
       })
