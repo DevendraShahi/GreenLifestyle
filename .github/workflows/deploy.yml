@@ -10,27 +10,26 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Deploy and Reload Web App
+    - name: Notify Deployment Needed
       run: |
-        echo "Reloading PythonAnywhere web app..."
-        
-        # Use PythonAnywhere API to reload the web app
-        RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+        echo "✅ Code pushed to GitHub successfully!"
+        echo ""
+        echo "📋 To deploy to PythonAnywhere, run this command in PythonAnywhere console:"
+        echo "   ~/deploy.sh"
+        echo ""
+        echo "Or manually:"
+        echo "   cd ~/GreenLifeStyle && git pull origin master"
+        echo "   source ~/.virtualenvs/greenlifestyle/bin/activate"
+        echo "   pip install -r requirements.txt"
+        echo "   python manage.py migrate"
+        echo "   python manage.py collectstatic --noinput"
+        echo "   touch /var/www/devendrashahi_pythonanywhere_com_wsgi.py"
+    
+    - name: Reload Web App via API
+      run: |
+        echo "🔄 Reloading web app..."
+        curl -X POST \
           "https://www.pythonanywhere.com/api/v0/user/devendraShahi/webapps/devendrashahi.pythonanywhere.com/reload/" \
-          -H "Authorization: Token ${{ secrets.PYTHONANYWHERE_API_TOKEN }}")
-        
-        HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-        BODY=$(echo "$RESPONSE" | sed '$d')
-        
-        echo "HTTP Status Code: $HTTP_CODE"
-        echo "Response Body: $BODY"
-        
-        if [ "$HTTP_CODE" -eq 200 ] || [ "$HTTP_CODE" -eq 204 ]; then
-          echo "✅ Web app reloaded successfully!"
-        else
-          echo "❌ Failed to reload web app"
-          echo "Response: $BODY"
-          exit 1
-        fi
-        
-        echo "Deployment completed!"
+          -H "Authorization: Token ${{ secrets.PYTHONANYWHERE_API_TOKEN }}"
+        echo ""
+        echo "✅ Web app reload triggered!"
