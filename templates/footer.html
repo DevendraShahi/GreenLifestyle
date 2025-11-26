@@ -16,7 +16,7 @@
   <div class="absolute inset-0 bg-glass backdrop-blur-lg border-t border-white/20 shadow-glass-footer"></div>
 
   <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
 
       <!-- Brand Section -->
       <div class="space-y-4">
@@ -64,7 +64,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="footer-link group flex items-center">
+            <a href="{% url 'tips:tip_list' %}" class="footer-link group flex items-center">
               <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">Tips &
                 Guides</span>
               <i
@@ -72,7 +72,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="footer-link group flex items-center">
+            <a href="{% url 'tips:tip_list' %}" class="footer-link group flex items-center">
               <span class="text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">Community</span>
               <i
                 class="fas fa-arrow-right text-xs ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-emerald-400"></i>
@@ -116,12 +116,7 @@
         </ul>
       </div>
 
-      <!-- Newsletter -->
-      <div class="space-y-4">
-        <video autoplay muted loop class=" inset-0 w-full h-full object-cover">
-          <source src="{% static 'images/bg-7.mp4' %}" type="video/mp4">
-        </video>
-      </div>
+      <!-- Newsletter Removed as per request -->
     </div>
 
     <!-- Divider -->
@@ -224,15 +219,5 @@
     });
   });
 
-  // Newsletter Form Submission (Add your actual form handling logic)
-  const newsletterForm = document.querySelector('footer form');
-  if (newsletterForm) {
-    newsletterForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = newsletterForm.querySelector('input[type="email"]').value;
-      // Add your newsletter subscription logic here
-      alert('Thank you for subscribing!');
-      newsletterForm.reset();
-    });
-  }
+  // Newsletter Form Removed
 </script>
