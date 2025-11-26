@@ -20,6 +20,7 @@ urlpatterns = [
 
     # Follow system
     path('follow/<str:username>/', views.toggle_follow_view, name='toggle_follow'),
+    path('follow/<str:username>/', views.follow_user, name='follow_user'),
     path('<str:username>/followers/', views.followers_list_view, name='followers_list'),
     path('<str:username>/following/', views.following_list_view, name='following_list'),
 

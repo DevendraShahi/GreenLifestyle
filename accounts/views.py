@@ -11,10 +11,13 @@ from django.core.paginator import Paginator
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+import logging
 
 from .models import CustomUser, Follow, UserActivity
 from tips.models import Tip
 from .forms import UserProfileForm, SignupForm, LoginForm
+
+logger = logging.getLogger(__name__)
 
 
 @login_required(login_url='accounts:login')
@@ -417,3 +420,23 @@ def calculate_login_streak(user):
             break
 
     return streak
+
+
+@login_required(login_url='accounts:login')
+def follow_user(request, username):
+    if request.method == 'POST':
+        try:
+            user_to_follow = get_object_or_404(User, username=username)
+            if user_to_follow == request.user:
+                return JsonResponse({'success': False, 'error': 'You cannot follow yourself.'})
+
+            if Follow.objects.filter(follower=request.user, following=user_to_follow).exists():
+                return JsonResponse({'success': False, 'error': 'Already following this user.'})
+
+            Follow.objects.create(follower=request.user, following=user_to_follow)
+            logger.info(f"{request.user.username} followed {user_to_follow.username}")
+            return JsonResponse({'success': True, 'followers_count': user_to_follow.followers.count()})
+        except Exception as e:
+            logger.error(f"Error in follow_user: {str(e)}")
+            return JsonResponse({'success': False, 'error': 'An error occurred.'})
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'})

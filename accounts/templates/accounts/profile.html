@@ -42,10 +42,13 @@
             </button>
             {% else %}
             <div class="mt-6">
-              <button id="followButton" onclick="toggleFollow('{{ profile_user.username }}')"
-                class="w-full px-6 py-3 rounded-lg font-semibold transition-all duration-300 {% if is_following %}bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600{% else %}bg-emerald-500 dark:bg-emerald-600 text-white hover:bg-emerald-600 dark:hover:bg-emerald-700{% endif %}">
-                <span id="followButtonText">{% if is_following %}Following{% else %}Follow{% endif %}</span>
-              </button>
+              <form method="POST" action="{% url 'accounts:follow_user' user.username %}" id="follow-form">
+                {% csrf_token %}
+                <button type="submit"
+                  class="w-full px-6 py-3 rounded-lg font-semibold transition-all duration-300 {% if is_following %}bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600{% else %}bg-emerald-500 dark:bg-emerald-600 text-white hover:bg-emerald-600 dark:hover:bg-emerald-700{% endif %}">
+                  <span id="followButtonText">{% if is_following %}Following{% else %}Follow{% endif %}</span>
+                </button>
+              </form>
             </div>
             {% endif %}
           </div>
@@ -781,7 +784,7 @@
       },
     })
       .then(response => response.json())
-      .then(data => {
+      .then data => {
         const button = document.getElementById('followButton');
         const buttonText = document.getElementById('followButtonText');
         const followersCount = document.getElementById('followersCount');
@@ -803,6 +806,27 @@
       })
       .catch(error => console.error('Error:', error));
   }
+</script>
+
+<script>
+  document.getElementById('follow-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const form = event.target;
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('follow-button').textContent = 'Following';
+          } else {
+            alert(data.error);
+          }
+    });
+  });
 </script>
 
 {% endblock %}

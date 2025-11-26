@@ -284,4 +284,29 @@
   }
 </style>
 
+<form method="POST" action="{% url 'tips:follow_user' user.username %}" id="follow-form">
+    {% csrf_token %}
+    <button type="submit">Follow</button>
+</form>
+<script>
+    document.getElementById('follow-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = event.target;
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Followed successfully!');
+            } else {
+                alert(data.error);
+            }
+        });
+    });
+</script>
+
 {% endblock %}

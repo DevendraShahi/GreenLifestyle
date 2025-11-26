@@ -120,3 +120,13 @@ class ActivityTrackingMiddleware:
                 for date, count in activity['daily_visits'].items()
                 if date >= cutoff_date
             }
+
+
+class ActivityMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.user.is_authenticated:
+            request.session['last_activity'] = str(request.user.username)
+        return self.get_response(request)
