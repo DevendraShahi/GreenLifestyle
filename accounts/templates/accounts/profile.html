@@ -1,3 +1,4 @@
+<!-- Developed by Devendra -->
 {% extends 'base.html' %}
 {% load static %}
 
@@ -9,8 +10,32 @@
   <div class="max-w-[1400px] mx-auto">
     <div class="flex">
 
+      <!-- Mobile Menu Button -->
+      <button onclick="toggleProfileSidebar()"
+        class="lg:hidden fixed bottom-6 right-6 z-50 p-4 bg-emerald-600 text-white rounded-full shadow-lg hover:bg-emerald-700 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+
+      <!-- Mobile Overlay -->
+      <div id="profileSidebarOverlay" onclick="toggleProfileSidebar()"
+        class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity"></div>
+
       <!-- Sidebar -->
-      <aside class="w-72 h-screen sticky top-0 bg-white border-r border-gray-200 dark:border-zinc-800">
+      <aside id="profileSidebar"
+        class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-zinc-950 border-r border-gray-200 dark:border-zinc-800 transform -translate-x-full transition-transform duration-300 lg:translate-x-0 lg:static lg:block lg:h-screen lg:sticky lg:top-0 overflow-y-auto">
+
+        <!-- Mobile Header -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-zinc-800 lg:hidden">
+          <h2 class="font-bold text-gray-900 dark:text-white">Menu</h2>
+          <button onclick="toggleProfileSidebar()"
+            class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
 
         <!-- Header -->
         <div class="p-8 border-b border-gray-200 dark:border-zinc-800">
@@ -21,7 +46,7 @@
                 class="w-full h-full object-cover">
               {% else %}
               <div class="w-full h-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center">
-                <img src="{% static 'images/user.gif' %}" alt="{{ profile_user.username }}"
+                <img src="{% static 'images/profile.png' %}" alt="{{ profile_user.username }}"
                   class="w-full h-full object-cover">
               </div>
               {% endif %}
@@ -36,10 +61,10 @@
             <p class="text-sm text-gray-500 dark:text-zinc-400 mb-4">@{{ profile_user.username }}</p>
 
             {% if is_own_profile %}
-            <button
-              class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors">
+            <a href="{% url 'tips:create_tip' %}"
+              class="w-full py-2.5 px-4 bg-emerald-600 text-center hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors">
               Share Tip
-            </button>
+            </a>
             {% else %}
             <div class="mt-6">
               <button id="followButton" onclick="toggleFollow('{{ profile_user.username }}')"
@@ -156,7 +181,7 @@
                         class="w-full h-full object-cover">
                       {% else %}
                       <div class="w-full h-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center">
-                        <img src="{% static 'images/user.gif' %}" alt="{{ profile_user.username }}"
+                        <img src="{% static 'images/profile.png' %}" alt="{{ profile_user.username }}"
                           class="w-full h-full object-cover">
                       </div>
                       {% endif %}
@@ -282,7 +307,8 @@
                 <div class="text-sm text-gray-500 dark:text-zinc-400">Tips Shared</div>
               </div>
               <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 p-6">
-                <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ followers_count }}</div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1" id="follow_count">{{followers_count}}
+                </div>
                 <div class="text-sm text-gray-500 dark:text-zinc-400">Followers</div>
               </div>
               <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 p-6">
@@ -363,7 +389,7 @@
                         class="w-full h-full object-cover">
                       {% else %}
                       <div class="w-full h-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center">
-                        <img src="{% static 'images/user.gif' %}" alt="{{ user.username }}"
+                        <img src="{% static 'images/profile.png' %}" alt="{{ user.username }}"
                           class="w-full h-full object-cover">
                       </div>
                       {% endif %}
@@ -515,7 +541,7 @@
                         {% else %}
                         <span></span>
                         {% endif %}
-                        <a href="#"
+                        <a href="{% url 'tips:tip_detail' slug=post.slug %}"
                           class="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">
                           Read more
                         </a>
@@ -543,77 +569,7 @@
               <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Settings</h1>
               <p class="text-sm text-gray-500 dark:text-zinc-400">Manage your account preferences</p>
             </div>
-
-            <!-- Privacy -->
-            <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 mb-6">
-              <div class="px-8 py-6 border-b border-gray-200 dark:border-zinc-800">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Privacy</h2>
-              </div>
-              <div class="p-8 space-y-6">
-                <label class="flex items-start justify-between cursor-pointer group">
-                  <div class="flex-1">
-                    <div class="font-medium text-gray-900 dark:text-white mb-1">Public Profile</div>
-                    <div class="text-sm text-gray-500 dark:text-zinc-400">Allow others to view your profile</div>
-                  </div>
-                  <input type="checkbox" checked
-                    class="mt-1 w-11 h-6 bg-gray-200 dark:bg-zinc-700 rounded-full appearance-none cursor-pointer relative checked:bg-emerald-600 dark:checked:bg-emerald-600 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:bg-white after:rounded-full after:transition-all checked:after:left-5">
-                </label>
-
-                <label class="flex items-start justify-between cursor-pointer group">
-                  <div class="flex-1">
-                    <div class="font-medium text-gray-900 dark:text-white mb-1">Show Statistics</div>
-                    <div class="text-sm text-gray-500 dark:text-zinc-400">Display your tips and followers count</div>
-                  </div>
-                  <input type="checkbox" checked
-                    class="mt-1 w-11 h-6 bg-gray-200 dark:bg-zinc-700 rounded-full appearance-none cursor-pointer relative checked:bg-emerald-600 dark:checked:bg-emerald-600 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:bg-white after:rounded-full after:transition-all checked:after:left-5">
-                </label>
-
-                <label class="flex items-start justify-between cursor-pointer group">
-                  <div class="flex-1">
-                    <div class="font-medium text-gray-900 dark:text-white mb-1">Private Account</div>
-                    <div class="text-sm text-gray-500 dark:text-zinc-400">Only approved followers can see your content
-                    </div>
-                  </div>
-                  <input type="checkbox"
-                    class="mt-1 w-11 h-6 bg-gray-200 dark:bg-zinc-700 rounded-full appearance-none cursor-pointer relative checked:bg-emerald-600 dark:checked:bg-emerald-600 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:bg-white after:rounded-full after:transition-all checked:after:left-5">
-                </label>
-              </div>
-            </div>
-
-            <!-- Notifications -->
-            <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 mb-6">
-              <div class="px-8 py-6 border-b border-gray-200 dark:border-zinc-800">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Notifications</h2>
-              </div>
-              <div class="p-8 space-y-6">
-                <label class="flex items-start justify-between cursor-pointer group">
-                  <div class="flex-1">
-                    <div class="font-medium text-gray-900 dark:text-white mb-1">Email Notifications</div>
-                    <div class="text-sm text-gray-500 dark:text-zinc-400">Receive updates via email</div>
-                  </div>
-                  <input type="checkbox" checked
-                    class="mt-1 w-11 h-6 bg-gray-200 dark:bg-zinc-700 rounded-full appearance-none cursor-pointer relative checked:bg-emerald-600 dark:checked:bg-emerald-600 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:bg-white after:rounded-full after:transition-all checked:after:left-5">
-                </label>
-
-                <label class="flex items-start justify-between cursor-pointer group">
-                  <div class="flex-1">
-                    <div class="font-medium text-gray-900 dark:text-white mb-1">Follow Notifications</div>
-                    <div class="text-sm text-gray-500 dark:text-zinc-400">Get notified when someone follows you</div>
-                  </div>
-                  <input type="checkbox" checked
-                    class="mt-1 w-11 h-6 bg-gray-200 dark:bg-zinc-700 rounded-full appearance-none cursor-pointer relative checked:bg-emerald-600 dark:checked:bg-emerald-600 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:bg-white after:rounded-full after:transition-all checked:after:left-5">
-                </label>
-
-                <label class="flex items-start justify-between cursor-pointer group">
-                  <div class="flex-1">
-                    <div class="font-medium text-gray-900 dark:text-white mb-1">Weekly Digest</div>
-                    <div class="text-sm text-gray-500 dark:text-zinc-400">Receive weekly summary of your activity</div>
-                  </div>
-                  <input type="checkbox"
-                    class="mt-1 w-11 h-6 bg-gray-200 dark:bg-zinc-700 rounded-full appearance-none cursor-pointer relative checked:bg-emerald-600 dark:checked:bg-emerald-600 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:bg-white after:rounded-full after:transition-all checked:after:left-5">
-                </label>
-              </div>
-            </div>
+            <!-- Privacy & Notifications sections removed -->
 
             <!-- Actions -->
             <div class="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 mb-6">
@@ -621,27 +577,13 @@
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Account</h2>
               </div>
               <div class="p-8 space-y-3">
-                <button
+                <a href="{% url 'accounts:password_change' %}"
                   class="w-full flex items-center justify-between px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900 rounded-lg transition-colors">
                   <span class="text-sm font-medium">Change Password</span>
                   <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
-                </button>
-                <button
-                  class="w-full flex items-center justify-between px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900 rounded-lg transition-colors">
-                  <span class="text-sm font-medium">Connected Accounts</span>
-                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                </button>
-                <button
-                  class="w-full flex items-center justify-between px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900 rounded-lg transition-colors">
-                  <span class="text-sm font-medium">Download Data</span>
-                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                </button>
+                </a>
               </div>
             </div>
 
@@ -657,10 +599,10 @@
                     Permanently delete your account and all data. This action cannot be undone.
                   </p>
                 </div>
-                <button
+                <a href="{% url 'accounts:delete_account' %}"
                   class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors">
                   Delete Account
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -672,137 +614,34 @@
   </div>
 </div>
 
-<style>
-  .nav-link {
-    color: #71717a;
-  }
+{% endblock %}
 
-  .dark .nav-link {
-    color: #71717a;
-  }
-
-  .nav-link:hover {
-    background-color: #f4f4f5;
-    color: #18181b;
-  }
-
-  .dark .nav-link:hover {
-    background-color: #18181b;
-    color: #fafafa;
-  }
-
-  .nav-link.active {
-    background-color: #f4f4f5;
-    color: #059669;
-  }
-
-  .dark .nav-link.active {
-    background-color: #18181b;
-    color: #10b981;
-  }
-</style>
-
+{% block extra_js %}
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('.content-section');
-    const editProfileBtn = document.querySelector('.edit-profile-btn');
-    const cancelBtn = document.querySelector('.cancel-btn');
+  function toggleProfileSidebar() {
+    const sidebar = document.getElementById('profileSidebar');
+    const overlay = document.getElementById('profileSidebarOverlay');
 
-    function showSection(targetId) {
-      sections.forEach(section => section.classList.add('hidden'));
-      navLinks.forEach(link => link.classList.remove('active'));
-
-      const targetSection = document.querySelector(`#${targetId}`);
-      if (targetSection) {
-        targetSection.classList.remove('hidden');
-      }
-
-      const activeLink = document.querySelector(`.nav-link[href="#${targetId}"]`);
-      if (activeLink) {
-        activeLink.classList.add('active');
-      }
+    if (sidebar.classList.contains('-translate-x-full')) {
+      // Open
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Close
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+      document.body.style.overflow = '';
     }
+  }
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-
-        // Only intercept hash links (internal tabs)
-        if (href.startsWith('#')) {
-          e.preventDefault();
-          const targetId = href.substring(1);
-          showSection(targetId);
-        }
-      });
+  // Close sidebar when clicking a nav link on mobile
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth < 1024) { // lg breakpoint
+        toggleProfileSidebar();
+      }
     });
-
-    if (editProfileBtn) {
-      editProfileBtn.addEventListener('click', function () {
-        showSection('edit');
-      });
-    }
-
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', function () {
-        showSection('profile');
-      });
-    }
-
-    showSection('profile');
   });
 </script>
-
-<!-- Follow Script -->
-<script>
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-
-  function toggleFollow(username) {
-    const csrftoken = getCookie('csrftoken');
-
-    fetch(`/accounts/follow/${username}/`, {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': csrftoken,
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        const button = document.getElementById('followButton');
-        const buttonText = document.getElementById('followButtonText');
-        const followersCount = document.getElementById('followersCount');
-
-        // Update followers count
-        followersCount.textContent = data.followers_count;
-
-        if (data.is_following) {
-          // Now following
-          button.classList.remove('bg-emerald-500', 'dark:bg-emerald-600', 'hover:bg-emerald-600', 'dark:hover:bg-emerald-700');
-          button.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
-          buttonText.textContent = 'Following';
-        } else {
-          // Unfollowed
-          button.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
-          button.classList.add('bg-emerald-500', 'dark:bg-emerald-600', 'text-white', 'hover:bg-emerald-600', 'dark:hover:bg-emerald-700');
-          buttonText.textContent = 'Follow';
-        }
-      })
-      .catch(error => console.error('Error:', error));
-  }
-</script>
-
 {% endblock %}

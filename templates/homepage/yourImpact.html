@@ -1,8 +1,6 @@
-<!-- templates/homepage/yourImpact.html -->
-
+<!-- Developed by Devendra -->
 <div class="py-32 px-4 relative overflow-hidden">
 
-  <!-- Subtle decorative elements -->
   <div class="absolute top-1/2 right-0 w-96 h-96 bg-emerald-50 rounded-full opacity-20 blur-3xl -z-10"></div>
   <div class="absolute bottom-0 left-0 w-80 h-80 bg-blue-50 rounded-full opacity-20 blur-3xl -z-10"></div>
 
@@ -21,13 +19,12 @@
       </h2>
 
       <p class="text-xl text-gray-600 leading-relaxed font-light max-w-3xl">
-        Green Lifestyle doesn't exist because of our platform—it exists because of <span
-          class="font-semibold text-gray-700">you</span>. Every tip shared, every story told, every choice made creates
-        ripples that transform lives and heal our planet.
+        Green Lifestyle isn't about us—it's about <span class="font-semibold text-gray-700">you</span>. Every tip you
+        share and every change you make helps build a better world.
       </p>
     </div>
 
-    <!-- Two Column Layout - IMPROVED -->
+    <!-- Two Column Layout -->
     <div class="grid lg:grid-cols-2 gap-16 items-start mb-24">
 
       <!-- Left: Stories & Impact -->
@@ -40,18 +37,19 @@
             <div class="flex-shrink-0">
               <div
                 class="flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 text-lg font-semibold group-hover:scale-110 transition-transform duration-300">
-                💡
+                <i class="bi bi-lightbulb"></i>
               </div>
             </div>
             <div class="flex-grow">
-              <h3 class="text-lg font-semibold text-gray-900 mb-2">Your Wisdom Inspires</h3>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">Your Ideas Matter</h3>
               <p class="text-gray-600 font-light leading-relaxed">
-                Each tip you share ignites a spark in someone's life. A simple idea about reducing waste becomes a
-                habit. A habit becomes a lifestyle. And one lifestyle multiplies into thousands.
+                When you share a tip, you help someone else. A simple idea can turn into a new habit for thousands of
+                people.
               </p>
             </div>
           </div>
         </div>
+
 
         <!-- Impact Card 2 -->
         <div
@@ -60,18 +58,19 @@
             <div class="flex-shrink-0">
               <div
                 class="flex items-center justify-center w-12 h-12 rounded-xl bg-blue-100 text-blue-600 text-lg font-semibold group-hover:scale-110 transition-transform duration-300">
-                🌱
+                <i class="bi bi-seedling"></i>
               </div>
             </div>
             <div class="flex-grow">
-              <h3 class="text-lg font-semibold text-gray-900 mb-2">Real Change Happens Here</h3>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">Real Change</h3>
               <p class="text-gray-600 font-light leading-relaxed">
-                Beyond likes and comments, your contributions fuel real environmental action. Every verified tip reduces
-                someone's carbon footprint. Every shared story builds a stronger, more conscious community.
+                It's not just about likes. It's about real action. Every verified tip helps reduce waste and save
+                energy.
               </p>
             </div>
           </div>
         </div>
+
 
         <!-- Impact Card 3 -->
         <div
@@ -80,35 +79,19 @@
             <div class="flex-shrink-0">
               <div
                 class="flex items-center justify-center w-12 h-12 rounded-xl bg-purple-100 text-purple-600 text-lg font-semibold group-hover:scale-110 transition-transform duration-300">
-                🤝
+                <i class="bi bi-people"></i>
               </div>
             </div>
             <div class="flex-grow">
-              <h3 class="text-lg font-semibold text-gray-900 mb-2">Connection Creates Movement</h3>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">Better Together</h3>
               <p class="text-gray-600 font-light leading-relaxed">
-                You're not alone in this journey. When you share, you connect with thousands who feel the same way.
-                Together, we're building something extraordinary—a global movement for a better tomorrow.
+                You're not doing this alone. You're part of a huge group of people who all care about the same things
+                you do.
               </p>
             </div>
           </div>
         </div>
 
-        <!-- Testimonial - NOW POSITIONED PROPERLY -->
-        <div
-          class="group bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl hover:border-emerald-200 transition-all duration-500">
-          <p class="text-sm text-gray-700 font-light italic mb-4 leading-relaxed">
-            "Sharing my journey here helped me realize I wasn't alone. Now I'm inspiring others too."
-          </p>
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-lg flex-shrink-0">
-              🌱
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-gray-900">Sarah</p>
-              <p class="text-xs text-gray-500 font-light">Community Member</p>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Right: Visual Impact Statistics -->
@@ -118,10 +101,10 @@
           <span class="font-semibold">Your Impact</span> in Numbers
         </h3>
 
-        <!-- Stat Grid -->
+
         <div class="space-y-10">
 
-          <!-- Stat 1 -->
+
           <div class="group">
             <div class="flex items-end gap-4 mb-4">
               <div class="text-5xl font-light text-emerald-600 tabular-nums">{{ total_tips }}</div>
@@ -135,21 +118,21 @@
             <p class="text-xs text-gray-500 mt-3 font-light">By people like you, changing lives daily</p>
           </div>
 
-          <!-- Stat 2 -->
+
           <div class="group">
             <div class="flex items-end gap-4 mb-4">
               <div class="text-5xl font-light text-blue-600 tabular-nums">{{ total_users }}</div>
             </div>
             <h4 class="text-sm font-semibold text-blue-700 mb-3">Lives Touched</h4>
             <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div class="h-full w-5/6 bg-blue-500 rounded-full"
+              <div class="h-full w-full bg-blue-500 rounded-full"
                 style="animation: fillBar 1.2s ease-out 0.4s forwards; transform-origin: left; animation-fill-mode: both;">
               </div>
             </div>
             <p class="text-xs text-gray-500 mt-3 font-light">People inspired to take action and grow</p>
           </div>
 
-          <!-- Stat 3 -->
+
           <div class="group">
             <div class="flex items-end gap-4 mb-4">
               <div class="text-5xl font-light text-purple-600">∞</div>
@@ -204,28 +187,26 @@
       <div class="max-w-3xl mx-auto text-center">
         <h3 class="text-4xl md:text-5xl font-light text-gray-900 mb-6">
           This Platform<br />
-          <span class="font-semibold">Beats Because of You</span>
+          <span class="font-semibold">Is Yours</span>
         </h3>
 
         <p class="text-lg text-gray-600 leading-relaxed font-light mb-8">
-          Every contribution you make—whether it's a detailed guide, a quick tip, or simply engaging with the
-          community—strengthens our collective mission. You're not just using an app; you're part of a movement that's
-          actively healing our world, one choice at a time.
+          Every time you visit, share, or comment, you make this community stronger. You're building a greener future,
+          one choice at a time.
         </p>
 
         <p class="text-lg text-gray-600 leading-relaxed font-light mb-12">
-          So we say thank you. For your wisdom. For your passion. For believing that together, we can create a greener,
-          more sustainable future for everyone.
+          Thank you for being here. Thank you for caring. And thank you for believing that we can make a difference.
         </p>
 
-        <!-- Decorative divider -->
+
         <div class="flex items-center justify-center gap-3 mb-12">
           <div class="h-0.5 w-12 bg-emerald-500 rounded-full"></div>
-          <span class="text-emerald-500 text-xl">🌍</span>
+          <span class="text-emerald-500 text-xl"><i class="bi bi-globe-americas"></i></span>
           <div class="h-0.5 w-12 bg-emerald-500 rounded-full"></div>
         </div>
 
-        <!-- CTA -->
+
         {% if user.is_authenticated %}
         <div class="space-y-4">
           <p class="text-gray-600 font-light mb-6">Ready to make your next contribution?</p>
@@ -259,86 +240,3 @@
     </div>
   </div>
 </div>
-
-<!-- Animations -->
-<style>
-  /* Impact cards entrance */
-  @keyframes slideInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  .bg-white.border {
-    animation: slideInLeft 0.6s ease-out forwards;
-  }
-
-  .bg-white.border:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-
-  .bg-white.border:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-
-  .bg-white.border:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  .bg-white.border:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-
-  /* Stats card fade in */
-  @keyframes fadeInScale {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  .sticky {
-    animation: fadeInScale 0.6s ease-out 0.2s forwards;
-  }
-
-  /* Progress bar fill animation */
-  @keyframes fillBar {
-    from {
-      transform: scaleX(0);
-    }
-
-    to {
-      transform: scaleX(1);
-    }
-  }
-
-  /* Icon animation on card hover */
-  .group:hover .rounded-xl {
-    animation: pulse 0.5s ease-out;
-  }
-
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-
-    50% {
-      transform: scale(1.1);
-    }
-
-    100% {
-      transform: scale(1);
-    }
-  }
-</style>

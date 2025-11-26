@@ -1,0 +1,57 @@
+{% load static %}
+<div
+    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 flex flex-col items-center text-center hover:shadow-lg transition-shadow">
+
+    <!-- Avatar -->
+    <div
+        class="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 flex items-center justify-center overflow-hidden mb-4">
+        {% if person.profile_picture %}
+        <img src="{{ person.profile_picture.url }}" alt="{{ person.username }}" class="w-full h-full object-cover">
+        {% else %}
+        <img src="{% static 'images/profile.png' %}" alt="{{ person.username }}" class="w-full h-full object-cover">
+        {% endif %}
+    </div>
+
+    <!-- Name & Bio -->
+    <h3 class="font-bold text-gray-900 dark:text-white text-lg mb-1">
+        {{ person.get_full_name|default:person.username }}
+    </h3>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">@{{ person.username }}</p>
+
+    <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2 min-h-[2.5rem]">
+        {{ person.bio|default:"No bio yet." }}
+    </p>
+
+    <!-- Stats -->
+    <div class="flex items-center gap-6 mb-6 text-sm">
+        <div class="text-center">
+            <span class="block font-bold text-gray-900 dark:text-white">{{ person.tips_count }}</span>
+            <span class="text-gray-500 dark:text-gray-400">Tips</span>
+        </div>
+        <div class="text-center">
+            <span id="follower-count-{{ person.username }}" class="block font-bold text-gray-900 dark:text-white">
+                {{ person.get_followers_count }}
+            </span>
+            <span class="text-gray-500 dark:text-gray-400">Followers</span>
+        </div>
+        <div class="text-center">
+            <span class="block font-bold text-gray-900 dark:text-white">{{ person.impact_score }}</span>
+            <span class="text-gray-500 dark:text-gray-400">Impact</span>
+        </div>
+    </div>
+
+    <!-- Follow Button -->
+    <button onclick="toggleFollow('{{ person.username }}', this)" class="w-full py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2
+        {% if person.is_following %}
+            bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white
+        {% else %}
+            bg-emerald-500 hover:bg-emerald-600 text-white
+        {% endif %}">
+
+        {% if person.is_following %}
+        <span>Following</span>
+        {% else %}
+        <span>Follow</span>
+        {% endif %}
+    </button>
+</div>

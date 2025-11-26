@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from django.urls import reverse
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -82,7 +83,7 @@ class Category(models.Model):
             if self.created_by.role in ['moderator', 'admin']:
                 self.is_approved = True
                 self.approved_by = self.created_by
-                from django.utils import timezone
+                
                 self.approved_at = timezone.now()
         
         super().save(*args, **kwargs)
@@ -97,7 +98,6 @@ class Category(models.Model):
     
     def approve(self, approved_by_user):
         # Approving this category
-        from django.utils import timezone
         self.is_approved = True
         self.approved_by = approved_by_user
         self.approved_at = timezone.now()

@@ -1,4 +1,6 @@
-from datetime import timedelta
+
+
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -17,6 +19,7 @@ from tips.models import Tip
 from .forms import UserProfileForm, SignupForm, LoginForm
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
 def profile_view(request, username=None):
     """Displaying user profile."""
@@ -74,8 +77,8 @@ def profile_view(request, username=None):
 
     # Getting stats
     tips_count = getattr(profile_user, 'tips_count', 0)
-    followers_count = profile_user.get_followers_count() if hasattr(profile_user, 'get_followers_count') else 0
-    following_count = profile_user.get_following_count() if hasattr(profile_user, 'get_following_count') else 0
+    followers_count = profile_user.followers_count
+    following_count = profile_user.following_count
     impact_score = getattr(profile_user, 'impact_score', 0)
     
     context = {
@@ -96,6 +99,7 @@ def profile_view(request, username=None):
     return render(request, 'accounts/profile.html', context)
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
 def edit_profile_view(request):
     """Handling profile editing."""
@@ -130,6 +134,7 @@ def edit_profile_view(request):
     return render(request, 'accounts/edit_profile.html', context)
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
 def profile_settings_view(request):
     """Displaying settings."""
@@ -141,11 +146,12 @@ def profile_settings_view(request):
     return render(request, 'accounts/settings.html', context)
 
 
+# Developed by Devendra
 def login_view(request):
     """Handling login."""
 
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('core:home')
 
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
@@ -157,7 +163,7 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
-                messages.success(request, f'Welcome back, {user.username}!')
+                messages.success(request, f'Welcome back, {user.get_username()}!')
                 return redirect('/accounts/profile')
         else:
             messages.error(request, 'Invalid username or password.')
@@ -167,6 +173,7 @@ def login_view(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
+# Developed by Devendra
 def signup_view(request):
     """Handling registration."""
 
@@ -195,13 +202,8 @@ def signup_view(request):
     return render(request, 'accounts/signup.html', {'form': form})
 
 
-def direct_password_reset_view(request):
-    """
-    Simplified password reset flow.
-    
-    Verifies email exists in database and redirects directly to password 
-    reset form without sending emails. For development purposes.
-    """
+# Developed by Devendra
+def password_reset_view(request):
     
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -221,14 +223,16 @@ def direct_password_reset_view(request):
     return render(request, 'accounts/password_reset_form.html')
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
 def logout_view(request):
     """Handling logout."""
     logout(request)
     messages.success(request, 'You have been logged out successfully.')
-    return redirect('accounts:login')
+    return redirect('core:home')
 
 
+# Developed by Nandha and Priya
 @login_required(login_url='accounts:login')
 @require_POST
 def toggle_follow_view(request, username):
@@ -269,6 +273,7 @@ def toggle_follow_view(request, username):
     })
 
 
+# Developed by Nandha and Priya
 @login_required(login_url='accounts:login')
 def followers_list_view(request, username):
     """Displaying followers."""
@@ -276,9 +281,9 @@ def followers_list_view(request, username):
     user = get_object_or_404(CustomUser, username=username)
     
     # Getting followers
-    followers_qs = Follow.objects.filter(
-        following=user
-    ).select_related('follower').order_by('-created_at')
+    followers_qs = (Follow.objects.filter(
+        following=user)
+    .select_related('follower').order_by('-created_at'))
     
     # Paginating results
     paginator = Paginator(followers_qs, 20)
@@ -301,6 +306,7 @@ def followers_list_view(request, username):
     return render(request, 'accounts/followers_list.html', context)
 
 
+# Developed by Nandha and Priya
 @login_required(login_url='accounts:login')
 def following_list_view(request, username):
     """Displaying following."""
@@ -333,12 +339,30 @@ def following_list_view(request, username):
     return render(request, 'accounts/following_list.html', context)
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
 def activity_history_view(request):
     """Displaying activity history."""
 
     # Getting session
-    session_activity = request.session.get('activity', {})
+    session_activity = request.session.get('activity', {}).copy()
+    
+    # Parse timestamps for display
+    if 'first_visit' in session_activity:
+        try:
+            val = session_activity['first_visit']
+            if isinstance(val, str):
+                session_activity['first_visit'] = datetime.fromisoformat(val)
+        except (ValueError, TypeError):
+            pass
+            
+    if 'last_visit' in session_activity:
+        try:
+            val = session_activity['last_visit']
+            if isinstance(val, str):
+                session_activity['last_visit'] = datetime.fromisoformat(val)
+        except (ValueError, TypeError):
+            pass
 
     # Getting logs
     activity_logs = UserActivity.objects.filter(
@@ -354,7 +378,7 @@ def activity_history_view(request):
     )
 
     # Getting today's activity
-    today = timezone.now().date()
+    today = timezone.localtime(timezone.now()).date()
     today_activity = UserActivity.objects.filter(
         user=request.user,
         date=today
@@ -371,7 +395,7 @@ def activity_history_view(request):
     from collections import Counter
     most_viewed_tip_ids = Counter(all_tips_viewed).most_common(5)
 
-    from tips.models import Tip
+    # Getting most viewed tips
     most_viewed_tips = []
     for tip_id, count in most_viewed_tip_ids:
         try:
@@ -393,6 +417,7 @@ def activity_history_view(request):
     return render(request, 'accounts/activity_history.html', context)
 
 
+# Developed by Devendra
 def calculate_login_streak(user):
     """Calculating login streak."""
     activities = UserActivity.objects.filter(
@@ -403,7 +428,7 @@ def calculate_login_streak(user):
         return 0
 
     streak = 1
-    today = timezone.now().date()
+    today = timezone.localtime(timezone.now()).date()
 
     # Checking recent visit
     if activities[0] < today - timedelta(days=1):
@@ -417,3 +442,18 @@ def calculate_login_streak(user):
             break
 
     return streak
+
+
+# Developed by Devendra
+@login_required(login_url='accounts:login')
+def delete_account_view(request):
+    """Handling account deletion."""
+    
+    if request.method == 'POST':
+        user = request.user
+        logout(request)  # Logout before deleting to avoid session issues
+        user.delete()
+        messages.success(request, 'Your account has been successfully deleted.')
+        return redirect('core:home')
+        
+    return render(request, 'accounts/delete_account_confirm.html')

@@ -1,3 +1,5 @@
+
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
@@ -60,22 +62,22 @@ class CustomUser(AbstractUser):
         return dict(self.ROLE_CHOICES).get(self.role, 'User')
 
     @property
-    def tips_count(self):
+    def get_tips_count_dynamic(self):
         # Getting number of tips shared by user
         return self.tips.count() if hasattr(self, 'tips') else 0
 
     @property
-    def followers_count(self):
+    def get_followers_count_dynamic(self):
         # Getting number of followers
         return self.followers.count() if hasattr(self, 'followers') else 0
 
     @property
-    def following_count(self):
+    def get_following_count_dynamic(self):
         # Getting number of users being followed
         return self.following.count() if hasattr(self, 'following') else 0
 
     @property
-    def impact_score(self):
+    def get_impact_score_dynamic(self):
         # Calculating user's impact score
         return (self.tips_count * 2) + self.followers_count
 
@@ -209,7 +211,7 @@ class UserActivity(models.Model):
     @classmethod
     def log_activity(cls, request, tip_id=None):
         # Logging user activity
-        today = timezone.now().date()
+        today = timezone.localtime(timezone.now()).date()
 
         if request.user.is_authenticated:
             # Handling logged in user
@@ -259,4 +261,5 @@ class UserActivity(models.Model):
                 total=models.Sum('visits_count')
             )['total'] or 0
         return self.visits_count
+        
 

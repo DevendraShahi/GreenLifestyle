@@ -1,3 +1,5 @@
+
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -12,14 +14,16 @@ from django.core.paginator import Paginator
 
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.auth import get_user_model
+from accounts.utils import update_user_impact_score
 
-
+# Developed by Krish
 def tip_list_view(request):
     """Displaying tips."""
 
     tips = Tip.objects.filter(is_published=True).select_related('author', 'category').annotate(
-        likes_count=Count('likes'),
-        comments_count=Count('comments')
+        likes_count=Count('likes', distinct=True),
+        comments_count=Count('comments', distinct=True)
     )
 
     # Filtering by category
@@ -60,9 +64,16 @@ def tip_list_view(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    # Adding display names
+    # Adding display names and interaction status
     for tip in page_obj:
         tip.author_display_name = tip.author.get_full_name() or tip.author.username
+        
+        if request.user.is_authenticated:
+            tip.is_liked = tip.likes.filter(user=request.user).exists()
+            tip.is_bookmarked = tip.bookmarks.filter(user=request.user).exists()
+        else:
+            tip.is_liked = False
+            tip.is_bookmarked = False
 
     categories = Category.objects.all()
 
@@ -84,6 +95,7 @@ def tip_list_view(request):
     return render(request, 'tips/tip_list.html', context)
 
 
+# Developed by Krish
 def tip_detail_view(request, slug):
     """Displaying tip details."""
 
@@ -117,7 +129,6 @@ def tip_detail_view(request, slug):
             comment.save()
 
             # Updating impact
-            from accounts.utils import update_user_impact_score
             update_user_impact_score(request.user)
             update_user_impact_score(tip.author)
 
@@ -151,6 +162,7 @@ def tip_detail_view(request, slug):
     return render(request, 'tips/tip_detail.html', context)
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
 def create_tip_view(request):
     """Creating new tip."""
@@ -182,6 +194,7 @@ def create_tip_view(request):
     return render(request, 'tips/tip_form.html', context)
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
 def edit_tip_view(request, slug):
     """Editing tip."""
@@ -217,6 +230,7 @@ def edit_tip_view(request, slug):
     return render(request, 'tips/tip_form.html', context)
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
 def delete_tip_view(request, slug):
     """Deleting tip."""
@@ -241,6 +255,7 @@ def delete_tip_view(request, slug):
     return render(request, 'tips/tip_confirm_delete.html', context)
 
 
+# Developed by Nandha and Priya
 @login_required(login_url='accounts:login')
 @require_POST
 def toggle_like_view(request, slug):
@@ -268,7 +283,9 @@ def toggle_like_view(request, slug):
     })
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
+@require_POST
 def delete_comment_view(request, comment_id):
     """Deleting comment."""
 
@@ -286,6 +303,7 @@ def delete_comment_view(request, comment_id):
     return redirect('tips:tip_detail', slug=tip_slug)
 
 
+# Developed by Devendra
 @login_required(login_url='accounts:login')
 def my_tips_view(request):
     """Displaying user tips."""
@@ -293,8 +311,8 @@ def my_tips_view(request):
     tips = Tip.objects.filter(
         author=request.user
     ).annotate(
-        likes_count=Count('likes'),
-        comments_count=Count('comments')
+        likes_count=Count('likes', distinct=True),
+        comments_count=Count('comments', distinct=True)
     ).order_by('-created_at')
 
     # Paginating tips
@@ -313,6 +331,7 @@ def my_tips_view(request):
     return render(request, 'tips/my_tips.html', context)
 
 
+# Developed by Devendra
 def category_detail_view(request, slug):
     """Displaying category tips."""
 
@@ -322,8 +341,8 @@ def category_detail_view(request, slug):
         category=category,
         is_published=True
     ).select_related('author').annotate(
-        likes_count=Count('likes'),
-        comments_count=Count('comments')
+        likes_count=Count('likes', distinct=True),
+        comments_count=Count('comments', distinct=True)
     ).order_by('-created_at')
 
     # Paginating tips
@@ -339,15 +358,13 @@ def category_detail_view(request, slug):
     return render(request, 'tips/category_detail.html', context)
 
 
+# Developed by Nandha and Priya
 @login_required(login_url='accounts:login')
 @require_POST
 def toggle_bookmark_view(request, slug):
     """Toggling bookmark status."""
 
     tip = get_object_or_404(Tip, slug=slug, is_published=True)
-
-    # Importing Bookmark
-    from .models import Bookmark
 
     # Checking existing bookmark
     bookmark, created = Bookmark.objects.get_or_create(user=request.user, tip=tip)
@@ -369,6 +386,7 @@ def toggle_bookmark_view(request, slug):
     })
 
 
+# Developed by Nandha and Priya
 @login_required(login_url='accounts:login')
 def saved_tips_view(request):
     """Displaying saved tips."""
@@ -380,8 +398,8 @@ def saved_tips_view(request):
         'tip__author',
         'tip__category'
     ).annotate(
-        likes_count=Count('tip__likes'),
-        comments_count=Count('tip__comments')
+        likes_count=Count('tip__likes', distinct=True),
+        comments_count=Count('tip__comments', distinct=True)
     ).order_by('-created_at')
 
     # Paginating bookmarks
@@ -398,3 +416,60 @@ def saved_tips_view(request):
     }
 
     return render(request, 'tips/saved_tips.html', context)
+
+
+# Developed by Devendra
+@login_required(login_url='accounts:login')
+def community_view(request):
+    """Displaying community members."""
+    User = get_user_model()
+    
+    # Getting all users except self
+    users = User.objects.exclude(id=request.user.id).order_by('-date_joined')
+    
+    # Splitting into following and suggested
+    following_users = []
+    suggested_users = []
+    
+    for user in users:
+        user.is_following = request.user.is_following(user)
+        if user.is_following:
+            following_users.append(user)
+        else:
+            suggested_users.append(user)
+            
+    context = {
+        'following_users': following_users,
+        'suggested_users': suggested_users,
+    }
+    
+    return render(request, 'tips/community.html', context)
+
+
+# Developed by Nandha and Priya
+@login_required(login_url='accounts:login')
+@require_POST
+def toggle_follow_view(request, username):
+    """Toggling follow status."""
+    User = get_user_model()
+    
+    target_user = get_object_or_404(User, username=username)
+    
+    if request.user == target_user:
+        return JsonResponse({'error': 'You cannot follow yourself.'}, status=400)
+        
+    if request.user.is_following(target_user):
+        request.user.unfollow(target_user)
+        is_following = False
+    else:
+        request.user.follow(target_user)
+        is_following = True
+        
+    # Updating impact scores
+    update_user_impact_score(request.user)
+    update_user_impact_score(target_user)
+        
+    return JsonResponse({
+        'is_following': is_following,
+        'followers_count': target_user.get_followers_count()
+    })

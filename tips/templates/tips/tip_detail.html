@@ -1,5 +1,6 @@
 <!-- tips/templates/tips/tip_detail.html -->
 
+<!-- Developed by Krish -->
 {% extends 'base.html' %}
 {% load static %}
 
@@ -37,7 +38,8 @@
             <img src="{{ tip.author.profile_picture.url }}" alt="{{ tip.author.username }}"
               class="w-full h-full object-cover">
             {% else %}
-            <span class="text-white font-semibold text-lg">{{ tip.author.username|slice:":1"|upper }}</span>
+            <img src="{% static 'images/profile.png' %}" alt="{{ tip.author.username }}"
+              class="w-full h-full object-cover">
             {% endif %}
           </div>
         </a>
@@ -65,9 +67,11 @@
             </div>
 
             <!-- More Menu (for author) -->
+            <!-- More Menu (for author) -->
             {% if user == tip.author %}
-            <div class="relative group">
-              <button class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
+            <div class="relative">
+              <button id="optionsMenuBtn" onclick="toggleOptionsMenu()"
+                class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
                 <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z">
@@ -76,8 +80,8 @@
               </button>
 
               <!-- Dropdown -->
-              <div
-                class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 hidden group-hover:block z-10">
+              <div id="optionsMenuDropdown"
+                class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 hidden z-10">
                 <a href="{% url 'tips:edit_tip' slug=tip.slug %}"
                   class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,6 +102,22 @@
                 </a>
               </div>
             </div>
+            <script>
+              function toggleOptionsMenu() {
+                const dropdown = document.getElementById('optionsMenuDropdown');
+                dropdown.classList.toggle('hidden');
+              }
+
+              // Close dropdown when clicking outside
+              document.addEventListener('click', function (event) {
+                const dropdown = document.getElementById('optionsMenuDropdown');
+                const button = document.getElementById('optionsMenuBtn');
+
+                if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                  dropdown.classList.add('hidden');
+                }
+              });
+            </script>
             {% endif %}
           </div>
         </div>
@@ -248,7 +268,7 @@
               {% if user.profile_picture %}
               <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}" class="w-full h-full object-cover">
               {% else %}
-              <span class="text-white font-semibold">{{ user.username|slice:":1"|upper }}</span>
+              <img src="{% static 'images/profile.png' %}" alt="{{ user.username }}" class="w-full h-full object-cover">
               {% endif %}
             </div>
           </div>
@@ -295,7 +315,8 @@
                   <img src="{{ comment.author.profile_picture.url }}" alt="{{ comment.author.username }}"
                     class="w-full h-full object-cover">
                   {% else %}
-                  <span class="text-white font-semibold text-sm">{{ comment.author.username|slice:":1"|upper }}</span>
+                  <img src="{% static 'images/profile.png' %}" alt="{{ comment.author.username }}"
+                    class="w-full h-full object-cover">
                   {% endif %}
                 </div>
               </a>
@@ -313,11 +334,13 @@
                 <time class="text-gray-600 dark:text-gray-400 text-sm">{{ comment.created_at|date:"M j" }}</time>
 
                 {% if user == comment.author %}
-                <button
-                  onclick="if(confirm('Delete this comment?')) window.location.href='{% url 'tips:delete_comment' comment_id=comment.id %}'"
-                  class="ml-auto text-gray-400 hover:text-red-500 text-sm">
-                  Delete
-                </button>
+                <form action="{% url 'tips:delete_comment' comment_id=comment.id %}" method="POST" class="ml-auto"
+                  onsubmit="return confirm('Delete this comment?');">
+                  {% csrf_token %}
+                  <button type="submit" class="text-gray-400 hover:text-red-500 text-sm">
+                    Delete
+                  </button>
+                </form>
                 {% endif %}
               </div>
               <p class="text-sm text-gray-900 dark:text-gray-100 leading-relaxed">{{ comment.content }}</p>
@@ -331,95 +354,5 @@
 
   </div>
 </div>
-
-<!-- Like & Bookmark Toggle JavaScript -->
-<script>
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-
-  function toggleLike(slug) {
-    const csrftoken = getCookie('csrftoken');
-
-    fetch(`/tips/${slug}/like/`, {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': csrftoken,
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('likesCount').textContent = data.likes_count;
-
-        const button = document.getElementById('likeButton');
-        const buttonText = document.getElementById('likeButtonText');
-        const svg = button.querySelector('svg');
-
-        if (data.liked) {
-          svg.classList.add('text-red-500', 'fill-current');
-          svg.classList.remove('text-gray-600', 'dark:text-gray-400');
-          svg.setAttribute('fill', 'currentColor');
-          buttonText.classList.add('text-red-500');
-          buttonText.classList.remove('text-gray-600', 'dark:text-gray-400');
-          buttonText.textContent = 'Liked';
-        } else {
-          svg.classList.remove('text-red-500', 'fill-current');
-          svg.classList.add('text-gray-600', 'dark:text-gray-400');
-          svg.setAttribute('fill', 'none');
-          buttonText.classList.remove('text-red-500');
-          buttonText.classList.add('text-gray-600', 'dark:text-gray-400');
-          buttonText.textContent = 'Like';
-        }
-      })
-      .catch(error => console.error('Error:', error));
-  }
-
-  function toggleBookmark(slug) {
-    const csrftoken = getCookie('csrftoken');
-
-    fetch(`/tips/${slug}/bookmark/`, {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': csrftoken,
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        const button = document.getElementById('bookmarkButton');
-        const buttonText = document.getElementById('bookmarkButtonText');
-        const svg = button.querySelector('svg');
-
-        if (data.bookmarked) {
-          svg.classList.add('text-yellow-500', 'fill-current');
-          svg.classList.remove('text-gray-600', 'dark:text-gray-400');
-          svg.setAttribute('fill', 'currentColor');
-          buttonText.classList.add('text-yellow-500');
-          buttonText.classList.remove('text-gray-600', 'dark:text-gray-400');
-          buttonText.textContent = 'Saved';
-        } else {
-          svg.classList.remove('text-yellow-500', 'fill-current');
-          svg.classList.add('text-gray-600', 'dark:text-gray-400');
-          svg.setAttribute('fill', 'none');
-          buttonText.classList.remove('text-yellow-500');
-          buttonText.classList.add('text-gray-600', 'dark:text-gray-400');
-          buttonText.textContent = 'Save';
-        }
-      })
-      .catch(error => console.error('Error:', error));
-  }
-</script>
 
 {% endblock %}

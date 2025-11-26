@@ -31,6 +31,8 @@ urlpatterns = [
     # ============================================
     path('my-tips/', views.my_tips_view, name='my_tips'),
     path('saved/', views.saved_tips_view, name='saved_tips'),
+    path('community/', views.community_view, name='community'),
+    path('follow/<str:username>/', views.toggle_follow_view, name='toggle_follow'),
     
     
     # ============================================

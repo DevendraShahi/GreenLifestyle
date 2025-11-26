@@ -8,17 +8,20 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GreenLifestyle/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/GreenLifestyle/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accounts/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/activity_history.html" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/templates/accounts/activity_history.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/templates/accounts/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/templates/accounts/profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/templates/accounts/settings.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/templates/accounts/signup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accounts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accounts/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/footer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/homepage/hero.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/homepage/hero.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tips/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/tips/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tips/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/tips/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/navbar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tips/templates/tips/_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/tips/templates/tips/_sidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tips/templates/tips/tip_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/tips/templates/tips/tip_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tips/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/tips/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tips/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tips/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -125,7 +128,7 @@
       <workItem from="1763414218848" duration="6722000" />
       <workItem from="1763515200395" duration="1221000" />
       <workItem from="1763787782483" duration="9491000" />
-      <workItem from="1763864042325" duration="15524000" />
+      <workItem from="1763864042325" duration="31065000" />
     </task>
     <servers />
   </component>

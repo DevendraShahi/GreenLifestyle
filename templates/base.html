@@ -1,5 +1,4 @@
-<!-- templates/base.html -->
-
+<!-- Developed by Devendra -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -10,75 +9,99 @@
 
   <title>{% block title %}Green Lifestyle{% endblock %}</title>
 
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
   <!-- Compiled Tailwind CSS -->
   <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/tips.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/accounts.css' %}" />
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#00712D',
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#00712D',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              950: '#061b01',
+            },
+            gray: {
+              800: '#000000',
+              900: '#000000',
+              950: '#000000',
+            },
+            secondary: {
+              DEFAULT: '#D5ED9F',
+              50: '#f7fee7',
+              100: '#ecfccb',
+              200: '#D5ED9F',
+              300: '#bef264',
+              400: '#a3e635',
+              500: '#84cc16',
+              600: '#65a30d',
+              700: '#4d7c0f',
+              800: '#3f6212',
+              900: '#365314',
+              950: '#1a2e05',
+            },
+            cream: {
+              DEFAULT: '#FFFBE6',
+              50: '#FFFBE6',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+              950: '#451a03',
+            },
+            accent: {
+              DEFAULT: '#FF9100',
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#FF9100',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+              950: '#431407',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Merriweather', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="{% static 'css/login.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/home.css' %}?v=2" />
 
-  <!-- Custom theme CSS -->
-  <style>
-    /* Root colors - nature theme */
-    :root {
-      --primary-green: #8b9d83;
-      --dark-green: #2d5f3f;
-      --light-bg: #f8f9f5;
-      --dark-bg: #1a1d1f;
-      --accent-blue: #a8dadc;
-    }
-
-    /* Light theme (default) */
-    body {
-      background-color: var(--light-bg);
-      color: #2d3436;
-      transition: all 0.3s ease;
-    }
-
-    /* Dark theme */
-    html.dark body {
-      background-color: #000000;
-      color: #e5e7eb;
-    }
-
-    /* Smooth transitions */
-    * {
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    /* Glass effect for navbar */
-    .glass-navbar {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(139, 157, 131, 0.2);
-    }
-
-    html.dark .glass-navbar {
-      background: rgba(26, 29, 31, 0.8);
-      border-bottom: 1px solid rgba(139, 157, 131, 0.3);
-    }
-
-    /* Calm animations */
-    @keyframes float {
-
-      0%,
-      100% {
-        transform: translateY(0px);
-      }
-
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    .float {
-      animation: float 3s ease-in-out infinite;
-    }
-  </style>
 
   {% block extra_css %}{% endblock %}
 </head>
@@ -87,16 +110,48 @@
   <!-- Include Navbar -->
   {% include 'navbar.html' %}
 
-  <!-- Messages -->
+  <!-- Messages (Toast Notifications) -->
   {% if messages %}
-  <div class="max-w-7xl mx-auto px-4 mt-4">
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-4 flex flex-col items-end pointer-events-none">
     {% for message in messages %}
     <div
-      class="p-4 rounded mb-4 {% if message.tags == 'success' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400{% endif %} {% if message.tags == 'error' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400{% endif %} {% if message.tags == 'info' %}bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400{% endif %}">
-      {{ message }}
+      class="toast-message pointer-events-auto transform transition-all duration-300 ease-out translate-x-0 opacity-100 flex items-center w-full max-w-xs p-4 rounded-lg shadow-lg border-l-4 {% if message.tags == 'success' %}bg-white dark:bg-gray-800 border-primary-500 text-primary-700 dark:text-primary-400{% elif message.tags == 'error' %}bg-white dark:bg-gray-800 border-red-500 text-red-700 dark:text-red-400{% else %}bg-white dark:bg-gray-800 border-blue-500 text-blue-700 dark:text-blue-400{% endif %}"
+      role="alert">
+      <div class="flex-1 text-sm font-medium">
+        {{ message }}
+      </div>
+      <button type="button"
+        class="ml-4 -mx-1.5 -my-1.5 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 inline-flex h-8 w-8 text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+        aria-label="Close" onclick="this.parentElement.remove()">
+        <span class="sr-only">Close</span>
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </button>
     </div>
     {% endfor %}
   </div>
+
+  <script>
+    // Auto-dismiss toasts after 3 seconds
+    document.addEventListener('DOMContentLoaded', function () {
+      const toasts = document.querySelectorAll('.toast-message');
+      toasts.forEach(toast => {
+        setTimeout(() => {
+          // Add fade out effect
+          toast.classList.remove('translate-x-0', 'opacity-100');
+          toast.classList.add('translate-x-full', 'opacity-0');
+
+          // Remove from DOM after transition
+          setTimeout(() => {
+            toast.remove();
+          }, 300); // Wait for transition to finish
+        }, 3000);
+      });
+    });
+  </script>
   {% endif %}
 
   <!-- Main content -->
@@ -108,6 +163,12 @@
   {% include 'footer.html' %}
 
   {% block extra_js %}{% endblock %}
+
+
+  <script src="{% static 'js/navbar.js' %}"></script>
+  <script src="{% static 'js/tips.js' %}"></script>
+  <script src="{% static 'js/accounts.js' %}"></script>
+  <script src="{% static 'js/core.js' %}"></script>
 </body>
 
 </html>

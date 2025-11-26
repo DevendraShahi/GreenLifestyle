@@ -1,80 +1,75 @@
-<!-- templates/homepage/hero.html -->
-
+<!-- Developed by Devendra -->
 {% load static %}
-<!-- Hero Section - FULL SCREEN WIDTH -->
-<div class="relative w-screen min-h-screen flex flex-col items-center justify-center overflow-hidden">
 
-  <!-- Video Background -->
-  <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover">
-    <source src="{% static 'images/bg.mp4' %}" type="video/mp4">
-  </video>
 
-  <!-- Dark Overlay -->
-  <div class="absolute inset-0 bg-black/20"></div>
+<div
+  class="relative w-screen min-h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50 via-secondary-50 to-cream-100 dark:from-primary-950 dark:via-primary-900 dark:to-primary-950 transition-colors duration-500 pt-24">
+
 
   <!-- Content Container -->
-  <div class="relative z-10 max-w-4xl mx-auto text-center px-4 animate-fade-in">
+  <div class="relative z-10 max-w-5xl mx-auto text-center px-4 animate-fade-in">
+
     <!-- Main Heading -->
-    <div class="mb-8">
-      <h1 class="text-6xl md:text-9xl headline  text-white mb-4 animate-slide-down drop-shadow-lg">
-        🌱 Green Lifestyle
+    <div class="mb-12">
+      <h1
+        class="headline text-6xl md:text-8xl lg:text-9xl text-primary-900 dark:text-cream-50 mb-6 animate-slide-down drop-shadow-sm">
+        Green Lifestyle
       </h1>
-      <p class="text-xl md:text-2xl tagline text-gray-100 mb-2 animate-slide-up delay-100 drop-shadow-md">
+      <p class="tagline text-2xl md:text-4xl text-primary-800 dark:text-secondary-200 mb-6 animate-slide-up delay-100">
         Transform Your Life, Save the Planet
       </p>
-      <p class="text-gray-200 text-lg animate-slide-up delay-200 drop-shadow-md">
-        Discover eco-friendly tips, connect with a sustainable community, and make a real difference
+      <p
+        class="text-primary-700/80 dark:text-cream-200/80 text-lg md:text-xl max-w-2xl mx-auto animate-slide-up delay-200 leading-relaxed font-light">
+        Find easy ways to help the planet and connect with people who care.
       </p>
     </div>
 
     <!-- CTA Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12 animate-slide-up delay-300">
+    <div class="flex flex-col sm:flex-row gap-5 justify-center mt-12 animate-slide-up delay-300">
       {% if user.is_authenticated %}
       <!-- User logged in -->
       <a href="{% url 'tips:tip_list' %}"
-        class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 backdrop-blur-sm">
+        class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-medium hover:shadow-lg hover:scale-105 transition-all duration-300 shadow-primary-200 dark:shadow-none min-w-[160px]">
         Browse Tips
       </a>
       <a href="{% url 'tips:create_tip' %}"
-        class="px-8 py-4 bg-white/20 backdrop-blur-md border-2 border-white text-white rounded-lg font-semibold hover:bg-white/30 transition-all duration-300">
+        class="px-8 py-4 bg-white dark:bg-gray-800 border border-primary-200 dark:border-primary-700 text-primary-800 dark:text-cream-100 rounded-full font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 min-w-[160px]">
         Share a Tip
       </a>
       {% else %}
       <!-- User not logged in -->
       <a href="{% url 'accounts:signup' %}"
-        class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 backdrop-blur-sm shadow-lg">
-        Get Started Free
+        class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-medium hover:shadow-lg hover:scale-105 transition-all duration-300 shadow-xl shadow-primary-200/50 dark:shadow-none min-w-[160px]">
+        Start Green Journey
       </a>
       <a href="{% url 'accounts:login' %}"
-        class="px-8 py-4 bg-white/20 backdrop-blur-md border-2 border-white text-white rounded-lg font-semibold hover:bg-white/30 transition-all duration-300">
+        class="px-8 py-4 bg-white dark:bg-gray-800 border border-primary-200 dark:border-primary-700 text-primary-800 dark:text-cream-100 rounded-full font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 min-w-[160px]">
         Sign In
       </a>
       {% endif %}
     </div>
 
     <!-- Stats Section -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 animate-slide-up delay-500">
-      <div
-        class="p-6 bg-white/20 backdrop-blur-md rounded-lg border border-white/30 hover:shadow-lg transition-shadow duration-300 transform hover:scale-105">
-        <div class="text-4xl font-bold text-white mb-2">{{ total_tips }}</div>
-        <p class="text-gray-100">Green Tips</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 animate-slide-up delay-500 max-w-4xl mx-auto">
+      <div class="text-center">
+        <div class="text-4xl font-bold text-primary-700 dark:text-secondary-400 mb-1">{{ total_tips }}</div>
+        <p class="text-sm text-primary-600/70 dark:text-cream-200/60 uppercase tracking-wider">Green Tips</p>
       </div>
-      <div
-        class="p-6 bg-white/20 backdrop-blur-md rounded-lg border border-white/30 hover:shadow-lg transition-shadow duration-300 transform hover:scale-105">
-        <div class="text-4xl font-bold text-white mb-2">{{ total_users }}</div>
-        <p class="text-gray-100">Community Members</p>
+      <div class="text-center">
+        <div class="text-4xl font-bold text-primary-700 dark:text-secondary-400 mb-1">{{ total_users }}</div>
+        <p class="text-sm text-primary-600/70 dark:text-cream-200/60 uppercase tracking-wider">Community Members</p>
       </div>
-      <div
-        class="p-6 bg-white/20 backdrop-blur-md rounded-lg border border-white/30 hover:shadow-lg transition-shadow duration-300 transform hover:scale-105">
-        <div class="text-4xl font-bold text-white mb-2">{{ total_categories }}</div>
-        <p class="text-gray-100">Categories</p>
+      <div class="text-center">
+        <div class="text-4xl font-bold text-primary-700 dark:text-secondary-400 mb-1">{{ total_categories }}</div>
+        <p class="text-sm text-primary-600/70 dark:text-cream-200/60 uppercase tracking-wider">Categories</p>
       </div>
     </div>
   </div>
 
   <!-- Scroll Down Indicator -->
   <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="w-6 h-6 text-primary-600 dark:text-secondary-400 opacity-50" fill="none" stroke="currentColor"
+      viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
     </svg>
   </div>

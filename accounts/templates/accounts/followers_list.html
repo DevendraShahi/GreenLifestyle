@@ -1,5 +1,6 @@
 <!-- accounts/templates/accounts/followers_list.html -->
 
+<!-- Developed by Nandha and Priya -->
 {% extends 'base.html' %}
 {% load static %}
 
@@ -62,14 +63,14 @@
                     {% if user.is_authenticated and user != follow.follower %}
                     {% if follow.is_followed_by_current_user %}
                     <!-- Already following -->
-                    <button onclick="toggleFollowInList('{{ follow.follower.username }}', this)"
+                    <button onclick="toggleFollowersInList('{{ follow.follower.username }}', this)"
                         class="follow-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600"
                         data-username="{{ follow.follower.username }}" data-following="true">
                         Following
                     </button>
                     {% else %}
                     <!-- Not following -->
-                    <button onclick="toggleFollowInList('{{ follow.follower.username }}', this)"
+                    <button onclick="toggleFollowersInList('{{ follow.follower.username }}', this)"
                         class="follow-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-emerald-500 text-white hover:bg-emerald-600"
                         data-username="{{ follow.follower.username }}" data-following="false">
                         Follow
@@ -120,53 +121,4 @@
         {% endif %}
     </div>
 </div>
-
-<script>
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
-    function toggleFollowInList(username, button) {
-        const csrftoken = getCookie('csrftoken');
-
-        fetch(`/accounts/follow/${username}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrftoken,
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.is_following) {
-                    // Now following
-                    button.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
-                    button.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
-                    button.textContent = 'Following';
-                    button.setAttribute('data-following', 'true');
-                } else {
-                    // Unfollowed
-                    button.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
-                    button.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
-                    button.textContent = 'Follow';
-                    button.setAttribute('data-following', 'false');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-</script>
-
 {% endblock %}

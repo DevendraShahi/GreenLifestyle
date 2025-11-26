@@ -1,12 +1,10 @@
 from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from tips.models import Tip, Category
 from accounts.models import CustomUser, UserActivity
 
 
+# Developed by Devendra
 def home_view(request):
     """Homepage showing welcome message and features"""
     
@@ -27,3 +25,19 @@ def home_view(request):
     }
 
     return render(request, 'home.html', context)
+
+
+# Developed by Devendra
+def about_view(request):
+    return render(request, 'about.html')
+
+
+# Developed by Devendra
+def contact_view(request):
+    return render(request, 'contactUs.html')
+
+
+# Developed by Devendra
+def resources_view(request):
+    return render(request, 'resources.html')
+

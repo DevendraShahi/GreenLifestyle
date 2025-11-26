@@ -1,0 +1,68 @@
+/* Dropdown animation */
+#userDropdown.show {
+    display: block;
+    opacity: 1;
+    transform: scale(1);
+    animation: dropdownFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Pulse animation for online status */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.pulse-animation {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Theme Toggle Enhancement */
+#themeToggle svg {
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#themeToggle:hover svg {
+    transform: rotate(20deg) scale(1.1);
+}
+
+/* Profile Image Enhancement */
+nav img {
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+#userMenuButton:hover img {
+    transform: scale(1.05);
+}
+
+/* Smooth transitions for theme */
+* {
+    transition-property: background-color, border-color, color;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Override transitions for specific elements */
+.transition-all,
+.transition-colors,
+.transition-transform {
+    transition-duration: 300ms;
+}

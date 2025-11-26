@@ -1,5 +1,6 @@
 <!-- tips/templates/tips/tip_form.html -->
 
+<!-- Developed by Devendra -->
 {% extends 'base.html' %}
 {% load static %}
 
@@ -140,52 +141,4 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-  // Category toggle functionality
-  document.addEventListener('DOMContentLoaded', function () {
-    const existingBtn = document.getElementById('existingCategoryBtn');
-    const newBtn = document.getElementById('newCategoryBtn');
-    const existingSection = document.getElementById('existingCategorySection');
-    const newSection = document.getElementById('newCategorySection');
-    const categorySelect = document.getElementById('id_category');
-
-    // Toggle to existing category
-    existingBtn.addEventListener('click', function () {
-      // Update button styles
-      existingBtn.classList.add('bg-emerald-100', 'dark:bg-emerald-900', 'text-emerald-700', 'dark:text-emerald-300', 'border-emerald-500');
-      existingBtn.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
-
-      newBtn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900', 'text-emerald-700', 'dark:text-emerald-300', 'border-emerald-500');
-      newBtn.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
-
-      // Show/hide sections
-      existingSection.classList.remove('hidden');
-      newSection.classList.add('hidden');
-
-      // Clear new category fields
-      document.getElementById('id_new_category_name').value = '';
-      document.getElementById('id_new_category_icon').value = '';
-      document.getElementById('id_new_category_description').value = '';
-    });
-
-    // Toggle to new category
-    newBtn.addEventListener('click', function () {
-      // Update button styles
-      newBtn.classList.add('bg-emerald-100', 'dark:bg-emerald-900', 'text-emerald-700', 'dark:text-emerald-300', 'border-emerald-500');
-      newBtn.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
-
-      existingBtn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900', 'text-emerald-700', 'dark:text-emerald-300', 'border-emerald-500');
-      existingBtn.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
-
-      // Show/hide sections
-      existingSection.classList.add('hidden');
-      newSection.classList.remove('hidden');
-
-      // Clear existing category selection
-      if (categorySelect) {
-        categorySelect.selectedIndex = 0;
-      }
-    });
-  });
-</script>
 {% endblock %}

@@ -1,111 +1,140 @@
+<!-- Developed by Devendra -->
 {% load static %}
-<!-- Premium Glassmorphism Navbar -->
-<nav class="fixed top-0 left-0 w-full z-50 bg-glass backdrop-blur-lg border-b border-white/20 shadow-glass py-3 transition-colors duration-300">
+
+<nav
+  class="fixed top-0 left-0 w-full z-50 bg-white dark:bg-primary-950 border-b border-primary-100 dark:border-primary-800 shadow-sm py-3 transition-colors duration-300">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center">
       <!-- Logo Section -->
       <div class="flex items-center space-x-3">
-        <span class="text-2xl text-emerald-500">🌱</span>
-        <a href="/" class="text-xl font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors duration-300">
+        <span class="text-2xl text-primary-500">🌱</span>
+        <a href="/"
+          class="text-xl font-bold text-primary-700 dark:text-secondary-200 hover:text-primary-800 dark:hover:text-secondary-100 transition-colors duration-300">
           Green Lifestyle
         </a>
       </div>
 
       <!-- Navigation Links - Desktop -->
       <div class="hidden md:flex items-center space-x-8">
-        <a href="/" class="relative text-green-900 dark:text-gray-200 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium px-1 py-2 transition-all duration-500 group">
+        <a href="{% url 'core:home' %}"
+          class="relative text-primary-800 dark:text-cream-100 hover:text-primary-600 dark:hover:text-secondary-300 font-medium px-1 py-2 transition-all duration-500 group">
           Home
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-emerald-500 group-hover:w-full transition-all duration-500 ease-out"></span>
+          <span
+            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-500 ease-out"></span>
         </a>
 
-        <a href="{% url 'tips:tip_list' %}" class="relative text-green-900 dark:text-gray-200 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium px-1 py-2 transition-all duration-500 group">
+        <a href="{% url 'tips:tip_list' %}"
+          class="relative text-primary-800 dark:text-cream-100 hover:text-primary-600 dark:hover:text-secondary-300 font-medium px-1 py-2 transition-all duration-500 group">
           Tips
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-emerald-500 group-hover:w-full transition-all duration-500 ease-out"></span>
+          <span
+            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-500 ease-out"></span>
         </a>
 
-{#        <a href="#" class="relative text-green-900 dark:text-gray-200 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium px-1 py-2 transition-all duration-500 group">#}
-{#          Community#}
-{#          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-emerald-500 group-hover:w-full transition-all duration-500 ease-out"></span>#}
-{#        </a>#}
+        <a href="{% url 'tips:community' %}"
+          class="relative text-primary-800 dark:text-cream-100 hover:text-primary-600 dark:hover:text-secondary-300 font-medium px-1 py-2 transition-all duration-500 group">
+          Community
+          <span
+            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-500 ease-out"></span>
+        </a>
       </div>
 
       <!-- Authentication Section - Desktop -->
       <div class="hidden md:flex items-center space-x-4">
         <!-- Theme Toggle -->
-        <button id="themeToggle" class="p-2.5 rounded-lg hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300 group relative" aria-label="Toggle theme">
-          <svg id="sunIcon" class="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        <button id="themeToggle"
+          class="p-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-800 transition-all duration-300 group relative"
+          aria-label="Toggle theme">
+          <svg id="sunIcon"
+            class="w-5 h-5 text-primary-700 dark:text-secondary-200 group-hover:text-accent-500 dark:group-hover:text-accent-400 transition-all duration-300"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <svg id="moonIcon" class="hidden w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          <svg id="moonIcon"
+            class="hidden w-5 h-5 text-primary-700 dark:text-secondary-200 group-hover:text-accent-500 dark:group-hover:text-accent-400 transition-all duration-300"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
         </button>
 
         {% if user.is_authenticated %}
         <!-- Logged In State - User Profile Dropdown -->
         <div class="relative">
-          <button id="userMenuButton" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300 group">
+          <button id="userMenuButton"
+            class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-800 transition-all duration-300 group">
             <!-- Profile Image -->
             <div class="relative">
-              {% if user.profile.image %}
-              <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="w-9 h-9 rounded-full object-cover border-2 border-emerald-500 dark:border-emerald-400 group-hover:border-emerald-600 dark:group-hover:border-emerald-300 transition-all duration-300">
+              {% if user.profile_picture %}
+              <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}"
+                class="w-9 h-9 rounded-full object-cover border-2 border-primary-500 dark:border-secondary-400 group-hover:border-primary-600 dark:group-hover:border-secondary-300 transition-all duration-300">
               {% else %}
-              <img src="{% static 'images/user.gif' %}" alt="{{ user.username }}" class="w-9 h-9 rounded-full object-cover border-2 border-emerald-500 dark:border-emerald-400 group-hover:border-emerald-600 dark:group-hover:border-emerald-300 transition-all duration-300">
+              <img src="{% static 'images/profile.png' %}" alt="{{ user.username }}"
+                class="w-9 h-9 rounded-full object-cover border-2 border-primary-500 dark:border-secondary-400 group-hover:border-primary-600 dark:group-hover:border-secondary-300 transition-all duration-300">
               {% endif %}
-              <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full pulse-animation"></span>
+              <span
+                class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-primary-900 rounded-full pulse-animation"></span>
             </div>
 
             <!-- Username -->
-            <span class="text-sm text-gray-700 dark:text-gray-200 font-medium group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-all duration-300">
+            <span
+              class="text-sm text-primary-800 dark:text-cream-100 font-medium group-hover:text-primary-600 dark:group-hover:text-secondary-300 transition-all duration-300">
               {{ user.username }}
             </span>
 
             <!-- Dropdown Arrow -->
-            <svg class="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-all duration-300 transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              class="w-4 h-4 text-primary-600 dark:text-secondary-400 group-hover:text-primary-700 dark:group-hover:text-secondary-300 transition-all duration-300 transform group-hover:rotate-180"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
 
           <!-- Dropdown Menu -->
-          <div id="userDropdown" class="hidden absolute right-0 mt-3 w-56 bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 py-2 transform origin-top-right transition-all duration-300 opacity-0 scale-95">
+          <div id="userDropdown"
+            class="hidden absolute right-0 mt-3 w-56 bg-white/95 dark:bg-primary-900/95 backdrop-blur-lg rounded-2xl shadow-xl border border-primary-100 dark:border-primary-700 py-2 transform origin-top-right transition-all duration-300 opacity-0 scale-95">
             <!-- User Info Header -->
-            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-              <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ user.username }}</p>
-              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">{{ user.email }}</p>
+            <div class="px-4 py-3 border-b border-primary-100 dark:border-primary-800">
+              <p class="text-sm font-semibold text-primary-900 dark:text-cream-100">{{ user.username }}</p>
+              <p class="text-xs text-primary-600 dark:text-secondary-400 mt-1">{{ user.email }}</p>
             </div>
 
             <!-- Menu Items -->
             <div class="py-2">
-              <a href="{% url 'accounts:profile' %}" class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all duration-200 group">
-                <svg class="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              <a href="{% url 'accounts:profile' %}"
+                class="flex items-center px-4 py-2.5 text-sm text-primary-700 dark:text-cream-200 hover:bg-primary-50 dark:hover:bg-primary-800 hover:text-primary-900 dark:hover:text-secondary-300 transition-all duration-200 group">
+                <svg
+                  class="w-5 h-5 mr-3 text-primary-500 dark:text-secondary-500 group-hover:text-primary-600 dark:group-hover:text-secondary-400 transition-colors duration-200"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 My Profile
               </a>
 
-              <a href="{% url 'tips:saved_tips' %}" class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all duration-200 group">
-                <svg class="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              <a href="{% url 'tips:saved_tips' %}"
+                class="flex items-center px-4 py-2.5 text-sm text-primary-700 dark:text-cream-200 hover:bg-primary-50 dark:hover:bg-primary-800 hover:text-primary-900 dark:hover:text-secondary-300 transition-all duration-200 group">
+                <svg
+                  class="w-5 h-5 mr-3 text-primary-500 dark:text-secondary-500 group-hover:text-primary-600 dark:group-hover:text-secondary-400 transition-colors duration-200"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
                 Saved Tips
               </a>
-
-{#              <a href="{% url 'accounts:profile' %}" class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all duration-200 group">#}
-{#                <svg class="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">#}
-{#                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />#}
-{#                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />#}
-{#                </svg>#}
-{#                Settings#}
-{#              </a>#}
             </div>
 
             <!-- Divider -->
-            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+            <div class="border-t border-primary-100 dark:border-primary-800 my-2"></div>
 
             <!-- Logout Button -->
-            <a href="{% url 'accounts:logout' %}" class="flex items-center px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all duration-200 group rounded-b-2xl">
-              <svg class="w-5 h-5 mr-3 text-red-500 dark:text-red-400 group-hover:text-red-600 dark:group-hover:text-red-300 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            <a href="{% url 'accounts:logout' %}"
+              class="flex items-center px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all duration-200 group rounded-b-2xl">
+              <svg
+                class="w-5 h-5 mr-3 text-red-500 dark:text-red-400 group-hover:text-red-600 dark:group-hover:text-red-300 transition-colors duration-200"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
               Logout
             </a>
@@ -114,10 +143,12 @@
         {% else %}
         <!-- Logged Out State -->
         <div class="flex items-center space-x-3">
-          <a href="{% url 'accounts:login' %}" class="px-4 py-2 text-emerald-700 dark:text-emerald-400 font-semibold rounded-lg border border-emerald-500/30 dark:border-emerald-400/30 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-all duration-300">
+          <a href="{% url 'accounts:login' %}"
+            class="px-4 py-2 text-primary-700 dark:text-secondary-400 font-semibold rounded-lg border border-primary-500/30 dark:border-secondary-400/30 hover:bg-primary-50 dark:hover:bg-primary-800/50 transition-all duration-300">
             Login
           </a>
-          <a href="{% url 'accounts:signup' %}" class="px-4 py-2 bg-emerald-500 dark:bg-emerald-600 text-green-100 dark:white font-semibold rounded-lg hover:bg-emerald-600 dark:hover:bg-emerald-500 transition-all duration-300 shadow-md hover:shadow-lg">
+          <a href="{% url 'accounts:signup' %}"
+            class="px-4 py-2 bg-primary-600 dark:bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-700 dark:hover:bg-primary-400 transition-all duration-300 shadow-md hover:shadow-lg">
             Sign Up
           </a>
         </div>
@@ -125,63 +156,70 @@
       </div>
 
       <!-- Mobile Menu Button -->
-      <button id="mobileMenuButton" class="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300">
+      <button id="mobileMenuButton"
+        class="md:hidden p-2 rounded-lg text-primary-700 dark:text-cream-200 hover:bg-primary-50 dark:hover:bg-primary-800 transition-all duration-300">
         <i class="fas fa-bars text-xl"></i>
       </button>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="hidden md:hidden mt-4 py-4 bg-glass-dark dark:bg-gray-800/95 backdrop-blur-glass rounded-lg shadow-glass">
+    <div id="mobileMenu"
+      class="hidden md:hidden mt-4 py-4 bg-white/95 dark:bg-primary-900/95 backdrop-blur-lg rounded-lg shadow-xl border border-primary-100 dark:border-primary-700">
       <!-- Mobile Navigation Links -->
       <div class="flex flex-col space-y-3 px-4">
-        <a href="/" class="relative text-gray-700 dark:text-gray-200 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium px-3 py-3 transition-all duration-500 group text-center">
+        <a href="/"
+          class="relative text-primary-800 dark:text-cream-100 hover:text-primary-600 dark:hover:text-secondary-300 font-medium px-3 py-3 transition-all duration-500 group text-center">
           Home
-          <span class="absolute bottom-2 left-1/4 right-1/4 h-0.5 bg-emerald-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></span>
+          <span
+            class="absolute bottom-2 left-1/4 right-1/4 h-0.5 bg-primary-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></span>
         </a>
-        <a href="{% url 'tips:tip_list' %}" class="relative text-gray-700 dark:text-gray-200 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium px-3 py-3 transition-all duration-500 group text-center">
+        <a href="{% url 'tips:tip_list' %}"
+          class="relative text-primary-800 dark:text-cream-100 hover:text-primary-600 dark:hover:text-secondary-300 font-medium px-3 py-3 transition-all duration-500 group text-center">
           Tips
-          <span class="absolute bottom-2 left-1/4 right-1/4 h-0.5 bg-emerald-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></span>
+          <span
+            class="absolute bottom-2 left-1/4 right-1/4 h-0.5 bg-primary-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></span>
         </a>
-{#        <a href="#" class="relative text-gray-700 dark:text-gray-200 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium px-3 py-3 transition-all duration-500 group text-center">#}
-{#          Community#}
-{#          <span class="absolute bottom-2 left-1/4 right-1/4 h-0.5 bg-emerald-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></span>#}
-{#        </a>#}
+
+        <a href="{% url 'tips:community' %}"
+          class="relative text-primary-800 dark:text-cream-100 hover:text-primary-600 dark:hover:text-secondary-300 font-medium px-1 py-2 transition-all duration-500 group">
+          Community
+          <span
+            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-500 ease-out"></span>
+        </a>
       </div>
 
       <!-- Mobile Authentication Section -->
-      <div class="border-t border-gray-200 dark:border-gray-700 mt-4 pt-4 px-4">
+      <div class="border-t border-primary-100 dark:border-primary-800 mt-4 pt-4 px-4">
         {% if user.is_authenticated %}
         <!-- Logged In State - Mobile -->
         <div class="flex flex-col space-y-3">
           <!-- User Profile -->
           <div class="flex items-center justify-center space-x-3 py-2">
-            {% if user.profile.image %}
-            <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 dark:border-emerald-400">
+            {% if user.profile_picture %}
+            <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}"
+              class="w-10 h-10 rounded-full object-cover border-2 border-primary-500 dark:border-secondary-400">
             {% else %}
-            <img src="{% static 'images/profile.png' %}" alt="{{ user.username }}" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 dark:border-emerald-400">
+            <img src="{% static 'images/profile.png' %}" alt="{{ user.username }}"
+              class="w-10 h-10 rounded-full object-cover border-2 border-primary-500 dark:border-secondary-400">
             {% endif %}
-            <span class="text-sm text-gray-700 dark:text-gray-200 font-semibold">{{ user.username }}</span>
+            <span class="text-sm text-primary-800 dark:text-cream-100 font-semibold">{{ user.username }}</span>
           </div>
 
           <!-- Mobile Menu Items -->
-          <a href="{% url 'accounts:profile' %}" class="px-4 py-2.5 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-all duration-300 text-center flex items-center justify-center space-x-2">
+          <a href="{% url 'accounts:profile' %}"
+            class="px-4 py-2.5 text-primary-700 dark:text-cream-200 font-medium rounded-lg hover:bg-primary-50 dark:hover:bg-primary-800 transition-all duration-300 text-center flex items-center justify-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
             <span>My Profile</span>
           </a>
 
-{#          <a href="#" class="px-4 py-2.5 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-all duration-300 text-center flex items-center justify-center space-x-2">#}
-{#            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">#}
-{#              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />#}
-{#              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />#}
-{#            </svg>#}
-{#            <span>Settings</span>#}
-{#          </a>#}
-
-          <a href="{% url 'accounts:logout' %}" class="px-4 py-2.5 bg-red-500 dark:bg-red-600 text-white font-semibold rounded-lg hover:bg-red-600 dark:hover:bg-red-500 transition-all duration-300 text-center flex items-center justify-center space-x-2">
+          <a href="{% url 'accounts:logout' %}"
+            class="px-4 py-2.5 bg-red-500 dark:bg-red-600 text-white font-semibold rounded-lg hover:bg-red-600 dark:hover:bg-red-500 transition-all duration-300 text-center flex items-center justify-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
             <span>Logout</span>
           </a>
@@ -189,10 +227,12 @@
         {% else %}
         <!-- Logged Out State - Mobile -->
         <div class="flex flex-col space-y-3">
-          <a href="{% url 'accounts:login' %}" class="px-4 py-2 text-emerald-700 dark:text-emerald-400 font-semibold rounded-lg border border-emerald-500/30 dark:border-emerald-400/30 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-all duration-300 text-center">
+          <a href="{% url 'accounts:login' %}"
+            class="px-4 py-2 text-primary-700 dark:text-secondary-400 font-semibold rounded-lg border border-primary-500/30 dark:border-secondary-400/30 hover:bg-primary-50 dark:hover:bg-primary-800/50 transition-all duration-300 text-center">
             Login
           </a>
-          <a href="{% url 'accounts:signup' %}" class="px-4 py-2 bg-emerald-500 dark:bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-600 dark:hover:bg-emerald-500 transition-all duration-300 text-center">
+          <a href="{% url 'accounts:signup' %}"
+            class="px-4 py-2 bg-primary-600 dark:bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-700 dark:hover:bg-primary-400 transition-all duration-300 text-center">
             Sign Up
           </a>
         </div>
@@ -204,191 +244,3 @@
 
 <!-- FontAwesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-<style>
-  /* Glassmorphism Styles */
-  .bg-glass {
-    background: rgba(255, 255, 255, 0.15);
-  }
-  .bg-glass-dark {
-    background: rgba(255, 255, 255, 0.9);
-  }
-  .shadow-glass {
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-  }
-  .backdrop-blur-glass {
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-  }
-
-  /* Dark Mode Glassmorphism */
-  .dark .bg-glass {
-    background: rgba(17, 24, 39, 0.85);
-  }
-  .dark .bg-glass-dark {
-    background: rgba(31, 41, 55, 0.95);
-  }
-  .dark nav {
-    border-bottom-color: rgba(255, 255, 255, 0.1);
-  }
-
-  /* Dropdown animation */
-  #userDropdown.show {
-    display: block;
-    opacity: 1;
-    transform: scale(1);
-    animation: dropdownFadeIn 0.3s ease-out forwards;
-  }
-
-  @keyframes dropdownFadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  /* Pulse animation for online status */
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-
-  .pulse-animation {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  /* Theme Toggle Enhancement */
-  #themeToggle svg {
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
-
-  #themeToggle:hover svg {
-    transform: rotate(20deg) scale(1.1);
-  }
-
-  /* Profile Image Enhancement */
-  nav img {
-    transition: transform 0.3s ease, border-color 0.3s ease;
-  }
-
-  #userMenuButton:hover img {
-    transform: scale(1.05);
-  }
-
-  /* Smooth transitions for theme */
-  * {
-    transition-property: background-color, border-color, color;
-    transition-duration: 300ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Override transitions for specific elements */
-  .transition-all, .transition-colors, .transition-transform {
-    transition-duration: 300ms;
-  }
-</style>
-
-<script>
-  // Mobile menu toggle
-  const mobileMenuButton = document.getElementById("mobileMenuButton");
-  const mobileMenu = document.getElementById("mobileMenu");
-
-  mobileMenuButton.addEventListener("click", () => {
-    mobileMenu.classList.toggle("hidden");
-    const icon = mobileMenuButton.querySelector("i");
-    if (mobileMenu.classList.contains("hidden")) {
-      icon.className = "fas fa-bars text-xl";
-    } else {
-      icon.className = "fas fa-times text-xl";
-    }
-  });
-
-  // Close mobile menu when clicking outside
-  document.addEventListener('click', (event) => {
-    if (mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
-      mobileMenu.classList.add('hidden');
-      const icon = mobileMenuButton.querySelector("i");
-      icon.className = "fas fa-bars text-xl";
-    }
-  });
-
-  // User dropdown toggle
-  const userMenuButton = document.getElementById("userMenuButton");
-  const userDropdown = document.getElementById("userDropdown");
-
-  if (userMenuButton && userDropdown) {
-    userMenuButton.addEventListener("click", (e) => {
-      e.stopPropagation();
-      userDropdown.classList.toggle("hidden");
-      userDropdown.classList.toggle("show");
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (event) => {
-      if (userDropdown && !userDropdown.contains(event.target) && !userMenuButton.contains(event.target)) {
-        userDropdown.classList.add('hidden');
-        userDropdown.classList.remove('show');
-      }
-    });
-
-    // Prevent dropdown from closing when clicking inside it
-    userDropdown.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-  }
-
-  // Theme Toggle Functionality
-  const themeToggle = document.getElementById('themeToggle');
-  const sunIcon = document.getElementById('sunIcon');
-  const moonIcon = document.getElementById('moonIcon');
-  const html = document.documentElement;
-
-  // Check for saved theme preference or default to light mode
-  const currentTheme = localStorage.getItem('theme') || 'light';
-
-  if (currentTheme === 'dark') {
-    html.classList.add('dark');
-    sunIcon.classList.add('hidden');
-    moonIcon.classList.remove('hidden');
-  }
-
-  themeToggle.addEventListener('click', () => {
-    html.classList.toggle('dark');
-
-    // Toggle icons with animation
-    if (html.classList.contains('dark')) {
-      sunIcon.classList.add('hidden');
-      moonIcon.classList.remove('hidden');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      moonIcon.classList.add('hidden');
-      sunIcon.classList.remove('hidden');
-      localStorage.setItem('theme', 'light');
-    }
-  });
-
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
-      if (href !== '#') {
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      }
-    });
-  });
-</script>

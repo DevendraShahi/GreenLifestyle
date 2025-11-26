@@ -20,33 +20,408 @@
   font-family: 'flower', serif;
 }
 
-.tagline{
-    font-family: 'flower1', serif;
+.tagline {
+  font-family: 'flower1', serif;
+}
+
+/* Force dark mode background override */
+html.dark body {
+  background-color: #000000 !important;
+  color: #D5ED9F !important;
+}
+
+/* Ensure other dark mode elements use the correct background if needed */
+html.dark .bg-gray-900,
+html.dark .bg-gray-950,
+html.dark .dark\:bg-gray-900,
+html.dark .dark\:bg-gray-950 {
+  background-color: #000000 !important;
 }
 
 
-.hero {
-  background-image: url('/static/images/bg-2.gif');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+/* CTA Section */
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.8s ease-out;
+}
+
+/* Shimmer effect on button */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Pulsing background circles */
+@keyframes softPulse {
+
+  0%,
+  100% {
+    opacity: 0.08;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.12;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse {
+  animation: softPulse 4s ease-in-out infinite;
+}
+
+/* Icon scale animation on parent hover */
+.group:hover .text-2xl {
+  animation: iconBounce 0.5s ease-out;
+}
+
+@keyframes iconBounce {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* How It Works Section */
+
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.group {
+  animation: cardReveal 0.6s ease-out forwards;
+}
+
+.group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h2 {
+  animation: textReveal 0.8s ease-out;
+}
+
+
+
+/* Why Choose Us Section */
+
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.group {
+  animation: cardReveal 0.6s ease-out forwards;
+}
+
+.group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.group:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.group:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.group:nth-child(6) {
+  animation-delay: 0.35s;
+}
+
+/* SVG arrow animation */
+svg {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+/* yourImpact section */
+
+/* Impact cards entrance */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.bg-white.border {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.bg-white.border:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.bg-white.border:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.bg-white.border:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.bg-white.border:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Stats card fade in */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sticky {
+  animation: fadeInScale 0.6s ease-out 0.2s forwards;
+}
+
+/* Progress bar fill animation */
+@keyframes fillBar {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Icon animation on card hover */
+.group:hover .rounded-xl {
+  animation: pulse 0.5s ease-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* Home Page */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-500 {
+  animation-delay: 0.5s;
+}
+
+
+/* Footer */
+.bg-glass {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.shadow-glass-footer {
+  box-shadow: 0 -8px 32px rgba(31, 38, 135, 0.15);
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.social-icon:hover {
+  background: rgba(213, 237, 159, 0.3);
+  /* Secondary color with opacity */
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(213, 237, 159, 0.4);
+  border-color: rgba(213, 237, 159, 0.5);
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
   position: relative;
 }
 
-/* Overlay for text readability */
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.85);
-  z-index: 1;
-}
-
-/* Make sure content is above overlay */
-.hero > div {
-  position: relative;
-  z-index: 2;
+/* Scroll to Top Button Animation */
+#scrollToTop.show {
+  opacity: 1;
+  visibility: visible;
 }

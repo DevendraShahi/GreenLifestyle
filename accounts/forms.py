@@ -1,3 +1,5 @@
+# accounts/forms.py
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import CustomUser
@@ -6,6 +8,7 @@ from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 
 
+# Developed by Devendra
 class SignupForm(UserCreationForm):
     """Form for new users to register"""
 
@@ -60,6 +63,7 @@ class SignupForm(UserCreationForm):
         return username
 
 
+# Developed by Devendra
 class LoginForm(AuthenticationForm):
     """Form for users to login"""
 
@@ -78,6 +82,7 @@ class LoginForm(AuthenticationForm):
     )
 
 
+# Developed by Devendra
 class UserProfileForm(forms.ModelForm):
     """Form for user profile editing"""
 

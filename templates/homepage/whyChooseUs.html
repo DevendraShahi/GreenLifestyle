@@ -1,15 +1,13 @@
-<!-- templates/homepage/whyChooseUs.html -->
-
-
+<!-- Developed by Devendra -->
 <div class="py-32 px-4 bg-white relative overflow-hidden">
 
-  <!-- Subtle background elements -->
+
   <div class="absolute top-0 left-0 w-96 h-96 bg-emerald-50 rounded-full opacity-30 blur-3xl -z-10"></div>
   <div class="absolute bottom-0 right-0 w-80 h-80 bg-blue-50 rounded-full opacity-30 blur-3xl -z-10"></div>
 
   <div class="max-w-6xl mx-auto">
 
-    <!-- Section Header - Consistent with "Our Journey" -->
+    <!-- Section Header -->
     <div class="mb-24">
       <div class="inline-flex items-center gap-3 mb-6">
         <div class="w-12 h-0.5 bg-emerald-500"></div>
@@ -22,30 +20,29 @@
       </h2>
 
       <p class="text-xl text-gray-600 max-w-3xl leading-relaxed font-light">
-        We've built something special—a platform where sustainability meets simplicity. Here's what sets us apart and
-        why our community thrives.
+        We built this place to make sustainability simple. Here's what makes our community special.
       </p>
     </div>
 
-    <!-- Features Grid - Premium Design -->
+    <!-- Features Grid  -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
 
       <!-- Feature 1: Sustainable Tips -->
       <div class="group relative">
-        <!-- Soft background accent -->
         <div
           class="absolute inset-0 bg-emerald-50/40 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10">
         </div>
 
-        <!-- Card -->
+
         <div
           class="bg-white border border-gray-100 rounded-3xl p-10 h-full hover:border-emerald-200 transition-all duration-700 shadow-sm hover:shadow-xl">
 
-          <!-- Icon Container -->
+
           <div class="mb-8 flex items-start justify-between">
             <div
-              class="inline-flex items-center justify-center w-14 h-14 bg-emerald-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-emerald-100 group-hover:scale-110">
-              ♻️
+              class="inline-flex items-center justify-center w-14 h-14 bg-emerald-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-emerald-100 group-hover:scale-110 text-emerald-600">
+              <i class="bi bi-recycle"></i>
             </div>
             <div
               class="text-emerald-400 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
@@ -57,24 +54,23 @@
             </div>
           </div>
 
-          <!-- Title -->
+
           <h3 class="text-2xl font-light text-gray-900 mb-3">
-            <span class="font-semibold">Sustainable</span> Tips
+            <span class="font-semibold">Real Tips</span> that Work
           </h3>
 
-          <!-- Accent line -->
+
           <div class="h-0.5 w-8 bg-emerald-400 rounded-full mb-6"></div>
 
-          <!-- Description -->
+
           <p class="text-gray-600 leading-relaxed mb-8 font-light">
-            Practical, actionable wisdom to reduce your environmental impact and build lasting sustainable habits into
-            your daily life.
+            Simple, practical ideas you can actually use. No complicated instructions, just good advice.
           </p>
 
-          <!-- Link -->
+
           <div
             class="flex items-center gap-2 text-sm font-semibold text-emerald-600 group-hover:text-emerald-700 transition-colors duration-300">
-            <span>Explore tips</span>
+            <a href="{% url 'tips:tip_list' %}">Explore tips</a>
             <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -82,6 +78,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Feature 2: Community Driven -->
       <div class="group relative lg:mt-8">
@@ -94,8 +91,8 @@
 
           <div class="mb-8 flex items-start justify-between">
             <div
-              class="inline-flex items-center justify-center w-14 h-14 bg-blue-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-blue-100 group-hover:scale-110">
-              🤝
+              class="inline-flex items-center justify-center w-14 h-14 bg-blue-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-blue-100 group-hover:scale-110 text-blue-600">
+              <i class="bi bi-people"></i>
             </div>
             <div
               class="text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
@@ -108,19 +105,18 @@
           </div>
 
           <h3 class="text-2xl font-light text-gray-900 mb-3">
-            <span class="font-semibold">Community</span> Driven
+            <span class="font-semibold">People Helping</span> People
           </h3>
 
           <div class="h-0.5 w-8 bg-blue-400 rounded-full mb-6"></div>
 
           <p class="text-gray-600 leading-relaxed mb-8 font-light">
-            Connect with thousands of like-minded eco-warriors. Share your journey, celebrate wins, and grow together as
-            a passionate community.
+            Join thousands of others on the same journey. Share your wins, ask questions, and grow together.
           </p>
 
           <div
             class="flex items-center gap-2 text-sm font-semibold text-blue-600 group-hover:text-blue-700 transition-colors duration-300">
-            <span>Join community</span>
+            <a href="{% url 'tips:community' %}">Join community</a>
             <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -128,6 +124,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Feature 3: Learn & Grow -->
       <div class="group relative">
@@ -140,8 +137,8 @@
 
           <div class="mb-8 flex items-start justify-between">
             <div
-              class="inline-flex items-center justify-center w-14 h-14 bg-amber-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-amber-100 group-hover:scale-110">
-              📚
+              class="inline-flex items-center justify-center w-14 h-14 bg-amber-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-amber-100 group-hover:scale-110 text-amber-600">
+              <i class="bi bi-book"></i>
             </div>
             <div
               class="text-amber-400 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
@@ -154,19 +151,19 @@
           </div>
 
           <h3 class="text-2xl font-light text-gray-900 mb-3">
-            <span class="font-semibold">Learn</span> & Grow
+            <span class="font-semibold">Learn</span> Something New
           </h3>
 
           <div class="h-0.5 w-8 bg-amber-400 rounded-full mb-6"></div>
 
           <p class="text-gray-600 leading-relaxed mb-8 font-light">
-            Curated content from environmental experts. Deepen your knowledge and discover innovative ways to create
-            positive change.
+            Discover new ways to make a difference. From small swaps to big changes, there's always something new to
+            try.
           </p>
 
           <div
             class="flex items-center gap-2 text-sm font-semibold text-amber-600 group-hover:text-amber-700 transition-colors duration-300">
-            <span>Start learning</span>
+            <a href="{% url 'tips:tip_list' %}">Start learning</a>
             <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -174,6 +171,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Feature 4: Global Impact -->
       <div class="group relative lg:mt-8">
@@ -186,8 +184,8 @@
 
           <div class="mb-8 flex items-start justify-between">
             <div
-              class="inline-flex items-center justify-center w-14 h-14 bg-teal-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-teal-100 group-hover:scale-110">
-              🌍
+              class="inline-flex items-center justify-center w-14 h-14 bg-teal-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-teal-100 group-hover:scale-110 text-teal-600">
+              <i class="bi bi-globe-americas"></i>
             </div>
             <div
               class="text-teal-400 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
@@ -200,19 +198,18 @@
           </div>
 
           <h3 class="text-2xl font-light text-gray-900 mb-3">
-            <span class="font-semibold">Global</span> Impact
+            <span class="font-semibold">Make a</span> Difference
           </h3>
 
           <div class="h-0.5 w-8 bg-teal-400 rounded-full mb-6"></div>
 
           <p class="text-gray-600 leading-relaxed mb-8 font-light">
-            Track your environmental progress and celebrate milestones. See how your choices contribute to meaningful
-            global change.
+            See how your choices add up. Every small step helps create a better world for everyone.
           </p>
 
           <div
             class="flex items-center gap-2 text-sm font-semibold text-teal-600 group-hover:text-teal-700 transition-colors duration-300">
-            <span>See your impact</span>
+            <a href="{% url 'accounts:activity_history' %}">See your impact</a>
             <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -220,6 +217,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Feature 5: Curated Content -->
       <div class="group relative">
@@ -232,8 +230,8 @@
 
           <div class="mb-8 flex items-start justify-between">
             <div
-              class="inline-flex items-center justify-center w-14 h-14 bg-purple-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-purple-100 group-hover:scale-110">
-              ⭐
+              class="inline-flex items-center justify-center w-14 h-14 bg-purple-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-purple-100 group-hover:scale-110 text-purple-600">
+              <i class="bi bi-star"></i>
             </div>
             <div
               class="text-purple-400 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
@@ -246,19 +244,18 @@
           </div>
 
           <h3 class="text-2xl font-light text-gray-900 mb-3">
-            <span class="font-semibold">Curated</span> Content
+            <span class="font-semibold">Trusted</span> Content
           </h3>
 
           <div class="h-0.5 w-8 bg-purple-400 rounded-full mb-6"></div>
 
           <p class="text-gray-600 leading-relaxed mb-8 font-light">
-            Every tip is verified and fact-checked. We maintain the highest standards of accuracy and reliability across
-            our platform.
+            We check everything to make sure it's accurate and helpful. You can trust what you find here.
           </p>
 
           <div
             class="flex items-center gap-2 text-sm font-semibold text-purple-600 group-hover:text-purple-700 transition-colors duration-300">
-            <span>Browse content</span>
+            <a href="{% url 'tips:tip_list' %}">Browse content</a>
             <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -266,6 +263,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Feature 6: Categories -->
       <div class="group relative lg:mt-8">
@@ -278,8 +276,8 @@
 
           <div class="mb-8 flex items-start justify-between">
             <div
-              class="inline-flex items-center justify-center w-14 h-14 bg-rose-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-rose-100 group-hover:scale-110">
-              🎯
+              class="inline-flex items-center justify-center w-14 h-14 bg-rose-50 rounded-2xl text-2xl transition-all duration-500 group-hover:bg-rose-100 group-hover:scale-110 text-rose-600">
+              <i class="bi bi-bullseye"></i>
             </div>
             <div
               class="text-rose-400 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
@@ -292,19 +290,18 @@
           </div>
 
           <h3 class="text-2xl font-light text-gray-900 mb-3">
-            <span class="font-semibold">Diverse</span> Categories
+            <span class="font-semibold">Something for</span> Everyone
           </h3>
 
           <div class="h-0.5 w-8 bg-rose-400 rounded-full mb-6"></div>
 
           <p class="text-gray-600 leading-relaxed mb-8 font-light">
-            From energy conservation to sustainable living. Explore 100+ meticulously organized categories tailored to
-            your lifestyle.
+            Whether you're just starting or looking for advanced tips, we have categories that fit your life.
           </p>
 
           <div
             class="flex items-center gap-2 text-sm font-semibold text-rose-600 group-hover:text-rose-700 transition-colors duration-300">
-            <span>Explore categories</span>
+            <a href="{% url 'tips:tip_list' %}">Explore categories</a>
             <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -314,16 +311,16 @@
       </div>
     </div>
 
-    <!-- Bottom CTA Section - Premium Style -->
+    <!-- Bottom CTA Section -->
     <div class="mt-32 pt-24 border-t border-gray-100">
       <div class="max-w-3xl mx-auto text-center">
         <h3 class="text-5xl md:text-6xl font-light text-gray-900 mb-6">
-          Ready for<br />
-          <span class="font-semibold">Your Green Journey</span>
+          Ready to<br />
+          <span class="font-semibold">Start?</span>
         </h3>
 
         <p class="text-lg text-gray-600 mb-12 leading-relaxed font-light">
-          Join our thriving community of eco-conscious individuals who are making a real difference every single day.
+          Join a friendly community of people making a difference every day.
         </p>
 
         <!-- CTA Buttons -->
@@ -356,52 +353,3 @@
     </div>
   </div>
 </div>
-
-<!-- Custom Animations -->
-<style>
-  /* Card entrance animation */
-  @keyframes cardReveal {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .group {
-    animation: cardReveal 0.6s ease-out forwards;
-  }
-
-  .group:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-
-  .group:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-
-  .group:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  .group:nth-child(4) {
-    animation-delay: 0.15s;
-  }
-
-  .group:nth-child(5) {
-    animation-delay: 0.25s;
-  }
-
-  .group:nth-child(6) {
-    animation-delay: 0.35s;
-  }
-
-  /* SVG arrow animation */
-  svg {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-</style>

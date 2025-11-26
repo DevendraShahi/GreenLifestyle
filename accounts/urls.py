@@ -23,8 +23,8 @@ urlpatterns = [
     path('<str:username>/followers/', views.followers_list_view, name='followers_list'),
     path('<str:username>/following/', views.following_list_view, name='following_list'),
 
-    # Password Reset (Direct & Simplified)
-    path('password-reset/', views.direct_password_reset_view, name='password_reset'),
+    # Password Reset 
+    path('password-reset/', views.password_reset_view, name='password_reset'),
          
     path('password-reset-confirm/<uidb64>/<token>/', 
          auth_views.PasswordResetConfirmView.as_view(
@@ -54,5 +54,6 @@ urlpatterns = [
          name='password_change_done'),
 
     # User profile (Keep this last to avoid conflicts)
+    path('delete/', views.delete_account_view, name='delete_account'),
     path('<str:username>/', views.profile_view, name='profile'),
 ]

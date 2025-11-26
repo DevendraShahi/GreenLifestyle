@@ -1,5 +1,6 @@
 <!-- accounts/templates/accounts/following_list.html -->
 
+<!-- Developed by Nandha and Priya -->
 {% extends 'base.html' %}
 {% load static %}
 
@@ -113,56 +114,5 @@
         {% endif %}
     </div>
 </div>
-
-<script>
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
-    function toggleFollowInList(username, button) {
-        const csrftoken = getCookie('csrftoken');
-
-        fetch(`/accounts/follow/${username}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrftoken,
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.is_following) {
-                    button.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
-                    button.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white');
-                    button.textContent = 'Following';
-                } else {
-                    button.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
-                    button.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white');
-                    button.textContent = 'Follow';
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    // Check follow status for all users on page load
-    document.addEventListener('DOMContentLoaded', function () {
-        const followBtns = document.querySelectorAll('.follow-btn');
-        followBtns.forEach(btn => {
-            const username = btn.dataset.username;
-            // You can add AJAX call here to check status if needed
-        });
-    });
-</script>
 
 {% endblock %}

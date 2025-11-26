@@ -1,0 +1,218 @@
+<!-- Developed by Nandha, Priyadharshan and Krish -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - Green Lifestyle{% endblock %}
+
+{% block content %}
+
+
+<div class="min-h-screen bg-white dark:bg-gray-950 pt-20">
+
+    <!-- Hero Section -->
+    <section class="py-20 border-b border-gray-100 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+                Building a Greener Future Together
+            </h1>
+
+            <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                Green Lifestyle is a place for people who want to do good. Small actions, done together, make a big
+                difference.
+            </p>
+        </div>
+    </section>
+
+    <!-- Our Mission Section -->
+    <section class="py-16 bg-white dark:bg-gray-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Our Mission</h2>
+                    <div class="space-y-6 text-lg text-gray-600 dark:text-gray-400">
+                        <p>
+                            We wanted to do something good. The world has some big problems right now, like pollution
+                            and climate change. It can feel overwhelming, and it's hard to know where to start.
+                        </p>
+                        <p>
+                            We believe in simple solutions. Most people want to help, they just need a little direction
+                            and some friends to do it with. That's why we built this—to make living green easy and fun.
+                        </p>
+                        <p>
+                            Our goal is simple: Help everyone live a little greener. Share what you know, learn from
+                            others, and see the good you're doing.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="flex items-center justify-center lg:justify-end">
+                    <div class="p-8 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800">
+                        <svg class="w-48 h-48 text-emerald-600 dark:text-emerald-500" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why We Built This -->
+    <section class="py-16 bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Why Green Lifestyle?</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    A place to learn, share, and do good.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <div class="bg-white dark:bg-gray-950 rounded-lg p-8 border border-gray-200 dark:border-gray-800">
+                    <div
+                        class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-md flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Community Power</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        One person recycling is good. Thousands doing it together is amazing. We can do more when we
+                        work together.
+                    </p>
+                </div>
+
+
+                <div class="bg-white dark:bg-gray-950 rounded-lg p-8 border border-gray-200 dark:border-gray-800">
+                    <div
+                        class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-md flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Practical Knowledge</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        No complicated theories. Just real tips from real people that fit into your daily life.
+                    </p>
+                </div>
+
+
+                <div class="bg-white dark:bg-gray-950 rounded-lg p-8 border border-gray-200 dark:border-gray-800">
+                    <div
+                        class="w-12 h-12 bg-teal-100 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-md flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Real Impact</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Every tip and every action helps. We help you see the difference you're making.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-16 bg-white dark:bg-gray-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Meet Our Team</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    The people behind Green Lifestyle.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <div
+                    class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-800 text-center">
+                    <div
+                        class="w-20 h-20 bg-emerald-100 dark:bg-emerald-900/30 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-emerald-700 dark:text-emerald-400">DS</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Devendra Shahi Thakuri</h3>
+                    <p class="text-sm text-emerald-600 dark:text-emerald-400 mb-2">Project Lead & Full Stack Developer
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Architecture, Backend, Frontend</p>
+                </div>
+
+
+                <div
+                    class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-800 text-center">
+                    <div
+                        class="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-blue-700 dark:text-blue-400">PR</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Priyadharshan Reddy</h3>
+                    <p class="text-sm text-blue-600 dark:text-blue-400 mb-2">Backend Developer</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Social Features, Engagement System</p>
+                </div>
+
+
+                <div
+                    class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-800 text-center">
+                    <div
+                        class="w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-purple-700 dark:text-purple-400">NK</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Nandha Kumar Reddy</h3>
+                    <p class="text-sm text-purple-600 dark:text-purple-400 mb-2">Backend Developer</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Social Features, Engagement System</p>
+                </div>
+
+
+                <div
+                    class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-800 text-center">
+                    <div
+                        class="w-20 h-20 bg-orange-100 dark:bg-orange-900/30 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-orange-700 dark:text-orange-400">VK</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Venkata Sai Krishna</h3>
+                    <p class="text-sm text-orange-600 dark:text-orange-400 mb-2">Frontend Developer</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Tip Browsing, UI/UX Design</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-emerald-50 dark:bg-emerald-900/10 border-t border-emerald-100 dark:border-emerald-900/30">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Ready to Make a Difference?</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+                Join us. Every small step counts.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                {% if user.is_authenticated %}
+                <a href="{% url 'tips:create_tip' %}"
+                    class="px-8 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-colors">
+                    Share Your First Tip
+                </a>
+                {% else %}
+                <a href="{% url 'accounts:signup' %}"
+                    class="px-8 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-colors">
+                    Join Green Lifestyle
+                </a>
+                <a href="{% url 'tips:tip_list' %}"
+                    class="px-8 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    Browse Tips
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

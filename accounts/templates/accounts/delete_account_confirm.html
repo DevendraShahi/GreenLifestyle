@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Account - Green Lifestyle{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-cream dark:bg-primary-950 py-12 px-4 sm:px-6 lg:px-8">
+    <div
+        class="max-w-md w-full space-y-8 bg-white dark:bg-primary-900 p-8 rounded-2xl shadow-xl border border-primary-100 dark:border-primary-800">
+        <div class="text-center">
+            <div
+                class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
+                <i class="fas fa-exclamation-triangle text-2xl text-red-600 dark:text-red-500"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-primary-900 dark:text-cream-100 mb-2">Delete Account?</h2>
+            <p class="text-primary-600 dark:text-cream-200/70">
+                Are you sure you want to delete your account? This action is permanent and cannot be undone. All your
+                data, including tips and profile information, will be lost.
+            </p>
+        </div>
+
+        <form method="post" class="mt-8 space-y-4">
+            {% csrf_token %}
+            <button type="submit"
+                class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-300 shadow-lg shadow-red-500/30 hover:shadow-red-500/50">
+                Yes, Delete My Account
+            </button>
+
+            <a href="{% url 'accounts:settings' %}"
+                class="group relative w-full flex justify-center py-3 px-4 border border-primary-200 dark:border-primary-700 text-sm font-medium rounded-xl text-primary-700 dark:text-cream-200 bg-transparent hover:bg-primary-50 dark:hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

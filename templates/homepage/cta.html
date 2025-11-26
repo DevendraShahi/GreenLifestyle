@@ -1,5 +1,4 @@
-<!-- templates/homepage/cta.html -->
-
+<!-- Developed by Devendra -->
 <div class="relative py-40 px-4 overflow-hidden bg-white">
 
   <!-- Animated background elements -->
@@ -29,9 +28,9 @@
         <span class="font-semibold">Starts Here</span>
       </h2>
 
-      <!-- Subheading with emotional touch -->
+      <!-- Subheading -->
       <p class="text-2xl md:text-3xl font-light text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-        Join a global community of changemakers. Every action counts. Every voice matters.
+        Join a global community of changemakers.
         <span class="block mt-3 text-emerald-700 font-semibold">
           Your sustainable future begins now.
         </span>
@@ -39,8 +38,7 @@
 
       <!-- Descriptive text -->
       <p class="text-lg text-gray-600 font-light max-w-2xl mx-auto mb-12 leading-relaxed">
-        Access 1000+ verified tips, connect with 5000+ eco-warriors, and track your real environmental impact—completely
-        free.
+        It's free, it's easy, and we'd love to have you.
       </p>
     </div>
 
@@ -51,12 +49,12 @@
       <div
         class="group bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-xl hover:border-emerald-300 transition-all duration-500">
         <div
-          class="flex items-center justify-center w-14 h-14 bg-emerald-100 rounded-xl text-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
-          🚀
+          class="flex items-center justify-center w-14 h-14 bg-emerald-100 rounded-xl text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-emerald-600">
+          <i class="bi bi-rocket-takeoff"></i>
         </div>
         <h3 class="text-lg font-semibold text-gray-900 mb-3">Instant Access</h3>
         <p class="text-gray-600 font-light leading-relaxed">
-          Start exploring curated tips immediately. No waiting, no setup complications. Pure simplicity.
+          Start exploring tips right away. No waiting, no hassle.
         </p>
       </div>
 
@@ -64,12 +62,12 @@
       <div
         class="group bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-xl hover:border-blue-300 transition-all duration-500">
         <div
-          class="flex items-center justify-center w-14 h-14 bg-blue-100 rounded-xl text-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
-          💚
+          class="flex items-center justify-center w-14 h-14 bg-blue-100 rounded-xl text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-blue-600">
+          <i class="bi bi-heart"></i>
         </div>
         <h3 class="text-lg font-semibold text-gray-900 mb-3">100% Free</h3>
         <p class="text-gray-600 font-light leading-relaxed">
-          No hidden fees. No premium paywalls. Pure commitment to making sustainability accessible.
+          No hidden fees. Just a free tool to help you live greener.
         </p>
       </div>
 
@@ -77,12 +75,12 @@
       <div
         class="group bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-xl hover:border-purple-300 transition-all duration-500">
         <div
-          class="flex items-center justify-center w-14 h-14 bg-purple-100 rounded-xl text-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
-          🌍
+          class="flex items-center justify-center w-14 h-14 bg-purple-100 rounded-xl text-2xl mb-6 group-hover:scale-110 transition-transform duration-300 text-purple-600">
+          <i class="bi bi-globe-americas"></i>
         </div>
         <h3 class="text-lg font-semibold text-gray-900 mb-3">Real Impact</h3>
         <p class="text-gray-600 font-light leading-relaxed">
-          Track your environmental progress. Celebrate milestones. See your ripple effect globally.
+          See the difference you're making. Track your progress and celebrate wins.
         </p>
       </div>
     </div>
@@ -95,12 +93,11 @@
 
       <h3 class="text-3xl md:text-4xl font-light text-gray-900 mb-4">
         Ready to Make<br />
-        <span class="font-semibold">Your Difference</span>
+        <span class="font-semibold">a Difference?</span>
       </h3>
 
       <p class="text-gray-600 font-light text-lg mb-10 max-w-2xl mx-auto">
-        Join over 5,000 eco-conscious individuals who are already transforming their lives and our planet. It takes less
-        than 60 seconds to get started.
+        Join thousands of others who are already changing their lives and the planet. It only takes a minute.
       </p>
 
       <!-- Button Group -->
@@ -156,14 +153,14 @@
 
       {% else %}
 
-      <!-- For logged-in users -->
+
       <h3 class="text-3xl md:text-4xl font-light text-gray-900 mb-4">
         Ready to Share<br />
-        <span class="font-semibold">Your Wisdom</span>
+        <span class="font-semibold">Your Ideas?</span>
       </h3>
 
       <p class="text-gray-600 font-light text-lg mb-10 max-w-2xl mx-auto">
-        Your insights could inspire thousands. Join our mission to make sustainability the new normal.
+        Your tips could help thousands of people. Share what you know and inspire others.
       </p>
 
       <a href="{% url 'tips:create_tip' %}"
@@ -182,90 +179,5 @@
 
       {% endif %}
     </div>
-
-    <!-- Bottom Social Proof -->
-    <div class="text-center pt-8">
-      <p class="text-sm text-gray-600 font-light mb-6">Join the movement for a sustainable future</p>
-      <div class="flex items-center justify-center gap-3">
-        <span class="text-2xl">🌱</span>
-        <span class="text-2xl">🌍</span>
-        <span class="text-2xl">💚</span>
-        <span class="text-2xl">♻️</span>
-        <span class="text-2xl">🌿</span>
-      </div>
-    </div>
   </div>
 </div>
-
-<!-- Animations & Styles -->
-<style>
-  /* Fade in animation */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-fadeIn {
-    animation: fadeIn 0.8s ease-out;
-  }
-
-  /* Shimmer effect on button */
-  @keyframes shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
-
-    100% {
-      transform: translateX(100%);
-    }
-  }
-
-  .animate-shimmer {
-    animation: shimmer 2s infinite;
-  }
-
-  /* Pulsing background circles */
-  @keyframes softPulse {
-
-    0%,
-    100% {
-      opacity: 0.08;
-      transform: scale(1);
-    }
-
-    50% {
-      opacity: 0.12;
-      transform: scale(1.05);
-    }
-  }
-
-  .animate-pulse {
-    animation: softPulse 4s ease-in-out infinite;
-  }
-
-  /* Icon scale animation on parent hover */
-  .group:hover .text-2xl {
-    animation: iconBounce 0.5s ease-out;
-  }
-
-  @keyframes iconBounce {
-    0% {
-      transform: scale(1);
-    }
-
-    50% {
-      transform: scale(1.15);
-    }
-
-    100% {
-      transform: scale(1);
-    }
-  }
-</style>

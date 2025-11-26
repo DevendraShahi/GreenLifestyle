@@ -1,8 +1,11 @@
+# tips/forms.py
+
 from django import forms
 from .models import Tip, Category, Comment
 from django.core.exceptions import ValidationError
 
 
+# Developed by Devendra
 class TipForm(forms.ModelForm):
     # Creating/editing tips with optional category creation
     
@@ -138,6 +141,7 @@ class TipForm(forms.ModelForm):
         return instance
 
 
+# Developed by Devendra
 class CommentForm(forms.ModelForm):
     # Adding comments to tips
     
@@ -154,6 +158,7 @@ class CommentForm(forms.ModelForm):
         }
 
 
+# Developed by Devendra
 class CategoryForm(forms.ModelForm):
     # Creating/editing categories
     
@@ -230,6 +235,7 @@ class CategoryForm(forms.ModelForm):
         return description
 
 
+# Developed by Devendra
 class CategoryRequestForm(forms.ModelForm):
     # Requesting new categories (for regular users)
     
