@@ -9,24 +9,4 @@ Django==5.2.7
 # Image Processing (for profile pictures and tip images)
 Pillow==11.0.0
 
-# Python Standard Library (already included, but listing for reference)
-# These are automatically available with Python 3.13
-
-# Optional but Recommended Production Dependencies
-# Uncomment these when deploying to production
-
-# gunicorn==23.0.0              # WSGI HTTP Server for production
-# whitenoise==6.8.2             # Static file serving for production
-# python-decouple==3.8          # Environment variable management
-# psycopg2-binary==2.9.10       # PostgreSQL database adapter
-# django-environ==0.11.2        # Environment configuration
-
-# Development Dependencies (optional)
-# Uncomment these for development
-
-# django-debug-toolbar==4.4.6  # Debugging toolbar
-# django-extensions==3.2.3     # Additional Django management commands
-# black==24.10.0                # Code formatter
-# flake8==7.1.1                 # Code linter
-# ipython==8.30.0               # Enhanced Python shell
 

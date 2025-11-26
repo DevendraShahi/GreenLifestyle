@@ -175,6 +175,7 @@ def create_tip_view(request):
             # Saving tip
             tip = form.save(commit=False)
             tip.author = request.user
+            tip.is_published = True
             tip.save()
 
             messages.success(request, '✓ Tip created successfully!')

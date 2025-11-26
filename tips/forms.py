@@ -43,7 +43,7 @@ class TipForm(forms.ModelForm):
     
     class Meta:
         model = Tip
-        fields = ['title', 'content', 'category', 'image', 'is_published']
+        fields = ['title', 'content', 'category', 'image']
         
         widgets = {
             'title': forms.TextInput(attrs={
@@ -66,9 +66,7 @@ class TipForm(forms.ModelForm):
                 'accept': 'image/*'
             }),
             
-            'is_published': forms.CheckboxInput(attrs={
-                'class': 'w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-            }),
+
         }
     
     def __init__(self, *args, **kwargs):
