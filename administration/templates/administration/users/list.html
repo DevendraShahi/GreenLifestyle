@@ -1,0 +1,209 @@
+{% extends 'administration/base_admin.html' %}
+
+{% block admin_content %}
+<div class="mb-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">User Management</h1>
+</div>
+
+{% if recommended_moderators %}
+<div class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recommended for Moderator</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% for user in recommended_moderators %}
+        <div
+            class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-between">
+            <div class="flex items-center">
+                <div
+                    class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold mr-3">
+                    {{ user.username.0|upper }}
+                </div>
+                <div>
+                    <div class="font-medium text-gray-900 dark:text-white">{{ user.username }}</div>
+                    <div class="text-xs text-gray-500">Impact Score: {{ user.impact_score }}</div>
+                </div>
+            </div>
+            <button onclick="promoteUser(this, {{ user.id }})"
+                class="text-xs bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-1.5 rounded-lg font-medium transition-colors">
+                Moderator
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">User</th>
+                    <th scope="col" class="px-6 py-3">Role</th>
+                    <th scope="col" class="px-6 py-3">Status</th>
+                    <th scope="col" class="px-6 py-3">Joined</th>
+                    <th scope="col" class="px-6 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr
+                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div
+                                class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold mr-3">
+                                {{ user.username.0|upper }}
+                            </div>
+                            <div>
+                                <div class="font-semibold">{{ user.username }}</div>
+                                <div class="text-xs text-gray-500">{{ user.email }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        {% if user == request.user %}
+                        <span class="text-xs text-gray-500">Current User</span>
+                        {% else %}
+                        <select onchange="updateRole(this, {{ user.id }})"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+                            <option value="moderator" {% if user.role == 'moderator' %}selected{% endif %}>Moderator
+                            </option>
+                            <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4">
+                        {% if user == request.user %}
+                        <span class="text-green-600 text-xs">Active</span>
+                        {% else %}
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer"
+                                onchange="toggleStatus(this, {{ user.id }})" {% if user.is_active %}checked{% endif %}>
+                            <div
+                                class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-600">
+                            </div>
+                            <span class="ml-2 text-xs font-medium text-gray-900 dark:text-gray-300 status-text">
+                                {% if user.is_active %}Active{% else %}Inactive{% endif %}
+                            </span>
+                        </label>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ user.date_joined|date:"M d, Y" }}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="{% url 'administration:user_edit' user.id %}"
+                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-3">Edit</a>
+                        <a href="{% url 'administration:user_delete' user.id %}"
+                            class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function updateRole(select, userId) {
+        const newRole = select.value;
+        const originalRole = select.getAttribute('data-original') || select.querySelector('option[selected]').value;
+
+        showConfirmation(
+            `Are you sure you want to change this user's role to ${newRole}?`,
+            () => {
+                // Confirm
+                fetch(`/administration/api/user/${userId}/update-role/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ role: newRole })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Success toast?
+                            select.setAttribute('data-original', newRole);
+                        } else {
+                            alert('Error: ' + data.error);
+                            select.value = originalRole;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        select.value = originalRole;
+                    });
+            },
+            () => {
+                // Cancel
+                select.value = originalRole;
+            }
+        );
+    }
+
+    function toggleStatus(checkbox, userId) {
+        const isActive = checkbox.checked;
+        const statusText = checkbox.parentElement.querySelector('.status-text');
+
+        showConfirmation(
+            `Are you sure you want to ${isActive ? 'enable' : 'disable'} this user account?`,
+            () => {
+                // Confirm
+                fetch(`/administration/api/user/${userId}/toggle-status/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ is_active: isActive })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            statusText.textContent = isActive ? 'Active' : 'Inactive';
+                        } else {
+                            alert('Error: ' + data.error);
+                            checkbox.checked = !isActive;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        checkbox.checked = !isActive;
+                    });
+            },
+            () => {
+                // Cancel
+                checkbox.checked = !isActive;
+            }
+        );
+    }
+    function promoteUser(btn, userId) {
+        showConfirmation(
+            "Are you sure you want to promote this user to Moderator?",
+            () => {
+                fetch(`/administration/api/user/${userId}/update-role/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ role: 'moderator' })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Reload to reflect changes
+                            window.location.reload();
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        );
+    }
+</script>
+{% endblock %}

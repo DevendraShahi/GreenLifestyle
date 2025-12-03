@@ -40,10 +40,19 @@ class TipForm(forms.ModelForm):
         }),
         help_text='Describe what this category is about'
     )
+
+    is_published = forms.BooleanField(
+        required=False,
+        initial=True,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'w-5 h-5 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer'
+        }),
+        label='Publish immediately'
+    )
     
     class Meta:
         model = Tip
-        fields = ['title', 'content', 'category', 'image']
+        fields = ['title', 'content', 'category', 'image', 'is_published']
         
         widgets = {
             'title': forms.TextInput(attrs={
@@ -63,8 +72,11 @@ class TipForm(forms.ModelForm):
             
             'image': forms.FileInput(attrs={
                 'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/30 dark:file:text-emerald-400 dark:hover:file:bg-emerald-900/50 cursor-pointer transition-all duration-200',
-                'accept': 'image/*'
+                'accept': 'image/*',
+                'id': 'tipImageInput'
             }),
+            
+
             
 
         }

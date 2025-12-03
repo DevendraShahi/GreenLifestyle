@@ -76,10 +76,10 @@ def profile_view(request, username=None):
     posts = Tip.objects.filter(author=profile_user).order_by('-created_at')
 
     # Getting stats
-    tips_count = getattr(profile_user, 'tips_count', 0)
-    followers_count = profile_user.followers_count
-    following_count = profile_user.following_count
-    impact_score = getattr(profile_user, 'impact_score', 0)
+    tips_count = profile_user.get_tips_count_dynamic
+    followers_count = profile_user.get_followers_count()
+    following_count = profile_user.get_following_count()
+    impact_score = profile_user.get_impact_score_dynamic
     
     context = {
         'profile_user': profile_user,

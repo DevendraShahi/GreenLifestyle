@@ -1,0 +1,107 @@
+{% extends 'administration/base_admin.html' %}
+
+{% block admin_content %}
+<div class="mb-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Category Management</h1>
+    <a href="{% url 'administration:category_create' %}"
+        class="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors">
+        <i class="bi bi-plus-lg mr-2"></i> Create Category
+    </a>
+</div>
+
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Icon</th>
+                    <th scope="col" class="px-6 py-3">Name</th>
+                    <th scope="col" class="px-6 py-3">Description</th>
+                    <th scope="col" class="px-6 py-3">Tips Count</th>
+                    <th scope="col" class="px-6 py-3">Status</th>
+                    <th scope="col" class="px-6 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr
+                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <td class="px-6 py-4 text-xl">
+                        {{ category.icon }}
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                        {{ category.name }}
+                    </td>
+                    <td class="px-6 py-4 truncate max-w-xs">
+                        {{ category.description|default:"-" }}
+                    </td>
+                    <td class="px-6 py-4">
+                        <span
+                            class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+                            {{ category.tips_count }} tips
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer"
+                                onchange="toggleCategoryStatus(this, {{ category.id }})" {% if category.is_approved%}checked{% endif %}>
+                            <div
+                                class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-600">
+                            </div>
+                            <span class="ml-2 text-xs font-medium text-gray-900 dark:text-gray-300 status-text">
+                                {% if category.is_approved %}Approved{% else %}Pending{% endif %}
+                            </span>
+                        </label>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="{% url 'administration:category_edit' category.id %}"
+                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-3">Edit</a>
+                        <a href="{% url 'administration:category_delete' category.id %}"
+                            class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function toggleCategoryStatus(checkbox, categoryId) {
+        const isApproved = checkbox.checked;
+        const statusText = checkbox.parentElement.querySelector('.status-text');
+
+        showConfirmation(
+            `Are you sure you want to ${isApproved ? 'approve' : 'unapprove'} this category?`,
+            () => {
+                // Confirm
+                fetch(`/administration/api/category/${categoryId}/toggle-status/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ is_approved: isApproved })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            statusText.textContent = isApproved ? 'Approved' : 'Pending';
+                        } else {
+                            alert('Error: ' + data.error);
+                            checkbox.checked = !isApproved;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        checkbox.checked = !isApproved;
+                    });
+            },
+            () => {
+                // Cancel
+                checkbox.checked = !isApproved;
+            }
+        );
+    }
+</script>
+{% endblock %}

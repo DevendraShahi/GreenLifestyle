@@ -14,6 +14,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
 
     path('tips/', include('tips.urls')),
+    
+    path('administration/', include('administration.urls')),
 ]
 
 # Serve static and media files

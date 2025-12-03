@@ -1,0 +1,107 @@
+{% extends 'administration/base_admin.html' %}
+
+{% block admin_content %}
+<div class="mb-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Tip Management</h1>
+</div>
+
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Title</th>
+                    <th scope="col" class="px-6 py-3">Author</th>
+                    <th scope="col" class="px-6 py-3">Category</th>
+                    <th scope="col" class="px-6 py-3">Status</th>
+                    <th scope="col" class="px-6 py-3">Created</th>
+                    <th scope="col" class="px-6 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tip in tips %}
+                <tr
+                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                        {{ tip.title }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ tip.author.username }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {% if tip.category %}
+                        <span
+                            class="bg-emerald-100 text-emerald-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-emerald-900 dark:text-emerald-300">
+                            {{ tip.category.icon }} {{ tip.category.name }}
+                        </span>
+                        {% else %}
+                        <span class="text-gray-400 italic">Uncategorized</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer"
+                                onchange="toggleTipStatus(this, {{ tip.id }})" {% if tip.is_published %}checked{% endif %}>
+                            <div
+                                class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-600">
+                            </div>
+                            <span class="ml-2 text-xs font-medium text-gray-900 dark:text-gray-300 status-text">
+                                {% if tip.is_published %}Published{% else %}Draft{% endif %}
+                            </span>
+                        </label>
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ tip.created_at|date:"M d, Y" }}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="{% url 'administration:tip_edit' tip.id %}"
+                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-3">Edit</a>
+                        <a href="{% url 'administration:tip_delete' tip.id %}"
+                            class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function toggleTipStatus(checkbox, tipId) {
+        const isPublished = checkbox.checked;
+        const statusText = checkbox.parentElement.querySelector('.status-text');
+
+        showConfirmation(
+            `Are you sure you want to ${isPublished ? 'publish' : 'unpublish'} this tip?`,
+            () => {
+                // Confirm
+                fetch(`/administration/api/tip/${tipId}/toggle-status/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ is_published: isPublished })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            statusText.textContent = isPublished ? 'Published' : 'Draft';
+                        } else {
+                            alert('Error: ' + data.error);
+                            checkbox.checked = !isPublished;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        checkbox.checked = !isPublished;
+                    });
+            },
+            () => {
+                // Cancel
+                checkbox.checked = !isPublished;
+            }
+        );
+    }
+</script>
+{% endblock %}

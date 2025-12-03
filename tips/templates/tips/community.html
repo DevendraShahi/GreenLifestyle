@@ -16,8 +16,7 @@
         </div>
 
         <!-- Discover People -->
-        {% if suggested_users %}
-        <section class="mb-12">
+        <section id="discover-people-section" class="mb-12 {% if not suggested_users %}hidden{% endif %}">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                 <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -26,17 +25,15 @@
                 Discover People
             </h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="discover-people-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for person in suggested_users %}
                 {% include 'tips/_user_card.html' with person=person %}
                 {% endfor %}
             </div>
         </section>
-        {% endif %}
 
         <!-- Your Community -->
-        {% if following_users %}
-        <section>
+        <section id="your-community-section" class="{% if not following_users %}hidden{% endif %}">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                 <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -46,16 +43,14 @@
                 Your Community
             </h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="your-community-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for member in following_users %}
                 {% include 'tips/_user_card.html' with person=member %}
                 {% endfor %}
             </div>
         </section>
-        {% endif %}
 
-        {% if not suggested_users and not following_users %}
-        <div class="text-center py-20">
+        <div id="no-users-found" class="text-center py-20 {% if suggested_users or following_users %}hidden{% endif %}">
             <div
                 class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,7 +62,6 @@
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No users found</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400">It seems you are the only one here!</p>
         </div>
-        {% endif %}
 
     </div>
 </div>

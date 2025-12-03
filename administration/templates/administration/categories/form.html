@@ -1,0 +1,54 @@
+{% extends 'administration/base_admin.html' %}
+
+{% block admin_content %}
+<div class="max-w-2xl mx-auto">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ title }}</h1>
+        <a href="{% url 'administration:category_list' %}"
+            class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+            <i class="bi bi-arrow-left mr-1"></i> Back to Categories
+        </a>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-6">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                <p class="mt-1 text-xs text-red-600">{{ form.name.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="mb-6">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Icon (Emoji)</label>
+                {{ form.icon }}
+                {% if form.icon.errors %}
+                <p class="mt-1 text-xs text-red-600">{{ form.icon.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="mb-6">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                <p class="mt-1 text-xs text-red-600">{{ form.description.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="flex justify-end gap-3">
+                <a href="{% url 'administration:category_list' %}"
+                    class="px-5 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                    Cancel
+                </a>
+                <button type="submit"
+                    class="px-5 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700">
+                    Save Category
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

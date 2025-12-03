@@ -21,7 +21,7 @@ from accounts.utils import update_user_impact_score
 def tip_list_view(request):
     """Displaying tips."""
 
-    tips = Tip.objects.filter(is_published=True).select_related('author', 'category').annotate(
+    tips = Tip.objects.filter(is_published=True, author__is_active=True).select_related('author', 'category').annotate(
         likes_count=Count('likes', distinct=True),
         comments_count=Count('comments', distinct=True)
     )
@@ -75,10 +75,10 @@ def tip_list_view(request):
             tip.is_liked = False
             tip.is_bookmarked = False
 
-    categories = Category.objects.all()
+    categories = Category.objects.filter(is_approved=True)
 
     # Getting stats
-    total_tips = Tip.objects.filter(is_published=True).count()
+    total_tips = Tip.objects.filter(is_published=True, author__is_active=True).count()
     total_likes = Like.objects.count()
 
     context = {
@@ -101,9 +101,14 @@ def tip_detail_view(request, slug):
 
     tip = get_object_or_404(
         Tip.objects.select_related('author', 'category'),
-        slug=slug,
-        is_published=True
+        slug=slug
     )
+
+    # Checking if tip is published or user is author
+    if not tip.is_published and tip.author != request.user:
+        # If not published and not author, return 404
+        from django.http import Http404
+        raise Http404("No Tip matches the given query.")
 
     # Tracking view
     UserActivity.log_activity(request, tip_id=tip.id)
@@ -139,7 +144,8 @@ def tip_detail_view(request, slug):
 
     related_tips = Tip.objects.filter(
         category=tip.category,
-        is_published=True
+        is_published=True,
+        author__is_active=True
     ).exclude(
         id=tip.id
     ).order_by('-created_at')[:3]
@@ -172,10 +178,9 @@ def create_tip_view(request):
         form = TipForm(request.POST, request.FILES, user=request.user)
 
         if form.is_valid():
-            # Saving tip
             tip = form.save(commit=False)
             tip.author = request.user
-            tip.is_published = True
+            tip.is_published = form.cleaned_data.get('is_published', False)
             tip.save()
 
             messages.success(request, '✓ Tip created successfully!')
@@ -338,9 +343,15 @@ def category_detail_view(request, slug):
 
     category = get_object_or_404(Category, slug=slug)
 
+    # Checking if category is approved
+    if not category.is_approved:
+        from django.http import Http404
+        raise Http404("Category not found or pending approval.")
+
     tips = Tip.objects.filter(
         category=category,
-        is_published=True
+        is_published=True,
+        author__is_active=True
     ).select_related('author').annotate(
         likes_count=Count('likes', distinct=True),
         comments_count=Count('comments', distinct=True)
@@ -425,8 +436,8 @@ def community_view(request):
     """Displaying community members."""
     User = get_user_model()
     
-    # Getting all users except self
-    users = User.objects.exclude(id=request.user.id).order_by('-date_joined')
+    # Getting all users except self and inactive users
+    users = User.objects.exclude(id=request.user.id).filter(is_active=True).order_by('-date_joined')
     
     # Splitting into following and suggested
     following_users = []

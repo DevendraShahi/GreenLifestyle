@@ -110,6 +110,20 @@
         <!-- Image -->
         <div>
           <label class="text-sm font-semibold text-gray-900 dark:text-white block mb-2">IMAGE (OPTIONAL)</label>
+
+          <!-- Image Preview -->
+          <div class="mb-4 hidden" id="tipImagePreviewContainer">
+            <img id="tipImagePreview" src="#" alt="Tip Preview"
+              class="max-h-64 rounded-lg border border-gray-200 dark:border-gray-700 object-cover">
+          </div>
+          {% if tip.image %}
+          <div class="mb-4" id="currentTipImage">
+            <img src="{{ tip.image.url }}" alt="Current Image"
+              class="max-h-64 rounded-lg border border-gray-200 dark:border-gray-700 object-cover">
+            <p class="text-xs text-gray-500 mt-1">Current image</p>
+          </div>
+          {% endif %}
+
           {{ form.image }}
           {% if form.image.errors %}
           <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ form.image.errors.0 }}</p>
@@ -117,10 +131,11 @@
         </div>
 
         <!-- Publish Checkbox -->
-        <!-- <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3">
           {{ form.is_published }}
-          <label class="text-sm text-gray-900 dark:text-white">Publish immediately</label>
-        </div> -->
+          <label for="{{ form.is_published.id_for_label }}"
+            class="text-sm text-gray-900 dark:text-white cursor-pointer select-none">Publish immediately</label>
+        </div>
 
         <!-- Buttons -->
         <div class="flex gap-3 pt-4">
@@ -141,4 +156,29 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tipImageInput = document.getElementById('tipImageInput');
+    const tipImagePreview = document.getElementById('tipImagePreview');
+    const tipImagePreviewContainer = document.getElementById('tipImagePreviewContainer');
+    const currentTipImage = document.getElementById('currentTipImage');
+
+    if (tipImageInput && tipImagePreview && tipImagePreviewContainer) {
+      tipImageInput.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            tipImagePreview.src = e.target.result;
+            tipImagePreviewContainer.classList.remove('hidden');
+            if (currentTipImage) {
+              currentTipImage.classList.add('hidden');
+            }
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+  });
+</script>
 {% endblock %}
